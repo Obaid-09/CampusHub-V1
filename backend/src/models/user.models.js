@@ -57,20 +57,25 @@ const userSchema = new Schema(
             },
         },
     ],
-    downloads:[
+    downloads: [
         {
-            type:Schema.Types.ObjectId,
-            ref:"Resource"
-            //ref: "User"
-        }
+            resource: {
+                type: Schema.Types.ObjectId,
+                ref: "Resource",
+            },
+            downloadedAt: {
+                type: Date,
+                default: Date.now,
+            },
+        },
     ],
-    uploadedResources:[
-        {
-            type:Schema.Types.ObjectId,
-            ref:"Resource",
-            //ref: "User"
-        }
-    ],
+    // uploadedResources:[
+    //     {
+    //         type:Schema.Types.ObjectId,
+    //         ref:"Resource",
+    //         //ref: "User"
+    //     }
+    // ],
     role:{
         type:String,
         enum:["student","admin"],

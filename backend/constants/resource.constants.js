@@ -1,4 +1,3 @@
-// constants/resource.constants.js
 
 export const BRANCHES = [
     "CSE",

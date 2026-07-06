@@ -405,19 +405,171 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 const getBookmarks = asyncHandler(async (req, res) => {
 
-})
+    const user = await User.findById(req.user._id)
+        .populate({
+            path: "bookmarks.resource",
+            select: `
+                title
+                description
+                subject
+                type
+                branch
+                semester
+                year
+                thumbnail
+                pdfUrl
+                downloads
+                views
+                bookmarks
+                averageRating
+                uploadedBy
+                createdAt
+            `,
+            populate: {
+                path: "uploadedBy",
+                select: "fullname username avatar"
+            }
+        });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Keep newest bookmarks first
+    user.bookmarks.sort(
+        (a, b) => b.bookmarkedAt - a.bookmarkedAt
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            user.bookmarks,
+            "Bookmarks fetched successfully"
+        )
+    );
+});
 
 const getRecentlyViewed = asyncHandler(async (req, res) => {
-    
-})
+
+    const user = await User.findById(req.user._id)
+        .populate({
+            path: "recentlyViewed.resource",
+            select: `
+                title
+                description
+                subject
+                type
+                branch
+                semester
+                year
+                thumbnail
+                pdfUrl
+                downloads
+                views
+                bookmarks
+                averageRating
+                uploadedBy
+                createdAt
+            `,
+            populate: {
+                path: "uploadedBy",
+                select: "fullname username avatar"
+            }
+        });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Keep latest viewed resources first
+    user.recentlyViewed.sort(
+        (a, b) => b.viewedAt - a.viewedAt
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            user.recentlyViewed,
+            "Recently viewed resources fetched successfully"
+        )
+    );
+});
 
 const getMyUploads = asyncHandler(async (req, res) => {
-    
-})
+
+    const totalUploads = await Resource.countDocuments({
+        uploadedBy: req.user._id,
+        isDeleted: false
+    });
+
+    const resources = await Resource.find({
+        uploadedBy: req.user._id,
+        isDeleted: false
+    })
+        .select(
+            "-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted"
+        )
+        .populate({
+            path: "uploadedBy",
+            select: "fullname username avatar"
+        })
+        .sort({
+            createdAt: -1
+        });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                totalUploads,
+                uploads: resources
+            },
+            "Uploaded resources fetched successfully"
+        )
+    );
+});
 
 const getDownloadHistory = asyncHandler(async (req, res) => {
-    
-})
+
+    console.log("Reached getMyUploads");
+    const user = await User.findById(req.user._id)
+        .populate({
+            path: "downloads.resource",
+            select: `
+                title
+                subject
+                type
+                branch
+                semester
+                year
+                thumbnail
+                pdfUrl
+                downloads
+                averageRating
+                uploadedBy
+            `,
+            populate: {
+                path: "uploadedBy",
+                select: "fullname username avatar"
+            }
+        });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    user.downloads.sort(
+        (a, b) => b.downloadedAt - a.downloadedAt
+    );
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            user.downloads,
+            "Download history fetched successfully"
+        )
+    );
+
+});
 
 
 export {

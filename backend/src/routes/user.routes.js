@@ -16,19 +16,31 @@ import {
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { registerValidator, loginValidator, changePasswordValidator, updateProfileValidator } from "../validators/user.validators.js";
+import { loginLimiter } from "../middlewares/rateLimit.middleware.js";
+
 const router = Router();
 console.log("User routes loaded");
 
 router.route("/register").post(
-  upload.fields([
-    {
-      name: "avatar",
-      maxCount: 1,
-    },
-  ]),
-  registerUser
+    upload.fields([
+        {
+            name: "avatar",
+            maxCount: 1
+        }
+    ]),
+    registerValidator,
+    validate,
+    registerUser
 );
-router.route("/login").post(loginUser);
+
+router.route("/login").post(
+    loginLimiter,
+    loginValidator,
+    validate,
+    loginUser
+);
 router.route("/refresh-token").post(requestAccessToken);
 
 // Secured Routes
@@ -44,11 +56,15 @@ router.route("/current-user").get(
 
 router.route("/change-password").patch(
     verifyJWT,
+    changePasswordValidator,
+    validate,
     changeCurrentPassword
 );
 
 router.route("/update-profile").patch(
     verifyJWT,
+    updateProfileValidator,
+    validate,
     updateAccountDetails
 );
 

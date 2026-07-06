@@ -42,10 +42,12 @@ app.get("/", (req, res) => {
 //routes import
 import userRouter from './routes/user.routes.js'
 import resourceRouter from './routes/resource.routes.js'
+import adminRouter from './routes/admin.routes.js'
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/resources", resourceRouter)
+app.use("/api/v1/admin", adminRouter);
 // http://localhost:8000/api/v1/users/register
 
 

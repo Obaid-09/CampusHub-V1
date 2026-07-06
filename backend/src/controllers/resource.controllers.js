@@ -954,11 +954,7 @@ export {
     getResourceById,
     viewResource,
     downloadResource,
-    getDownloadHistory,
     bookmarkResource,
-    getBookmarks,
-    getRecentlyViewed,
-    getMyUploads,
     updateResource,
     deleteResource
 }

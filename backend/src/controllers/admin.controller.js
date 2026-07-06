@@ -1,0 +1,1049 @@
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { User } from "../models/user.models.js";
+import { Resource } from "../models/resource.models.js";
+import mongoose from "mongoose";
+import { ApiError } from "../utils/ApiError.js";
+
+const adminDashboard = asyncHandler(async (req, res) => {
+
+    // User Statistics
+    // ==========================
+    const totalUsers = await User.countDocuments();
+    const totalStudents = await User.countDocuments({
+        role: "student"
+    });
+    const totalAdmins = await User.countDocuments({
+        role: "admin"
+    });
+
+
+    // Resource Statistics
+    // ==========================
+    const totalResources = await Resource.countDocuments({
+        isDeleted: false
+    });
+
+    const pendingResources = await Resource.countDocuments({
+        status: "pending",
+        isDeleted: false
+    });
+
+    const approvedResources = await Resource.countDocuments({
+        status: "approved",
+        isDeleted: false
+    });
+
+    const rejectedResources = await Resource.countDocuments({
+        status: "rejected",
+        isDeleted: false
+    });
+
+    const deletedResources = await Resource.countDocuments({
+        isDeleted: true
+    });
+
+
+    // Platform Statistics
+    // ==========================
+    const stats = await Resource.aggregate([
+        {
+            $group: {
+                _id: null,
+
+                totalDownloads: {
+                    $sum: "$downloads"
+                },
+
+                totalViews: {
+                    $sum: "$views"
+                },
+
+                totalBookmarks: {
+                    $sum: "$bookmarks"
+                }
+            }
+        }
+    ]);
+
+    const platformStats = stats[0] || {
+        totalDownloads: 0,
+        totalViews: 0,
+        totalBookmarks: 0
+    };
+
+
+    // Response
+    // ==========================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                users: {
+                    totalUsers,
+                    totalStudents,
+                    totalAdmins
+                },
+
+                resources: {
+                    totalResources,
+                    pendingResources,
+                    approvedResources,
+                    rejectedResources,
+                    deletedResources
+                },
+
+                platform: {
+                    totalDownloads: platformStats.totalDownloads,
+                    totalViews: platformStats.totalViews,
+                    totalBookmarks: platformStats.totalBookmarks
+                }
+            },
+            "Dashboard statistics fetched successfully"
+        )
+    );
+
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+
+    // Query Parameters
+    // ==========================================
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        role,
+        branch,
+        year,
+        semester,
+        sort = "latest"
+    } = req.query;
+
+
+    // Pagination
+    // ==========================================
+    const pageNumber = Math.max(Number(page), 1);
+    const limitNumber = Math.max(Number(limit), 1);
+    const skip = (pageNumber - 1) * limitNumber;
+
+
+    // Filters
+    // ==========================================
+    const filter = {};
+    if (role) {
+        filter.role = role;
+    }
+    if (branch) {
+        filter.branch = branch.toUpperCase();
+    }
+    if (year) {
+        filter.year = Number(year);
+    }
+    if (semester) {
+        filter.semester = Number(semester);
+    }
+
+
+    // Search
+    // ==========================================
+    if (search) {
+        filter.$or = [
+            {
+                fullname: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                username: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                email: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }
+        ];
+    }
+
+
+    // Sorting
+    // ==========================================
+    let sortOption = {};
+    switch (sort) {
+        case "oldest":
+            sortOption = {
+                createdAt: 1
+            };
+            break;
+
+        case "fullname":
+            sortOption = {
+                fullname: 1
+            };
+            break;
+
+        case "latest":
+        default:
+            sortOption = {
+                createdAt: -1
+            };
+    }
+
+
+    // Fetch Users
+    // ==========================================
+    const users = await User.find(filter)
+    .select(
+        "fullname username email avatar role branch year semester college lastLogin createdAt")
+    .select("-password -refreshToken -__v")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limitNumber)
+    .lean();
+
+
+    // Total Count
+    // ==========================================
+    const totalUsers = await User.countDocuments(filter);
+    const totalPages = Math.ceil(totalUsers / limitNumber);
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                page: pageNumber,
+                limit: limitNumber,
+                totalUsers,
+                totalPages,
+                hasNextPage: pageNumber < totalPages,
+                hasPreviousPage: pageNumber > 1,
+                users
+            },
+            "Users fetched successfully"
+        )
+    );
+
+});
+
+const getUserById = asyncHandler(async (req, res) => {
+
+
+    // Validate User ID
+    // ============================
+    const { userId } = req.params;
+    const { ObjectId } = mongoose.Types;
+    if (!ObjectId.isValid(userId)) {
+        throw new ApiError(400, "Invalid User ID");
+    }
+
+
+    // Find User
+    // ============================
+    const user = await User.findById(userId)
+        .select("-password -refreshToken -__v")
+        .lean();
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+
+    // Upload Statistics
+    // ============================
+    const uploadsCount = await Resource.countDocuments({
+        uploadedBy: user._id,
+        isDeleted: false
+    });
+    const deletedUploads = await Resource.countDocuments({
+        uploadedBy: user._id,
+        isDeleted: true
+    });
+
+
+    // Response
+    // ============================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                ...user,
+                uploadsCount,
+                deletedUploads,
+                bookmarksCount:
+                    user.bookmarks?.length || 0,
+
+                recentlyViewedCount:
+                    user.recentlyViewed?.length || 0,
+
+                downloadsCount:
+                    user.downloads?.length || 0
+            },
+            "User fetched successfully"
+        )
+    );
+});
+
+const getPendingResources = asyncHandler(async (req, res) => {
+
+    // Query Parameters
+    // ==========================================
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        branch,
+        semester,
+        type,
+        subject,
+        college,
+        sort = "latest"
+    } = req.query;
+
+
+    // Pagination
+    // ==========================================
+    const pageNumber = Math.max(Number(page), 1);
+    const limitNumber = Math.max(Number(limit), 1);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Filters
+    // ==========================================
+    const filter = {
+        status: "pending",
+        isDeleted: false
+    };
+    if (branch) {
+        filter.branch = branch.toUpperCase();
+    }
+    if (semester) {
+        filter.semester = Number(semester);
+    }
+    if (type) {
+        filter.type = type;
+    }
+    if (subject) {
+        filter.subject = {
+            $regex: subject,
+            $options: "i"
+        };
+    }
+    if (college) {
+        filter.college = {
+            $regex: college,
+            $options: "i"
+        };
+    }
+
+
+    // Search
+    // ==========================================
+    if (search) {
+        filter.$or = [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                subject: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                courseCode: {
+                    $regex: search.toUpperCase(),
+                    $options: "i"
+                }
+            }
+        ];
+    }
+
+
+    // Sorting
+    // ==========================================
+    let sortOption = {};
+
+    switch (sort) {
+        case "oldest":
+            sortOption = {
+                createdAt: 1
+            };
+            break;
+        case "downloads":
+            sortOption = {
+                downloads: -1
+            };
+            break;
+        case "views":
+            sortOption = {
+                views: -1
+            };
+            break;
+        default:
+            sortOption = {
+                createdAt: -1
+            };
+    }
+
+
+    // Fetch Pending Resources
+    // ==========================================
+    const resources = await Resource.find(filter)
+        .populate(
+            "uploadedBy",
+            "fullname username avatar branch year semester college"
+        )
+        .select("-pdfPublicId -thumbnailPublicId -__v")
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNumber)
+        .lean();
+
+
+    // Total Count
+    // ==========================================
+    const totalResources = await Resource.countDocuments(filter);
+    const totalPages = Math.ceil(
+        totalResources / limitNumber
+    );
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                page: pageNumber,
+                limit: limitNumber,
+                totalResources,
+                totalPages,
+                hasNextPage:
+                    pageNumber < totalPages,
+                hasPreviousPage:
+                    pageNumber > 1,
+                resources
+            },
+            "Pending resources fetched successfully"
+        )
+    );
+});
+
+const approveResource = asyncHandler(async (req, res) => {
+
+    const { resourceId } = req.params;
+    const { ObjectId } = mongoose.Types;
+
+    // Validate Resource ID
+    if (!ObjectId.isValid(resourceId)) {
+        throw new ApiError(400, "Invalid Resource ID");
+    }
+
+    // Find Resource
+    const resource = await Resource.findById(resourceId);
+    if (!resource) {
+        throw new ApiError(404, "Resource not found");
+    }
+
+    // Prevent approving deleted resource
+    if (resource.isDeleted) {
+        throw new ApiError(
+            400,
+            "Deleted resources cannot be approved"
+        );
+    }
+
+    // Already approved
+    if (resource.status === "approved") {
+        throw new ApiError(
+            400,
+            "Resource is already approved"
+        );
+    }
+
+    // Update Status
+    resource.status = "approved";
+    resource.isVerified = true;
+    resource.approvedBy = req.user._id;
+    resource.approvedAt = new Date();
+    await resource.save({
+        validateBeforeSave: false
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            resource,
+            "Resource approved successfully"
+        )
+    );
+});
+
+const rejectResource = asyncHandler(async (req, res) => {
+
+    const { resourceId } = req.params;
+    const { ObjectId } = mongoose.Types;
+
+    // Validate Resource ID
+    if (!ObjectId.isValid(resourceId)) {
+        throw new ApiError(400, "Invalid Resource ID");
+    }
+
+    // Find Resource
+    const resource = await Resource.findById(resourceId);
+    if (!resource) {
+        throw new ApiError(404, "Resource not found");
+    }
+
+    // Prevent rejecting deleted resource
+    if (resource.isDeleted) {
+        throw new ApiError(
+            400,
+            "Deleted resources cannot be rejected"
+        );
+    }
+
+    // Already rejected
+    if (resource.status === "rejected") {
+        throw new ApiError(
+            400,
+            "Resource is already rejected"
+        );
+    }
+
+    // Update Status
+    resource.status = "rejected";
+    resource.isVerified = false;
+    resource.rejectedBy = req.user._id;
+    resource.rejectedAt = new Date();
+    //resource.rejectionReason = req.body.reason || "";
+    await resource.save({
+        validateBeforeSave: false
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            resource,
+            "Resource rejected successfully"
+        )
+    );
+});
+
+const getAllResourcesForAdmin = asyncHandler(async (req, res) => {
+
+    // Query Parameters
+    // ==========================================
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        status,
+        branch,
+        semester,
+        year,
+        type,
+        subject,
+        courseCode,
+        college,
+        visibility,
+        uploadedBy,
+        showDeleted = "false",
+        sort = "latest"
+    } = req.query;
+
+
+    // Pagination
+    // ==========================================
+    const pageNumber = Math.max(Number(page), 1);
+    const limitNumber = Math.max(Number(limit), 1);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Filters
+    // ==========================================
+    const filter = {};
+
+    // Deleted Resources
+    filter.isDeleted = showDeleted === "true";
+    if (status) filter.status = status;
+    if (branch) {
+        filter.branch = {
+            $in: branch
+                .split(",")
+                .map(item => item.trim().toUpperCase())
+        };
+    }
+    if (semester) filter.semester = Number(semester);
+    if (year) filter.year = Number(year);
+    if (type) filter.type = type;
+    if (visibility) filter.visibility = visibility;
+    if (uploadedBy) filter.uploadedBy = uploadedBy;
+    if (subject) {
+        filter.subject = {
+            $regex: subject.trim(),
+            $options: "i"
+        };
+    }
+    if (courseCode) {
+        filter.courseCode = {
+            $regex: courseCode.toUpperCase(),
+            $options: "i"
+        };
+    }
+    if (college) {
+        filter.college = {
+            $regex: college.trim(),
+            $options: "i"
+        };
+    }
+
+
+    // Search
+    // ==========================================
+    if (search) {
+        filter.$or = [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                subject: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                courseCode: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }
+        ];
+    }
+
+
+    // Sorting
+    // ==========================================
+    let sortOption = {};
+    switch (sort) {
+        case "downloads":
+            sortOption = { downloads: -1 };
+            break;
+        case "views":
+            sortOption = { views: -1 };
+            break;
+        case "rating":
+            sortOption = { averageRating: -1 };
+            break;
+        case "bookmarks":
+            sortOption = { bookmarks: -1 };
+            break;
+        case "oldest":
+            sortOption = { createdAt: 1 };
+            break;
+        case "title-asc":
+            sortOption = { title: 1 };
+            break;
+        case "title-desc":
+            sortOption = { title: -1 };
+            break;
+        case "latest":
+        default:
+            sortOption = { createdAt: -1 };
+    }
+
+
+    // Fetch Resources
+    // ==========================================
+    const resources = await Resource.find(filter)
+        .populate(
+            "uploadedBy",
+            "fullname username avatar email branch semester year college role"
+        )
+        .select("-pdfPublicId -thumbnailPublicId -__v")
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNumber)
+        .lean();
+
+
+    // Total Count
+    // ==========================================
+    const totalResources = await Resource.countDocuments(filter);
+    const totalPages = Math.ceil(
+        totalResources / limitNumber
+    );
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                page: pageNumber,
+                limit: limitNumber,
+                totalResources,
+                totalPages,
+                hasNextPage:
+                    pageNumber < totalPages,
+                hasPreviousPage:
+                    pageNumber > 1,
+                resources
+            },
+            "Resources fetched successfully"
+        )
+    );
+});
+
+const deleteAnyResource = asyncHandler(async (req, res) => {
+
+    // Validate Resource ID
+    // ==========================================
+    const { resourceId } = req.params;
+    const { ObjectId } = mongoose.Types;
+    if (!ObjectId.isValid(resourceId)) {
+        throw new ApiError(400, "Invalid Resource ID");
+    }
+
+
+    // Find Resource
+    // ==========================================
+    const resource = await Resource.findById(resourceId);
+    if (!resource) {
+        throw new ApiError(404, "Resource not found");
+    }
+    if (resource.isDeleted) {
+        throw new ApiError(
+            400,
+            "Resource is already deleted"
+        );
+    }
+
+
+    // Soft Delete
+    // ==========================================
+    resource.isDeleted = true;
+    resource.deletedAt = new Date();
+    resource.deletedBy = req.user._id;
+    await resource.save({
+        validateBeforeSave: false
+    });
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            resource,
+            "Resource deleted successfully"
+        )
+    );
+});
+
+const restoreResource = asyncHandler(async (req, res) => {
+
+
+    // Validate Resource ID
+    // ==========================================
+    const { resourceId } = req.params;
+    const { ObjectId } = mongoose.Types;
+    if (!ObjectId.isValid(resourceId)) {
+        throw new ApiError(400, "Invalid Resource ID");
+    }
+
+
+    // Find Resource
+    // ==========================================
+    const resource = await Resource.findById(resourceId);
+    if (!resource) {
+        throw new ApiError(404, "Resource not found");
+    }
+    if (!resource.isDeleted) {
+        throw new ApiError(
+            400,
+            "Resource is already active"
+        );
+    }
+
+
+    // Restore Resource
+    // ==========================================
+    resource.isDeleted = false;
+    resource.deletedAt = null;
+    resource.deletedBy = null;
+    await resource.save({
+        validateBeforeSave: false
+    });
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            resource,
+            "Resource restored successfully"
+        )
+    );
+});
+
+const getDeletedResources = asyncHandler(async (req, res) => {
+
+    // Query Parameters
+    // ==========================================
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        branch,
+        semester,
+        type,
+        sort = "latest"
+    } = req.query;
+
+    // Pagination
+    // ==========================================
+    const pageNumber = Math.max(Number(page), 1);
+    const limitNumber = Math.max(Number(limit), 1);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Filters
+    // ==========================================
+    const filter = {
+        isDeleted: true
+    };
+    if (branch) {
+        filter.branch = branch.toUpperCase();
+    }
+    if (semester) {
+        filter.semester = Number(semester);
+    }
+    if (type) {
+        filter.type = type;
+    }
+
+    // Search
+    // ==========================================
+    if (search) {
+        filter.$or = [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                subject: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                courseCode: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }
+        ];
+    }
+
+    // Sorting
+    // ==========================================
+    let sortOption = {};
+    switch (sort) {
+        case "oldest":
+            sortOption = { createdAt: 1 };
+            break;
+
+        case "downloads":
+            sortOption = { downloads: -1 };
+            break;
+
+        case "views":
+            sortOption = { views: -1 };
+            break;
+
+        default:
+            sortOption = { createdAt: -1 };
+    }
+
+    // Fetch Resources
+    // ==========================================
+    const resources = await Resource.find(filter)
+        .populate(
+            "uploadedBy",
+            "fullname username avatar email branch semester year"
+        )
+        .select("-pdfPublicId -thumbnailPublicId -__v")
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNumber)
+        .lean();
+
+    // Total Count
+    // ==========================================
+    const totalResources = await Resource.countDocuments(filter);
+    const totalPages = Math.ceil(
+        totalResources / limitNumber
+    );
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                page: pageNumber,
+                limit: limitNumber,
+                totalResources,
+                totalPages,
+                hasNextPage:
+                    pageNumber < totalPages,
+                hasPreviousPage:
+                    pageNumber > 1,
+                resources
+            },
+            "Deleted resources fetched successfully"
+        )
+    );
+});
+
+const getAnalytics = asyncHandler(async (req, res) => {
+
+
+    // Platform Statistics
+    // ==========================================
+    const platformStats = await Resource.aggregate([
+        {
+            $match: {
+                isDeleted: false
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalResources: {
+                    $sum: 1
+                },
+                totalDownloads: {
+                    $sum: "$downloads"
+                },
+                totalViews: {
+                    $sum: "$views"
+                },
+                totalBookmarks: {
+                    $sum: "$bookmarks"
+                },
+                averageRating: {
+                    $avg: "$averageRating"
+                }
+            }
+        }
+    ]);
+
+
+    // Resources By Branch
+    // ==========================================
+    const branchWiseResources = await Resource.aggregate([
+        {
+            $match: {
+                isDeleted: false
+            }
+        },
+        {
+            $group: {
+                _id: "$branch",
+                count: {
+                    $sum: 1
+                }
+            }
+        },
+        {
+            $sort: {
+                count: -1
+            }
+        }
+    ]);
+
+
+    // Resources By Type
+    // ==========================================
+    const typeWiseResources = await Resource.aggregate([
+        {
+            $match: {
+                isDeleted: false
+            }
+        },
+        {
+            $group: {
+                _id: "$type",
+                count: {
+                    $sum: 1
+                }
+            }
+        },
+        {
+            $sort: {
+                count: -1
+            }
+        }
+    ]);
+
+
+    // Resources By Status
+    // ==========================================
+    const statusWiseResources = await Resource.aggregate([
+        {
+            $group: {
+                _id: "$status",
+                count: {
+                    $sum: 1
+                }
+            }
+        }
+    ]);
+
+
+    // Response
+    // ==========================================
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                platform:
+                    platformStats[0] || {},
+                branchWiseResources,
+                typeWiseResources,
+                statusWiseResources
+            },
+            "Analytics fetched successfully"
+        )
+    );
+});
+
+export { adminDashboard,
+    getAllUsers,
+    getUserById,
+    getPendingResources,
+    approveResource,
+    rejectResource,
+    getAllResourcesForAdmin,
+    deleteAnyResource,
+    restoreResource,
+    getDeletedResources,
+    getAnalytics
+ };
+

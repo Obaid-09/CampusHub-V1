@@ -189,7 +189,7 @@ const resourceSchema = new Schema(
         "approved",
         "rejected",
       ],
-      default: "approved",
+      default: "pending",
       index: true,
     },
 
@@ -203,6 +203,44 @@ const resourceSchema = new Schema(
         default: false,
         index: true
     },
+
+    deletedAt: {
+        type: Date,
+        default: null
+    },
+
+    deletedBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: null
+    },
+    
+    approvedBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: null
+    },
+
+    approvedAt: {
+        type: Date,
+        default: null
+    },
+
+    rejectedBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: null
+    },
+
+    rejectedAt: {
+        type: Date,
+        default: null
+    },
+
+    rejectionReason: {
+        type: String,
+        default: ""
+    }
   },
   {
     timestamps: true,

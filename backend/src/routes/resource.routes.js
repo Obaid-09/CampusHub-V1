@@ -5,11 +5,11 @@ import {
     getResourceById,
     viewResource,
     downloadResource,
-    getDownloadHistory,
+    // getDownloadHistory,
     bookmarkResource,
-    getBookmarks,
-    getRecentlyViewed,
-    getMyUploads,
+    // getBookmarks,
+    // getRecentlyViewed,
+    // getMyUploads,
     updateResource,
     deleteResource
 } from "../controllers/resource.controllers.js";

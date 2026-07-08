@@ -2,6 +2,10 @@ import dotenv from "dotenv"
 dotenv.config({
     path: './.env'
 })
+
+import { validateEnv } from "./utils/validateEnv.js";
+validateEnv();
+
 import connectDB from "./db/indexdb.js";
 import express from "express";
 import {app} from "./app.js"
@@ -15,3 +19,8 @@ connectDB()
 .catch((err) => {
   console.log("MONGODB connection failed", err);
 })
+
+
+
+
+

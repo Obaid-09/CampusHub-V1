@@ -45,16 +45,30 @@
  *           example: obaid
  *         email:
  *           type: string
+ *           format: email
  *           example: obaid@gmail.com
  *         avatar:
  *           type: string
+ *           format: uri
  *           example: https://res.cloudinary.com/demo/image/upload/avatar.png
  *         role:
- *           type: string
- *           example: student
+            type: string
+            enum:
+                - student
+                - admin
+            example: student
  *         branch:
- *           type: string
- *           example: EEE
+            type: string
+            enum:
+                - CSE
+                - ECE
+                - EEE
+                - ME
+                - CE
+                - CHE
+                - MME
+                - BT
+                - Other
  *         year:
  *           type: integer
  *           example: 3
@@ -123,9 +137,11 @@
  *             - memory
  *         pdfUrl:
  *           type: string
+ *           format: uri
  *           example: https://res.cloudinary.com/demo/raw/upload/file.pdf
  *         thumbnail:
  *           type: string
+ *           format: uri
  *           example: https://res.cloudinary.com/demo/image/upload/thumb.png
  *         fileSize:
  *           type: integer
@@ -185,6 +201,7 @@
  *           example: obaid@gmail.com
  *         password:
  *           type: string
+ *           format: password
  *           example: Password@123
  *         branch:
  *           type: string
@@ -210,6 +227,7 @@
  *           example: obaid@gmail.com
  *         password:
  *           type: string
+ *           format: password
  *           example: Password@123
  *
  *     UpdateProfileRequest:
@@ -238,9 +256,11 @@
  *       properties:
  *         oldPassword:
  *           type: string
+ *           format: password
  *           example: Password@123
  *         newPassword:
  *           type: string
+ *           format: password
  *           example: NewPassword@123
  *
  *     UploadResourceRequest:
@@ -279,8 +299,10 @@
  *         examType:
  *           type: string
  *         visibility:
- *           type: string
- *           example: public
+            type: string
+            enum:
+                - public
+                - private
  *         tags:
  *           type: string
  *           example: os,memory,scheduling
@@ -348,3 +370,8 @@
  *           items:
  *             $ref: '#/components/schemas/Resource'
  */
+
+
+
+
+

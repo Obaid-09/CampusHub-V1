@@ -1,19 +1,22 @@
-const variants = {
-    primary: "bg-primaryLight text-primary",
-    secondary: "bg-secondary text-white",
-    success: "bg-green-100 text-green-700",
-    warning: "bg-yellow-100 text-yellow-700",
-    danger: "bg-red-100 text-red-700",
-    info: "bg-blue-100 text-blue-700",
-    gray: "bg-gray100 text-gray700",
+const badgeColors = {
+    Notes:
+        "bg-primaryLight text-primary",
+    PYQ:
+        "bg-blue-100 text-blue-700",
+    Assignment:
+        "bg-purple-100 text-purple-700",
+    "Lab Manual":
+        "bg-green-100 text-green-700",
+    Book:
+        "bg-yellow-100 text-yellow-700",
 };
 
 const Badge = ({
     children,
-    variant = "primary",
-    className = "",
 }) => {
+
     return (
+
         <span
             className={`
                 inline-flex
@@ -23,13 +26,17 @@ const Badge = ({
                 rounded-full
                 text-xs
                 font-semibold
-                ${variants[variant]}
-                ${className}
+                ${badgeColors[children] ||
+                "bg-gray100 text-gray700"}
             `}
         >
+
             {children}
+
         </span>
+
     );
+
 };
 
 export default Badge;

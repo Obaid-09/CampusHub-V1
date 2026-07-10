@@ -1,10 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/home/Home";
+import Resources from "../pages/resources/Resources";
+import ResourceDetails from "../pages/resources/ResourceDetails";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import UploadResource from "../pages/upload/UploadResource";
+import Profile from "../pages/profile/Profile";
+import About from "../pages/about/About";
+import NotFound from "../pages/notFound/NotFound";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -14,9 +20,13 @@ const AppRoutes = () => {
     return (
         <Routes>
 
+            <Route path="/" element={<Home />} />
+
+            <Route path="/resources" element={<Resources />} />
+
             <Route
-                path="/"
-                element={<Home />}
+                path="/resources/:resourceId"
+                element={<ResourceDetails />}
             />
 
             <Route
@@ -38,6 +48,26 @@ const AppRoutes = () => {
             />
 
             <Route
+                path="/upload"
+                element={
+                    <ProtectedRoute>
+                        <UploadResource />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route path="/about" element={<About />} />
+
+            <Route
                 path="/dashboard"
                 element={
                     <ProtectedRoute>
@@ -54,6 +84,8 @@ const AppRoutes = () => {
                     </AdminRoute>
                 }
             />
+
+            <Route path="*" element={<NotFound />} />
 
         </Routes>
     );

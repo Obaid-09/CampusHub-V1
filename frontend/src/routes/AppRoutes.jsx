@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/home/Home";
 import Resources from "../pages/resources/Resources";
-import ResourceDetails from "../pages/resources/ResourceDetails";
+import ResourceDetails from "../pages/resources/ResourceDetails"
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -25,7 +25,7 @@ const AppRoutes = () => {
             <Route path="/resources" element={<Resources />} />
 
             <Route
-                path="/resources/:resourceId"
+                path="/resources/:id"
                 element={<ResourceDetails />}
             />
 
@@ -49,11 +49,7 @@ const AppRoutes = () => {
 
             <Route
                 path="/upload"
-                element={
-                    <ProtectedRoute>
-                        <UploadResource />
-                    </ProtectedRoute>
-                }
+                element={<UploadResource />}
             />
 
             <Route

@@ -1,6 +1,6 @@
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
-
+import { useNavigate } from "react-router-dom";
 import {
     Eye,
     Download,
@@ -10,9 +10,14 @@ import {
 
 const ResourceCard = ({ resource }) => {
 
-    return (
+    const navigate = useNavigate();
 
+    return (
+        
         <div
+            onClick={() =>
+                navigate(`/resources/${resource._id}`)
+            }
             className="
                 group
                 bg-white

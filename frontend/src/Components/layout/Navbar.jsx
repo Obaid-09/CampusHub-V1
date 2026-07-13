@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Menu } from "lucide-react";
-
+import { Link } from "react-router-dom";
 import Logo from "../common/Logo";
 import Button from "../ui/Button";
 
@@ -55,15 +55,18 @@ const Navbar = () => {
                             <ProfileDropdown />
                         ) : (
                             <>
+                            <Link to="/login">
                                 <Button
                                     variant="outline"
                                 >
                                     Login
                                 </Button>
-
+                            </Link>
+                            <Link to="/register">
                                 <Button>
                                     Register
                                 </Button>
+                            </Link>
                             </>
                         )}
                     </div>

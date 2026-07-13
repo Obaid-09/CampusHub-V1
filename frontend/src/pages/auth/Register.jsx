@@ -1,9 +1,32 @@
+import AuthLayout from "../../components/auth/AuthLayout";
+import AuthCard from "../../components/auth/AuthCard";
+import RegisterForm from "../../components/auth/RegisterForm";
+
 const Register = () => {
+
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            Register Page
-        </div>
+
+        <AuthLayout>
+
+            {(isOn) => (
+
+                <AuthCard isOn={isOn}>
+
+                    <RegisterForm isOn={isOn} />
+
+                </AuthCard>
+
+            )}
+
+        </AuthLayout>
+        // <AuthCard>
+
+        //     <RegisterForm />
+
+        // </AuthCard>
+
     );
+
 };
 
 export default Register;

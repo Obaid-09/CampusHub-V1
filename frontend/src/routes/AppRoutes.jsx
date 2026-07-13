@@ -17,6 +17,7 @@ import VerifyEmail from "../pages/auth/VerifyEmail";
 import EmailVerified from "../pages/auth/EmailVerified";
 import PasswordResetSuccess from "../pages/auth/PasswordResetSuccess";
 import ProtectedRoute from "./ProtectedRoute";
+
 import PublicRoute from "./PublicRoute";
 import AdminRoute from "./AdminRoute";
 
@@ -66,25 +67,51 @@ const AppRoutes = () => {
                 element={<UploadResource />}
             />
 
-            <Route
+            {/* <Route
                 path="/profile"
                 element={
                     <ProtectedRoute>
                         <Profile />
                     </ProtectedRoute>
                 }
-            />
+            /> */}
 
             <Route path="/about" element={<About />} />
 
             <Route
                 path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
+                element={<Dashboard />}
             />
+
+            <Route
+                path="/profile"
+                element={<Profile />}
+            />
+
+            {/* <Route
+                path="/dashboard/resources"
+                element={<MyResources />}
+            />
+
+            <Route
+                path="/dashboard/bookmarks"
+                element={<Bookmarks />}
+            />
+
+            <Route
+                path="/dashboard/profile"
+                element={<Profile />}
+            />
+
+            <Route
+                path="/dashboard/settings"
+                element={<Settings />}
+            />
+
+            <Route
+                path="/dashboard/notifications"
+                element={<Notifications />}
+            /> */}
 
             <Route
                 path="/admin"

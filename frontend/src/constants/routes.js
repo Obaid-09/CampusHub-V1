@@ -11,3 +11,23 @@ export const ROUTES = {
     RECENT: "/recently-viewed",
     ADMIN: "/admin",
 };
+
+export const ADMIN_ROUTES = {
+
+    dashboard: "/admin",
+
+    pending: "/admin/pending",
+
+    resources: "/admin/resources",
+
+    users: "/admin/users",
+
+    reports: "/admin/reports",
+
+    categories: "/admin/categories",
+
+    analytics: "/admin/analytics",
+
+    settings: "/admin/settings",
+
+};

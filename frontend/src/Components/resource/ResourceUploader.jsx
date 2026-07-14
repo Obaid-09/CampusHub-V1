@@ -1,6 +1,6 @@
 import Button from "../ui/Button";
 
-const ResourceUploader = ({ uploader }) => {
+const ResourceUploader = ({ uploader = {} }) => {
 
     return (
 
@@ -22,15 +22,18 @@ const ResourceUploader = ({ uploader }) => {
             <div className="flex items-center gap-5 mt-6">
 
                 <img
-                    src={uploader.avatar}
-                    alt={uploader.fullname}
+                    src={
+                        uploader.avatar ||
+                        "https://i.pravatar.cc/150"
+                    }
+                    alt=""
                     className="w-20 h-20 rounded-full object-cover"
                 />
 
                 <div>
                     <h3 className="text-xl font-semibold text-secondary">
 
-                        {uploader.fullname}
+                        {uploader.fullname || "Unknown User"}
 
                     </h3>
 

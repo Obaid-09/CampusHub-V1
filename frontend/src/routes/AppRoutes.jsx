@@ -22,9 +22,17 @@ import ResourceAnalyticsPage from "../pages/dashboard/ResourceAnalyticsPage";
 import EditResource from "../pages/dashboard/EditResource";
 import Bookmarks from "../pages/dashboard/Bookmarks";
 import Notifications from "../pages/dashboard/Notifications";
+import PendingResources from "../pages/admin/PendingResources";
+import AllResources from "../pages/admin/AllResources";
+import Users from "../pages/admin/Users";
+import Reports from "../pages/admin/Reports";
+import Categories from "../pages/admin/Categories";
+import AdminAnalytics from "../pages/admin/AdminAnalytics";
+import AdminSettings from "../pages/admin/AdminSettings";
+
 import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
-import AdminRoute from "./AdminRoute";
+// import AdminRoute from "./AdminRoute";
 
 const AppRoutes = () => {
     return (
@@ -142,15 +150,73 @@ const AppRoutes = () => {
                 element={<Notifications />}
             /> */}
 
-            <Route
+            {/* <Route
                 path="/admin"
                 element={
                     <AdminRoute>
                         <AdminDashboard />
                     </AdminRoute>
                 }
-            />
+            /> */}
 
+            <Route path="/admin">
+
+                <Route
+                    index
+                    element={<AdminDashboard/>}
+                />
+
+                <Route
+                    path="pending"
+                    element={<PendingResources/>}
+                />
+
+                <Route
+                    path="resources"
+                    element={<AllResources/>}
+                />
+
+                <Route
+                    path="users"
+                    element={<Users/>}
+                />
+
+                <Route
+                    path="reports"
+                    element={<Reports/>}
+                />
+
+                <Route
+                    path="categories"
+                    element={<Categories/>}
+                />
+
+                <Route
+                    path="analytics"
+                    element={<AdminAnalytics/>}
+                />
+
+                <Route
+                    path="settings"
+                    element={<AdminSettings/>}
+                />
+
+                <Route
+                    path="/admin/resources/:id/edit"
+                    element={<EditResource />}
+                />
+
+                <Route
+                    path="/admin/users/:id"
+                    element={<UserDetails />}
+                />
+
+                <Route
+                    path="/admin/resources/:id/analytics"
+                    element={<ResourceAnalyticsPage />}
+                />
+
+            </Route>
             <Route path="*" element={<NotFound />} />
 
         </Routes>

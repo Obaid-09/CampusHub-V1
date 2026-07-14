@@ -1,0 +1,113 @@
+import { useState } from "react";
+
+import AdminLayout from "../../components/admin/AdminLayout";
+import UsersToolbar from "../../components/admin/UsersToolbar";
+import UsersTable from "../../components/admin/UsersTable";
+
+import UserDetailsModal from "../../components/admin/UserDetailsModal";
+import SuspendUserModal from "../../components/admin/SuspendUserModal";
+import DeleteUserModal from "../../components/admin/DeleteUserModal";
+import PromoteUserModal from "../../components/admin/PromoteUserModal";
+
+import { dummyUsers } from "../../constants/admin";
+
+const Users = () => {
+
+    const [users] = useState(dummyUsers);
+
+    const [selectedUser, setSelectedUser] = useState(null);
+
+    const [showDetails, setShowDetails] = useState(false);
+
+    const [showSuspend, setShowSuspend] = useState(false);
+
+    const [showDelete, setShowDelete] = useState(false);
+
+    const [showPromote, setShowPromote] = useState(false);
+
+    const [role, setRole] = useState("Student");
+
+    return (
+
+        <AdminLayout>
+
+            <div className="space-y-8">
+                <div>
+                    <h1 className="text-4xl font-heading font-bold text-secondary">
+                        Users
+                    </h1>
+
+                    <p className="mt-2 text-gray600">
+                        Manage all registered users.
+                    </p>
+                </div>
+
+                <UsersToolbar />
+
+                <UsersTable
+                    users={users}
+                    onView={(user)=>{
+                        setSelectedUser(user);
+                        setShowDetails(true);
+                    }}
+
+                    onSuspend={(user)=>{
+                        setSelectedUser(user);
+                        setShowSuspend(true);
+                    }}
+
+                    onDelete={(user)=>{
+                        setSelectedUser(user);
+                        setShowDelete(true);
+                    }}
+
+                    onPromote={(user)=>{
+                        setSelectedUser(user);
+                        setRole(user.role);
+                        setShowPromote(true);
+                    }}
+                />
+
+                <UserDetailsModal
+                    open={showDetails}
+                    user={selectedUser}
+                    onClose={()=>setShowDetails(false)}
+                />
+
+                <SuspendUserModal
+                    open={showSuspend}
+                    onClose={()=>setShowSuspend(false)}
+                    onConfirm={(reason)=>{
+                        console.log(reason);
+                        setShowSuspend(false);
+                    }}
+                />
+
+                <DeleteUserModal
+                    open={showDelete}
+                    onClose={()=>setShowDelete(false)}
+                    onDelete={()=>{
+                        console.log(selectedUser);
+                        setShowDelete(false);
+                    }}
+                />
+
+                <PromoteUserModal
+                    open={showPromote}
+                    role={role}
+                    setRole={setRole}
+                    onClose={()=>setShowPromote(false)}
+                    onPromote={()=>{
+                        console.log(role);
+                        setShowPromote(false);
+                    }}
+                />
+            </div>
+
+        </AdminLayout>
+
+    );
+
+};
+
+export default Users;

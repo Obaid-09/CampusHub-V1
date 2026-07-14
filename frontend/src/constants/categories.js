@@ -64,3 +64,81 @@ export const categories = [
     },
 
 ];
+
+export const categoryTabs = [
+
+    "Branches",
+
+    "Semesters",
+
+    "Subjects",
+
+    "Resource Types",
+
+];
+
+export const categoryData = {
+
+    Branches: [
+
+        "CSE",
+
+        "ECE",
+
+        "EEE",
+
+        "Mechanical",
+
+        "Civil",
+
+    ],
+
+    Semesters: [
+
+        "Semester 1",
+
+        "Semester 2",
+
+        "Semester 3",
+
+        "Semester 4",
+
+        "Semester 5",
+
+        "Semester 6",
+
+        "Semester 7",
+
+        "Semester 8",
+
+    ],
+
+    Subjects: [
+
+        "Operating Systems",
+
+        "DBMS",
+
+        "Computer Networks",
+
+        "OOPS",
+
+        "Machine Learning",
+
+    ],
+
+    "Resource Types":[
+
+        "Notes",
+
+        "PYQ",
+
+        "Assignment",
+
+        "Lab Manual",
+
+        "Book",
+
+    ],
+
+};

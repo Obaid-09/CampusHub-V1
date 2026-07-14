@@ -16,8 +16,13 @@ import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 import EmailVerified from "../pages/auth/EmailVerified";
 import PasswordResetSuccess from "../pages/auth/PasswordResetSuccess";
-import ProtectedRoute from "./ProtectedRoute";
-
+//import ProtectedRoute from "./ProtectedRoute";
+import MyResources from "../pages/dashboard/MyResources";
+import ResourceAnalyticsPage from "../pages/dashboard/ResourceAnalyticsPage";
+import EditResource from "../pages/dashboard/EditResource";
+import Bookmarks from "../pages/dashboard/Bookmarks";
+import Notifications from "../pages/dashboard/Notifications";
+import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
 import AdminRoute from "./AdminRoute";
 
@@ -88,7 +93,7 @@ const AppRoutes = () => {
                 element={<Profile />}
             />
 
-            {/* <Route
+            <Route
                 path="/dashboard/resources"
                 element={<MyResources />}
             />
@@ -99,14 +104,38 @@ const AppRoutes = () => {
             />
 
             <Route
-                path="/dashboard/profile"
-                element={<Profile />}
+                path="/dashboard/resources/:id/edit"
+                element={<EditResource />}
+            />
+
+            <Route
+                path="/dashboard/resources/:id/analytics"
+                element={<ResourceAnalyticsPage />}
+            />
+
+            <Route
+                path="/dashboard/notifications"
+                element={<Notifications />}
             />
 
             <Route
                 path="/dashboard/settings"
                 element={<Settings />}
             />
+
+            {/* <Route
+                path="/dashboard/resources"
+                element={<MyResources />}
+            />
+
+            
+
+            <Route
+                path="/dashboard/profile"
+                element={<Profile />}
+            />
+
+            
 
             <Route
                 path="/dashboard/notifications"

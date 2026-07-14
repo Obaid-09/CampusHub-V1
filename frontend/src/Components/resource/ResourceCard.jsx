@@ -6,9 +6,11 @@ import {
     Download,
     Bookmark,
     Star,
+
 } from "lucide-react";
 
-const ResourceCard = ({ resource, variant = "default", }) => {
+const ResourceCard = ({ resource, variant = "default", showBookmarkAction = false,
+    onRemoveBookmark,}) => {
     const isCompact = variant === "compact";
     const navigate = useNavigate();
 
@@ -19,6 +21,7 @@ const ResourceCard = ({ resource, variant = "default", }) => {
                 navigate(`/resources/${resource._id}`)
             }
             className={`
+                    relative
                     bg-white
                     rounded-2xl
                     border
@@ -47,6 +50,58 @@ const ResourceCard = ({ resource, variant = "default", }) => {
                         : "h-52 rounded-xl"
                 }
             `} */}
+
+
+            {
+                showBookmarkAction && (
+
+                    <button
+
+                        onClick={(e) => {
+
+                            e.stopPropagation();
+
+                            onRemoveBookmark?.(resource);
+
+                        }}
+
+                        className="
+                            absolute
+                            top-4
+                            right-4
+
+                            w-10
+                            h-10
+
+                            rounded-full
+
+                            bg-white
+
+                            shadow-lg
+
+                            flex
+                            items-center
+                            justify-center
+
+                            hover:bg-red-50
+                            hover:text-red-600
+
+                            transition-all
+
+                            z-20
+                        "
+
+                    >
+
+                        <Bookmark
+                            size={18}
+                            fill="currentColor"
+                        />
+
+                    </button>
+
+                )
+            }
             <img
                 src={
                     resource.thumbnail ||

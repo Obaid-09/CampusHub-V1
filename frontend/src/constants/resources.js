@@ -155,3 +155,5 @@ export const dummyResources = Array.from(
         };
     }
 );
+
+export const dummyResource = dummyResources[0];

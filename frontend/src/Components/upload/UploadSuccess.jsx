@@ -3,6 +3,7 @@ import Button from "../ui/Button";
 
 const UploadSuccess = ({
     onUploadAgain,
+    editMode
 }) => {
 
     return (
@@ -30,7 +31,9 @@ const UploadSuccess = ({
                     text-secondary
                 "
             >
-                Upload Successful
+                {editMode
+                    ? "Resource Updated"
+                    : "Resource Uploaded"}
             </h2>
 
             <p className="mt-3 text-gray500">

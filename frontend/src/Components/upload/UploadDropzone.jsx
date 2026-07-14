@@ -5,6 +5,7 @@ import Button from "../ui/Button";
 const UploadDropzone = ({
     file,
     setFile,
+    editMode
 }) => {
 
     const inputRef = useRef(null);
@@ -58,7 +59,9 @@ const UploadDropzone = ({
                         className="mt-6"
                         onClick={() => inputRef.current.click()}
                     >
-                        Browse File
+                        {editMode
+                            ? "Replace PDF"
+                            : "Browse PDF"}
                     </Button>
                 </>
             ) : (

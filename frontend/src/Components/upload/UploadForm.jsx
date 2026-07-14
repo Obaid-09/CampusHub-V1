@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Select from "../ui/Select";
@@ -20,21 +19,14 @@ const resourceTypes = [
     { value: "Book", label: "Book" },
 ];
 
-const UploadForm = () => {
-
-    const [form, setForm] = useState({
-        title: "",
-        description: "",
-        subject: "",
-        courseCode: "",
-        branch: "CSE",
-        semester: 1,
-        type: "Notes",
-        tags: [],
-    });
+const UploadForm = ({
+    form,
+    setForm,
+    editMode = false,
+}) => {
 
     const update = (key, value) => {
-        setForm(prev => ({
+        setForm((prev) => ({
             ...prev,
             [key]: value,
         }));
@@ -42,18 +34,27 @@ const UploadForm = () => {
 
     return (
 
-        <div className="mt-8 bg-white rounded-2xl shadow-card p-8 space-y-6">
+        <div
+            className="
+                mt-8
+                bg-white
+                rounded-2xl
+                shadow-card
+                p-8
+                space-y-6
+            "
+        >
 
             <Input
                 label="Title"
                 value={form.title}
-                onChange={(e)=>update("title",e.target.value)}
+                onChange={(e) => update("title", e.target.value)}
             />
 
             <Textarea
                 label="Description"
                 value={form.description}
-                onChange={(e)=>update("description",e.target.value)}
+                onChange={(e) => update("description", e.target.value)}
             />
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -61,38 +62,42 @@ const UploadForm = () => {
                 <Input
                     label="Subject"
                     value={form.subject}
-                    onChange={(e)=>update("subject",e.target.value)}
+                    onChange={(e) => update("subject", e.target.value)}
                 />
 
                 <Input
                     label="Course Code"
                     value={form.courseCode}
-                    onChange={(e)=>update("courseCode",e.target.value)}
+                    onChange={(e) => update("courseCode", e.target.value)}
                 />
 
                 <Select
                     label="Branch"
                     value={form.branch}
                     options={branches}
-                    onChange={(e)=>update("branch",e.target.value)}
+                    onChange={(e) => update("branch", e.target.value)}
                 />
 
                 <Select
                     label="Resource Type"
                     value={form.type}
                     options={resourceTypes}
-                    onChange={(e)=>update("type",e.target.value)}
+                    onChange={(e) => update("type", e.target.value)}
                 />
 
             </div>
 
             <TagInput
-                tags={form.tags}
-                setTags={(tags)=>update("tags",tags)}
+                tags={form.tags || []}
+                setTags={(tags) => update("tags", tags)}
             />
 
             <Button className="w-full">
-                Upload Resource
+
+                {editMode
+                    ? "Save Changes"
+                    : "Upload Resource"}
+
             </Button>
 
         </div>

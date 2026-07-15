@@ -26,7 +26,7 @@ const AdminResourceActions = ({
                     variant="outline"
 
                     onClick={() =>
-                        navigate(`/resources/${resource._id}`)
+                        navigate(`/admin/resources/${resource._id}`)
                     }
 
                 >

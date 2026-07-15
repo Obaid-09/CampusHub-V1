@@ -1,5 +1,5 @@
 import Button from "../ui/Button";
-
+import { useNavigate } from "react-router-dom";
 const UserRow = ({
     user,
     onView,
@@ -7,12 +7,18 @@ const UserRow = ({
     onDelete,
     onPromote,
 }) => {
-
+    const navigate = useNavigate();
     return (
 
-        <tr className="border-b last:border-none">
+        <tr 
+            
+    className="border-b last:border-none">
 
-            <td className="px-6 py-5">
+            <td 
+            onClick={() =>
+                navigate(`/admin/users/${user._id}`)
+            }
+            className="px-6 py-5 cursor-pointer">
 
                 <div
                     className="

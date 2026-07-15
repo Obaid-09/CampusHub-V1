@@ -1,7 +1,8 @@
-import { userResources } from "../../constants/admin";
-import UserResourceRow from "./UserResourceRow";
+import { moderationHistory } from "../../../constants/admin";
 
-const UserResourcesTable = () => {
+import ModerationRow from "./ModerationRow";
+
+const ModerationHistory = () => {
 
     return (
 
@@ -10,10 +11,10 @@ const UserResourcesTable = () => {
             className="
                 bg-white
                 rounded-2xl
+                shadow-card
                 border
                 border-gray100
-                shadow-card
-                overflow-x-auto
+                overflow-hidden
             "
 
         >
@@ -30,7 +31,7 @@ const UserResourcesTable = () => {
 
                 >
 
-                    Uploaded Resources
+                    Moderation History
 
                 </h2>
 
@@ -44,19 +45,21 @@ const UserResourcesTable = () => {
 
                         <th className="py-4 text-left px-6">
 
-                            Title
+                            Action
 
                         </th>
 
-                        <th>Subject</th>
+                        <th>
 
-                        <th>Type</th>
+                            By
 
-                        <th>Downloads</th>
+                        </th>
 
-                        <th>Status</th>
+                        <th>
 
-                        <th>Actions</th>
+                            Date
+
+                        </th>
 
                     </tr>
 
@@ -66,13 +69,13 @@ const UserResourcesTable = () => {
 
                     {
 
-                        userResources.map(resource => (
+                        moderationHistory.map(history=>(
 
-                            <UserResourceRow
+                            <ModerationRow
 
-                                key={resource._id}
+                                key={history._id}
 
-                                resource={resource}
+                                history={history}
 
                             />
 
@@ -90,4 +93,4 @@ const UserResourcesTable = () => {
 
 };
 
-export default UserResourcesTable;
+export default ModerationHistory;

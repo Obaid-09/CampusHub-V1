@@ -10,13 +10,12 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import UploadResource from "../pages/upload/UploadResource";
 import Profile from "../pages/profile/Profile";
 import About from "../pages/about/About";
-import NotFound from "../pages/notFound/NotFound";
+import PageNotFound from "../pages/PageNotFound";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 import EmailVerified from "../pages/auth/EmailVerified";
 import PasswordResetSuccess from "../pages/auth/PasswordResetSuccess";
-//import ProtectedRoute from "./ProtectedRoute";
 import MyResources from "../pages/dashboard/MyResources";
 import ResourceAnalyticsPage from "../pages/dashboard/ResourceAnalyticsPage";
 import EditResource from "../pages/dashboard/EditResource";
@@ -29,10 +28,11 @@ import Reports from "../pages/admin/Reports";
 import Categories from "../pages/admin/Categories";
 import AdminAnalytics from "../pages/admin/AdminAnalytics";
 import AdminSettings from "../pages/admin/AdminSettings";
-
+import AdminResourceDetails from "../pages/admin/AdminResourceDetails";
+import UserDetails from "../pages/admin/UserDetails";
 import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
-// import AdminRoute from "./AdminRoute";
+
 
 const AppRoutes = () => {
     return (
@@ -201,6 +201,13 @@ const AppRoutes = () => {
                     element={<AdminSettings/>}
                 />
 
+            </Route>
+
+            <Route
+                    path="/admin/resources/:id"
+                    element={<AdminResourceDetails/>}
+                />
+
                 <Route
                     path="/admin/resources/:id/edit"
                     element={<EditResource />}
@@ -215,12 +222,23 @@ const AppRoutes = () => {
                     path="/admin/resources/:id/analytics"
                     element={<ResourceAnalyticsPage />}
                 />
+            <Route
 
-            </Route>
-            <Route path="*" element={<NotFound />} />
+                path="*"
+
+                element={<PageNotFound/>}
+
+            />
 
         </Routes>
     );
 };
 
 export default AppRoutes;
+
+
+// 404 Page
+// Loading Components
+// Empty State Components
+// Reusable Confirm Modal
+// Toast Notification

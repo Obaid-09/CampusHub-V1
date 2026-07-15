@@ -491,6 +491,189 @@ export const userStats = [
 
 ];
 
+export const userResources = [
+
+    {
+        _id: "1",
+        title: "Operating Systems Notes",
+        subject: "OS",
+        type: "Notes",
+        downloads: 520,
+        status: "Approved",
+    },
+
+    {
+        _id: "2",
+        title: "DBMS PYQs",
+        subject: "DBMS",
+        type: "PYQ",
+        downloads: 340,
+        status: "Pending",
+    },
+
+    {
+        _id: "3",
+        title: "DSA Book",
+        subject: "DSA",
+        type: "Book",
+        downloads: 1120,
+        status: "Approved",
+    },
+
+];
+
+export const recentDownloads = [
+
+    {
+        id: 1,
+        title: "Computer Networks Notes",
+        date: "Yesterday",
+    },
+
+    {
+        id: 2,
+        title: "OS PYQs",
+        date: "2 days ago",
+    },
+
+];
+
+export const bookmarks = [
+
+    {
+        id: 1,
+        title: "React Handbook",
+    },
+
+    {
+        id: 2,
+        title: "Java Notes",
+    },
+
+];
+
+export const userReports = [
+
+    {
+        id: 1,
+        reason: "Spam Upload",
+        status: "Resolved",
+    },
+
+];
+
+export const resourceReports = [
+
+    {
+        _id: "r1",
+
+        reportedBy: "Rahul Sharma",
+
+        reason: "Incorrect Content",
+
+        status: "Pending",
+
+        date: "12 Jul 2026",
+    },
+
+    {
+        _id: "r2",
+
+        reportedBy: "Sneha Gupta",
+
+        reason: "Duplicate Resource",
+
+        status: "Resolved",
+
+        date: "10 Jul 2026",
+    },
+
+];
+
+export const moderationHistory = [
+
+    {
+        _id: "1",
+
+        action: "Uploaded",
+
+        by: "Rahul Sharma",
+
+        date: "01 Jul 2026",
+    },
+
+    {
+        _id: "2",
+
+        action: "Approved",
+
+        by: "Admin",
+
+        date: "02 Jul 2026",
+    },
+
+];
+
+export const adminResource = {
+
+    _id: "1",
+
+    title: "Operating Systems Notes",
+
+    description:
+        "Complete handwritten notes covering OS concepts.",
+
+    thumbnail:
+        "https://placehold.co/900x600",
+
+    pdf: "#",
+
+    subject: "Operating Systems",
+
+    branch: "CSE",
+
+    semester: 5,
+
+    courseCode: "CS301",
+
+    type: "Notes",
+
+    status: "Approved",
+
+    tags: [
+        "OS",
+        "Notes",
+        "Exam",
+    ],
+
+    views: 2487,
+
+    downloads: 1286,
+
+    bookmarks: 384,
+
+    averageRating: 4.8,
+
+    uploader: {
+
+        _id: "u1",
+
+        name: "Rahul Sharma",
+
+        username: "rahul",
+
+        avatar: "https://i.pravatar.cc/150?img=11",
+
+        email: "rahul@gmail.com",
+
+        role: "Contributor",
+
+        branch: "CSE",
+
+    },
+
+};
+
 export const dummyReports = [
 
     {

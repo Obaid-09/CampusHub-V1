@@ -2,9 +2,9 @@ import AdminLayout from "../../components/admin/AdminLayout";
 
 import AnalyticsHeader from "../../components/admin/AnalyticsHeader";
 import AnalyticsStatsGrid from "../../components/admin/AnalyticsStatsGrid";
-import UploadTrendChart from "../../Components/admin/UploadTrendChart";
-import DownloadTrendChart from "../../Components/admin/DownloadTrendChart";
-import BranchDistribution from "../../Components/admin/BranchDistribution";
+import UploadTrendChart from "../../components/admin/UploadTrendChart";
+import DownloadTrendChart from "../../components/admin/DownloadTrendChart";
+import BranchDistribution from "../../components/admin/BranchDistribution";
 import TopContributors from "../../components/admin/TopContributors";
 import TopResources from "../../components/admin/TopResources";
 import RecentActivity from "../../components/admin/RecentActivity";

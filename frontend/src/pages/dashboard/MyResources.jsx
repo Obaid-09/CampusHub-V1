@@ -3,7 +3,7 @@ import { useState } from "react";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
 import MyResourcesGrid from "../../components/dashboard/MyResourcesGrid";
-import DeleteResourceModal from "../../Components/dashboard/DeleteResourceModal";
+import DeleteResourceModal from "../../components/dashboard/DeleteResourceModal";
 import { dummyResources } from "../../constants/resources";
 
 const MyResources = () => {

@@ -1,6 +1,6 @@
 import { Search } from "lucide-react";
 
-import Button from "../../Components/ui/Button";
+import Button from "../../components/ui/Button";
 
 const HeroSearch = () => {
 

@@ -4,10 +4,10 @@ import WelcomeCard from "../../components/dashboard/WelcomeCard";
 import StatsGrid from "../../components/dashboard/StatsGrid";
 import QuickActions from "../../components/dashboard/QuickActions";
 import RecentActivity from "../../components/dashboard/RecentActivity";
-import ProgressCard from "../../Components/dashboard/ProgressCard";
-import TrendingResources from "../../Components/dashboard/TrendingResources";
-import RecommendedResources from "../../Components/dashboard/RecommendedResources";
-import UpcomingEvents from "../../Components/dashboard/UpcomingEvents";
+import ProgressCard from "../../components/dashboard/ProgressCard";
+import TrendingResources from "../../components/dashboard/TrendingResources";
+import RecommendedResources from "../../components/dashboard/RecommendedResources";
+import UpcomingEvents from "../../components/dashboard/UpcomingEvents";
 const Dashboard = () => {
 
     return (

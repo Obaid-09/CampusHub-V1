@@ -1,5 +1,5 @@
-import AuthCard from "../../Components/auth/AuthCard";
-import SuccessCard from "../../Components/auth/SuccessCard";
+import AuthCard from "../../components/auth/AuthCard";
+import SuccessCard from "../../components/auth/SuccessCard";
 
 const PasswordResetSuccess = () => {
 

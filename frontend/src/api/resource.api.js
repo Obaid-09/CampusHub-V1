@@ -63,3 +63,30 @@ export const resourceAPI = {
         ),
 
 };
+
+// import api from "./axios";
+
+// export const uploadResource = (formData)=>
+//     api.post(
+//         "/resources",
+//         formData,
+
+//         {
+//             headers:{
+//                 "Content-Type":
+//                 "multipart/form-data",
+//             },
+//         }
+//     );
+
+// export const getResources=()=>
+//     api.get("/resources");
+
+// export const getResource=(id)=>
+//     api.get(`/resources/${id}`);
+
+// export const updateResource=(id,data)=>
+//     api.patch(`/resources/${id}`,data);
+
+// export const deleteResource=(id)=>
+//     api.delete(`/resources/${id}`);

@@ -2,24 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Toaster } from "react-hot-toast";
-import ToastProvider from "./components/ui/ToastProvider";
+
 import App from "./App";
 import "./index.css";
 
 import { store } from "./redux/store";
+import ToastProvider from "./components/ui/ToastProvider";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <ToastProvider/>
-                <App />
-                    <Toaster
-                        position="top-right"
-                        reverseOrder={false}
-                    />
+                <AuthProvider>
+                    <ToastProvider />
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
         </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

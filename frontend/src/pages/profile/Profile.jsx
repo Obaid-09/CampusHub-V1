@@ -1,9 +1,9 @@
 import ProfileHeader from "../../components/profile/ProfileHeader";
 import ProfileStats from "../../components/profile/ProfileStats";
 import ProfileAbout from "../../components/profile/ProfileAbout";
-import UploadedResources from "../../Components/profile/UploadedResources";
-import Achievements from "../../Components/profile/Achievements";
-import ActivityTimeline from "../../Components/profile/ActivityTimeline";
+import UploadedResources from "../../components/profile/UploadedResources";
+import Achievements from "../../components/profile/Achievements";
+import ActivityTimeline from "../../components/profile/ActivityTimeline";
 import { dummyProfile } from "../../constants/profile";
 
 

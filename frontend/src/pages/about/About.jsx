@@ -6,7 +6,7 @@ import Vision from "../../components/about/Vision";
 import Developer from "../../components/about/Developer";
 import FAQ from "../../components/about/FAQ";
 import CTA from "../../components/about/CTA";
-import WhyCampusHub from "../../Components/about/WhyCampusHub";
+import WhyCampusHub from "../../components/about/WhyCampusHub";
 
 const About = () => {
 

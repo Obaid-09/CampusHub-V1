@@ -26,7 +26,7 @@ export const authAPI = {
         axiosInstance.post("/users/refresh-token"),
 
     changePassword: (data) =>
-        axiosInstance.post(
+        axiosInstance.patch(
             "/users/change-password",
             data
         ),
@@ -48,3 +48,20 @@ export const authAPI = {
             }
         ),
 };
+
+// import api from "./axios";
+
+// export const loginUser = (data) =>
+//     api.post("/users/login", data);
+
+// export const registerUser = (data) =>
+//     api.post("/users/register", data);
+
+// export const logoutUser = () =>
+//     api.post("/users/logout");
+
+// export const refreshToken = () =>
+//     api.post("/users/refresh-token");
+
+// export const getCurrentUser = () =>
+//     api.get("/users/current-user");

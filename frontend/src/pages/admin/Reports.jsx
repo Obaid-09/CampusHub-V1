@@ -3,9 +3,9 @@ import { useState } from "react";
 import AdminLayout from "../../components/admin/AdminLayout";
 import ReportsToolbar from "../../components/admin/ReportsToolbar";
 import ReportsTable from "../../components/admin/ReportsTable";
-import ReportDetailsModal from "../../Components/admin/ReportDetailsModal";
-import ResolveReportModal from "../../Components/admin/ResolveReportModal";
-import DismissReportModal from "../../Components/admin/DismissReportModal";
+import ReportDetailsModal from "../../components/admin/ReportDetailsModal";
+import ResolveReportModal from "../../components/admin/ResolveReportModal";
+import DismissReportModal from "../../components/admin/DismissReportModal";
 import { dummyReports } from "../../constants/admin";
 
 const Reports = () => {

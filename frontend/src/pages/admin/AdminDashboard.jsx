@@ -2,7 +2,7 @@ import AdminLayout from "../../components/admin/AdminLayout";
 
 import AdminHeader from "../../components/admin/AdminHeader";
 import AdminStatsGrid from "../../components/admin/AdminStatsGrid";
-import AdminQuickActions from "../../Components/admin/AdminQuickActions";
+import AdminQuickActions from "../../components/admin/AdminQuickActions";
 import RecentResources from "../../components/admin/RecentResources";
 import RecentUsers from "../../components/admin/RecentUsers";
 

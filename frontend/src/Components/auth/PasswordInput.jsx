@@ -66,7 +66,7 @@ const PasswordInput = ({
                 <button
 
                     type="button"
-
+                    disabled={props.disabled}
                     onClick={() =>
                         setShow(!show)
                     }
@@ -77,8 +77,9 @@ const PasswordInput = ({
                         top-1/2
                         -translate-y-1/2
                         text-gray400
+                        disabled:opacity-50
+                        disabled:cursor-not-allowed
                     "
-
                 >
 
                     {show

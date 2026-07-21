@@ -1,4 +1,4 @@
-import ResourceToolbar from "../../Components/resource/ResourceToolbar";
+import ResourceToolbar from "../../components/resource/ResourceToolbar";
 import ResourceFilters from "../../components/resource/ResourceFilters";
 import ResultsInfo from "../../components/resource/ResultsInfo";
 import ActiveFilters from "../../components/resource/ActiveFilters";

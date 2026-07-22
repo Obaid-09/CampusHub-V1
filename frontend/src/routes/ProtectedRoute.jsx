@@ -15,7 +15,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import useAuth from "../hooks/useAuth";
-import { toast } from "../utils/toast";
+import toast from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
 

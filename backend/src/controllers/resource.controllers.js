@@ -775,39 +775,39 @@ const bookmarkResource = asyncHandler(async (req, res) => {
 // });
 
 
-// const getMyUploads = asyncHandler(async (req, res) => {
+const getMyUploads = asyncHandler(async (req, res) => {
 
-//     const totalUploads = await Resource.countDocuments({
-//         uploadedBy: req.user._id,
-//         isDeleted: false
-//     });
+    const totalUploads = await Resource.countDocuments({
+        uploadedBy: req.user._id,
+        isDeleted: false
+    });
 
-//     const resources = await Resource.find({
-//         uploadedBy: req.user._id,
-//         isDeleted: false
-//     })
-//         .select(
-//             "-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted"
-//         )
-//         .populate({
-//             path: "uploadedBy",
-//             select: "fullname username avatar"
-//         })
-//         .sort({
-//             createdAt: -1
-//         });
+    const resources = await Resource.find({
+        uploadedBy: req.user._id,
+        isDeleted: false
+    })
+        .select(
+            "-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted"
+        )
+        .populate({
+            path: "uploadedBy",
+            select: "fullname username avatar"
+        })
+        .sort({
+            createdAt: -1
+        });
 
-//     return res.status(200).json(
-//         new ApiResponse(
-//             200,
-//             {
-//                 totalUploads,
-//                 uploads: resources
-//             },
-//             "Uploaded resources fetched successfully"
-//         )
-//     );
-// });
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                totalUploads,
+                uploads: resources
+            },
+            "Uploaded resources fetched successfully"
+        )
+    );
+});
 
 const updateResource = asyncHandler(async (req, res) => {
 
@@ -956,5 +956,6 @@ export {
     downloadResource,
     bookmarkResource,
     updateResource,
-    deleteResource
+    deleteResource,
+    getMyUploads
 }

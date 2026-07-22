@@ -1,12 +1,13 @@
 import { Edit, GraduationCap, Calendar } from "lucide-react";
 import Button from "../ui/Button";
+import useAuth from "../../hooks/useAuth";
 
-const ProfileHeader = ({ profile, isOwner }) => {
+const ProfileHeader = ({ isOwner, onEdit }) => {
+  const { user } = useAuth();
 
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-3xl
                 shadow-card
@@ -14,10 +15,9 @@ const ProfileHeader = ({ profile, isOwner }) => {
                 border-gray100
                 p-8
             "
-        >
-
-            <div
-                className="
+    >
+      <div
+        className="
                     flex
                     flex-col
                     lg:flex-row
@@ -25,22 +25,20 @@ const ProfileHeader = ({ profile, isOwner }) => {
                     justify-between
                     gap-8
                 "
-            >
-
-                <div
-                    className="
+      >
+        <div
+          className="
                         flex
                         flex-col
                         md:flex-row
                         items-center
                         gap-6
                     "
-                >
-
-                    <img
-                        src={profile.avatar}
-                        alt={profile.fullname}
-                        className="
+        >
+          <img
+            src={user?.avatar}
+            alt={user?.fullname}
+            className="
                             w-36
                             h-36
                             rounded-full
@@ -48,88 +46,84 @@ const ProfileHeader = ({ profile, isOwner }) => {
                             border-4
                             border-primary/20
                         "
-                    />
+          />
 
-                    <div>
-
-                        <h1
-                            className="
+          <div>
+            <h1
+              className="
                                 text-4xl
                                 font-heading
                                 font-bold
                                 text-secondary
                             "
-                        >
-                            {profile.fullname}
-                        </h1>
+            >
+              {user?.fullname}
+            </h1>
 
-                        <p
-                            className="
+            <p
+              className="
                                 mt-1
                                 text-primary
                                 font-medium
                             "
-                        >
-                            @{profile.username}
-                        </p>
+            >
+              @{user?.username}
+            </p>
 
-                        <div
-                            className="
+            <div
+              className="
                                 mt-4
                                 flex
                                 flex-wrap
                                 gap-4
                                 text-gray500
                             "
-                        >
+            >
+              <span className="flex items-center gap-2">
+                <GraduationCap size={18} />
+                {user?.branch}
+              </span>
 
-                            <span className="flex items-center gap-2">
-                                <GraduationCap size={18}/>
-                                {profile.branch}
-                            </span>
+              <span>Semester {user?.semester}</span>
 
-                            <span>
-                                Semester {profile.semester}
-                            </span>
+              <span>{user?.college}</span>
+            </div>
 
-                            <span>
-                                {profile.college}
-                            </span>
-
-                        </div>
-
-                        <div
-                            className="
+            <div
+              className="
                                 mt-3
                                 flex
                                 items-center
                                 gap-2
                                 text-gray400
                             "
-                        >
+            >
+              <Calendar size={16} />
+              Joined{" "}
+              {user?.createdAt
+                ? new Date(user.createdAt).toLocaleDateString(
+                    "en-IN",
 
-                            <Calendar size={16}/>
+                    {
+                      month: "long",
 
-                            Joined {profile.joined}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {isOwner && (
-                <Button>
-                    <Edit size={18}/>
-                    Edit Profile
-                </Button>)}
-
+                      year: "numeric",
+                    },
+                  )
+                : "--"}
             </div>
-
+          </div>
         </div>
 
-    );
-
+        {isOwner && (
+          <Button onClick={onEdit}>
+            <Edit size={18} />
+            Edit Profile
+          </Button>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default ProfileHeader;

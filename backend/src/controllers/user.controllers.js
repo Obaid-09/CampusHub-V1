@@ -27,26 +27,29 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   // 1) Get User Details from Frontend
-    const {
-        username,
-        fullname,
-        email,
-        password,
-        branch,
-        semester,
-        year,
-        college,
-        bio
-    } = req.body;
+  const {
+    username,
+    fullName,
+    email,
+    password,
+    branch,
+    semester,
+    year,
+    college,
+    bio,
+  } = req.body;
+  college = req.body.college?.trim() || "NIT Warangal";
 
   // 2) Validation not empty
   if (
-    [fullname, email, username, password, branch].some((field) => field?.trim() === "")
+    [fullName, email, username, password, branch].some(
+      (field) => field?.trim() === ""
+    )
   ) {
     throw new ApiError(400, "All fields are required");
   }
 
-  if(!semester || !year){
+  if (!semester || !year) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -59,90 +62,96 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User already exists with given username or email");
   }
 
+  // // 4) Check for Images
+  // const avatarLocalPath = req.files?.avatar?.[0]?.path;
 
-  // 4) Check for Images
-  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  // if (!avatarLocalPath) {
+  //   throw new ApiError(400, "Avatar is required");
+  // }
 
-  if (!avatarLocalPath) {
-    throw new ApiError(400, "Avatar is required");
-  }
+  // // 5) Upload to Cloudinary
+  // const avatar = await uploadOnCloudinary(avatarLocalPath);
 
-  // 5) Upload to Cloudinary
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  // if (!avatar?.url) {
+  //   throw new ApiError(400, "Error while uploading Avatar");
+  // }
 
-  if (!avatar?.url) {
-    throw new ApiError(400, "Error while uploading Avatar");
+  let avatarUrl = process.env.DEFAULT_AVATAR_URL;
+
+  if (req.files?.avatar?.length > 0) {
+    const avatarLocalPath = req.files.avatar[0].path;
+    const avatar = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatar?.url) {
+      throw new ApiError(400, "Error while uploading avatar");
+    }
+    avatarUrl = avatar.url;
   }
 
   // 6) Create User object and make an entry in DB
+  console.log("avatarUrl:", avatarUrl);
   const user = await User.create({
-    fullname,
+    fullname: fullName,
     username: username.toLowerCase(),
     email,
     password,
-    avatar: avatar.url,
+    avatar: avatarUrl,
     branch,
     semester,
     year,
-    college,
-    bio
+    college: college,
+    bio,
   });
 
   // 7) Remove password and RefreshToken
-//   const createdUser = await User.findById(user._id).select(
-//     "-password -refreshToken"
-//   );
+  //   const createdUser = await User.findById(user._id).select(
+  //     "-password -refreshToken"
+  //   );
 
-//   // 8) Check for User Creation
-//   if (!createdUser) {
-//     throw new ApiError(500, "Something went wrong while registering");
-//   }
+  //   // 8) Check for User Creation
+  //   if (!createdUser) {
+  //     throw new ApiError(500, "Something went wrong while registering");
+  //   }
 
-//   // 9) Sending the response
-//   return res
-//     .status(201)
-//     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+  //   // 9) Sending the response
+  //   return res
+  //     .status(201)
+  //     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 
-    // Generate Access & Refresh Tokens
-    const { accessToken, refreshToken } =
-        await generateAccessAndRefreshTokens(user._id);
+  // Generate Access & Refresh Tokens
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id
+  );
 
-    // Fetch user without password & refresh token
-    const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
-    );
+  // Fetch user without password & refresh token
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
-    if (!createdUser) {
-        throw new ApiError(
-            500,
-            "Something went wrong while registering"
-        );
-    }
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while registering");
+  }
 
-    const options = {
-      httpOnly:true,
-      secure:process.env.NODE_ENV==="production",
-      sameSite:
-          process.env.NODE_ENV==="production"
-          ? "none"
-          : "lax",
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
 
-    return res
-        .status(201)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
-        .json(
-            new ApiResponse(
-                201,
-                {
-                    user: createdUser,
-                    accessToken,
-                    refreshToken,
-                },
-                "User registered successfully"
-            )
-        );
+  return res
+    .status(201)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        201,
+        {
+          user: createdUser,
+          // accessToken,
+          // refreshToken,
+        },
+        "User registered successfully"
+      )
+    );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -169,9 +178,9 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   user.lastLogin = new Date();
-    await user.save({
-    validateBeforeSave:false
-    });
+  await user.save({
+    validateBeforeSave: false,
+  });
 
   // 5) Access and Refresh Token
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
@@ -186,7 +195,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     //secure: true,
-    secure:process.env.NODE_ENV==="production"
+    secure: process.env.NODE_ENV === "production",
   };
 
   return res
@@ -221,7 +230,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production"
+    secure: process.env.NODE_ENV === "production",
     // secure: true,
   };
 
@@ -252,15 +261,14 @@ const requestAccessToken = asyncHandler(async (req, res) => {
       throw new ApiError(401, "Invalid refresh Token");
     }
 
-
     if (incomingRefreshToken !== user?.refreshToken) {
       throw new ApiError(401, "Refresh Token is Expired");
     }
 
     const options = {
       httpOnly: true,
-    //   secure: true,
-    secure: process.env.NODE_ENV === "production"
+      //   secure: true,
+      secure: process.env.NODE_ENV === "production",
     };
 
     const { accessToken, newrefreshToken } =
@@ -308,46 +316,42 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-    const { username } = req.params;
+  const { username } = req.params;
 
-    if (!username?.trim()) {
-        throw new ApiError(400, "Username is required");
-    }
+  if (!username?.trim()) {
+    throw new ApiError(400, "Username is required");
+  }
 
-    const user = await User.findOne({
-        username: username.toLowerCase(),
-    })
+  const user = await User.findOne({
+    username: username.toLowerCase(),
+  })
     .select("-password -refreshToken -email")
     .populate({
-        path: "uploadedResources",
-        select: "title thumbnail subject branch semester createdAt"
+      path: "uploadedResources",
+      select: "title thumbnail subject branch semester createdAt",
     });
 
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
-    const profile = {
-        fullname: user.fullname,
-        username: user.username,
-        avatar: user.avatar,
-        bio: user.bio,
-        college: user.college,
-        branch: user.branch,
-        year: user.year,
-        semester: user.semester,
-        // uploadedResources: user.uploadedResources,
-        // uploadsCount: user.uploadedResources.length,
-        joinedAt: user.createdAt
-    };
+  const profile = {
+    fullname: user.fullname,
+    username: user.username,
+    avatar: user.avatar,
+    bio: user.bio,
+    college: user.college,
+    branch: user.branch,
+    year: user.year,
+    semester: user.semester,
+    // uploadedResources: user.uploadedResources,
+    // uploadsCount: user.uploadedResources.length,
+    joinedAt: user.createdAt,
+  };
 
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            profile,
-            "User profile fetched successfully"
-        )
-    );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, profile, "User profile fetched successfully"));
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
@@ -367,7 +371,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
         semester,
         year,
         college,
-        bio
+        bio,
       },
     },
     { new: true }
@@ -406,13 +410,10 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Avatar Updated Successfully"));
 });
 
-
 const getBookmarks = asyncHandler(async (req, res) => {
-
-    const user = await User.findById(req.user._id)
-        .populate({
-            path: "bookmarks.resource",
-            select: `
+  const user = await User.findById(req.user._id).populate({
+    path: "bookmarks.resource",
+    select: `
                 title
                 description
                 subject
@@ -429,36 +430,30 @@ const getBookmarks = asyncHandler(async (req, res) => {
                 uploadedBy
                 createdAt
             `,
-            populate: {
-                path: "uploadedBy",
-                select: "fullname username avatar"
-            }
-        });
+    populate: {
+      path: "uploadedBy",
+      select: "fullname username avatar",
+    },
+  });
 
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
-    // Keep newest bookmarks first
-    user.bookmarks.sort(
-        (a, b) => b.bookmarkedAt - a.bookmarkedAt
-    );
+  // Keep newest bookmarks first
+  user.bookmarks.sort((a, b) => b.bookmarkedAt - a.bookmarkedAt);
 
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            user.bookmarks,
-            "Bookmarks fetched successfully"
-        )
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, user.bookmarks, "Bookmarks fetched successfully")
     );
 });
 
 const getRecentlyViewed = asyncHandler(async (req, res) => {
-
-    const user = await User.findById(req.user._id)
-        .populate({
-            path: "recentlyViewed.resource",
-            select: `
+  const user = await User.findById(req.user._id).populate({
+    path: "recentlyViewed.resource",
+    select: `
                 title
                 description
                 subject
@@ -475,71 +470,66 @@ const getRecentlyViewed = asyncHandler(async (req, res) => {
                 uploadedBy
                 createdAt
             `,
-            populate: {
-                path: "uploadedBy",
-                select: "fullname username avatar"
-            }
-        });
+    populate: {
+      path: "uploadedBy",
+      select: "fullname username avatar",
+    },
+  });
 
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
-    // Keep latest viewed resources first
-    user.recentlyViewed.sort(
-        (a, b) => b.viewedAt - a.viewedAt
-    );
+  // Keep latest viewed resources first
+  user.recentlyViewed.sort((a, b) => b.viewedAt - a.viewedAt);
 
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            user.recentlyViewed,
-            "Recently viewed resources fetched successfully"
-        )
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        user.recentlyViewed,
+        "Recently viewed resources fetched successfully"
+      )
     );
 });
 
 const getMyUploads = asyncHandler(async (req, res) => {
+  const totalUploads = await Resource.countDocuments({
+    uploadedBy: req.user._id,
+    isDeleted: false,
+  });
 
-    const totalUploads = await Resource.countDocuments({
-        uploadedBy: req.user._id,
-        isDeleted: false
+  const resources = await Resource.find({
+    uploadedBy: req.user._id,
+    isDeleted: false,
+  })
+    .select("-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted")
+    .populate({
+      path: "uploadedBy",
+      select: "fullname username avatar",
+    })
+    .sort({
+      createdAt: -1,
     });
 
-    const resources = await Resource.find({
-        uploadedBy: req.user._id,
-        isDeleted: false
-    })
-        .select(
-            "-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted"
-        )
-        .populate({
-            path: "uploadedBy",
-            select: "fullname username avatar"
-        })
-        .sort({
-            createdAt: -1
-        });
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                totalUploads,
-                uploads: resources
-            },
-            "Uploaded resources fetched successfully"
-        )
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        totalUploads,
+        uploads: resources,
+      },
+      "Uploaded resources fetched successfully"
+    )
+  );
 });
 
 const getDownloadHistory = asyncHandler(async (req, res) => {
-
-    console.log("Reached getMyUploads");
-    const user = await User.findById(req.user._id)
-        .populate({
-            path: "downloads.resource",
-            select: `
+  console.log("Reached getMyUploads");
+  const user = await User.findById(req.user._id).populate({
+    path: "downloads.resource",
+    select: `
                 title
                 subject
                 type
@@ -552,29 +542,27 @@ const getDownloadHistory = asyncHandler(async (req, res) => {
                 averageRating
                 uploadedBy
             `,
-            populate: {
-                path: "uploadedBy",
-                select: "fullname username avatar"
-            }
-        });
+    populate: {
+      path: "uploadedBy",
+      select: "fullname username avatar",
+    },
+  });
 
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
-    user.downloads.sort(
-        (a, b) => b.downloadedAt - a.downloadedAt
+  user.downloads.sort((a, b) => b.downloadedAt - a.downloadedAt);
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        user.downloads,
+        "Download history fetched successfully"
+      )
     );
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            user.downloads,
-            "Download history fetched successfully"
-        )
-    );
-
 });
-
 
 export {
   updateUserAvatar,
@@ -589,5 +577,5 @@ export {
   getDownloadHistory,
   getMyUploads,
   getRecentlyViewed,
-  getUserProfile
+  getUserProfile,
 };

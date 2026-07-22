@@ -4,53 +4,53 @@ import ProfileAbout from "../../components/profile/ProfileAbout";
 import UploadedResources from "../../components/profile/UploadedResources";
 import Achievements from "../../components/profile/Achievements";
 import ActivityTimeline from "../../components/profile/ActivityTimeline";
-import { dummyProfile } from "../../constants/profile";
-
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import EditProfileModal from "../../components/profile/EditProfileModal";
 
 const Profile = () => {
+  const { user, loading } = useAuth();
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
-    return (
+  if (loading) {
+    return null;
 
-        <section
-            className="
+    // Later:
+    // return <ProfileSkeleton />
+  }
+
+  return (
+    <section
+      className="
                 bg-background
                 min-h-screen
                 py-12
             "
-        >
-
-            <div
-                className="
+    >
+      <div
+        className="
                     max-w-7xl
                     mx-auto
                     px-6
                 "
-            >
+      >
+        <ProfileHeader isOwner={true} onEdit={() => setShowEditProfile(true)} />
 
-                <ProfileHeader
-                    profile={dummyProfile}
-                    isOwner={true}
-                />
+        <ProfileStats />
 
-                <ProfileStats
-                    profile={dummyProfile}
-                />
+        <ProfileAbout />
 
-                <ProfileAbout
-                    profile={dummyProfile}
-                />
+        <UploadedResources />
 
-                <UploadedResources />
-
-                <Achievements />
-                <ActivityTimeline />
-
-            </div>
-
-        </section>
-
-    );
-
+        <Achievements />
+        <ActivityTimeline />
+        <EditProfileModal
+          open={showEditProfile}
+          onClose={() => setShowEditProfile(false)}
+        />
+      </div>
+    </section>
+  );
 };
 
 export default Profile;

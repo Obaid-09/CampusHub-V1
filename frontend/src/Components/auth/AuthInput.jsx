@@ -1,50 +1,30 @@
 const AuthInput = ({
     label,
     disabled,
+    className = "",
     ...props
 }) => {
-
     return (
-
         <div className="space-y-2">
-
-            <label className="block text-gray200 font-medium">
+            <label className="block font-medium text-gray-700">
                 {label}
             </label>
 
             <input
                 disabled={disabled}
                 {...props}
-                className="
+                className={`
                     w-full
                     h-14
-
                     px-5
-
                     rounded-xl
-
-                    bg-white/5
-
-                    border border-white/10
-
-                    text-white
-
-                    placeholder:text-gray500
-
+                    border
                     outline-none
-
                     transition-all
-
-                    focus:border-primary
-                    focus:ring-2
-                    focus:ring-primary/30
-                "
+                    ${className}
+                `}
             />
-
         </div>
-
     );
-
 };
-
 export default AuthInput;

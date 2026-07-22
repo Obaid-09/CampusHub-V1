@@ -1,25 +1,15 @@
 import { Upload } from "lucide-react";
 
-const AvatarUpload = ({
-    disabled,
-}) => {
+const AvatarUpload = ({ disabled, file, onChange }) => {
+  return (
+    <div>
+      <label className="block mb-2 font-medium text-gray200">
+        Profile Picture
+        <span className="ml-2 text-sm text-gray400">(Optional)</span>
+      </label>
 
-    return (
-
-        <div>
-
-            <label className="block mb-2 font-medium text-gray200">
-
-                Profile Picture
-
-                <span className="ml-2 text-sm text-gray400">
-                    (Optional)
-                </span>
-
-            </label>
-
-            <label
-                className="
+      <label
+        className="
                     h-32
                     rounded-xl
                     border-2
@@ -39,32 +29,29 @@ const AvatarUpload = ({
 
                     transition-all
                 "
-            >
+      >
+        <Upload size={28} className="text-primary" />
 
-                <Upload
-                    size={28}
-                    className="text-primary"
-                />
+        <p className="mt-3 text-gray400">
+          {file ? file.name : "Upload Avatar"}
+        </p>
 
-                <p className="mt-3 text-gray400">
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          disabled={disabled}
+          onChange={(e) => {
+            const selectedFile = e.target.files[0];
 
-                    Upload Avatar
-
-                </p>
-
-                <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    disabled={disabled}
-                />
-
-            </label>
-
-        </div>
-
-    );
-
+            if (selectedFile) {
+              onChange(selectedFile);
+            }
+          }}
+        />
+      </label>
+    </div>
+  );
 };
 
 export default AvatarUpload;

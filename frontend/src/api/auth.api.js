@@ -33,7 +33,7 @@ export const authAPI = {
 
     updateProfile: (data) =>
         axiosInstance.patch(
-            "/users/update-account",
+            "/users/update-profile",
             data
         ),
 

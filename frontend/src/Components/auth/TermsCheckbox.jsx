@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-
-const TermsCheckbox = () => {
+const TermsCheckbox = ({
+    checked,
+    onChange,
+}) => {
 
     return (
 
@@ -15,12 +17,17 @@ const TermsCheckbox = () => {
         >
 
             <input
-                type="checkbox"
-                className="
-                    mt-1
-                    accent-primary
-                "
-            />
+    type="checkbox"
+
+    checked={checked}
+
+    onChange={onChange}
+
+    className="
+        mt-1
+        accent-primary
+    "
+/>
 
             <span>
 

@@ -14,6 +14,10 @@ const links = [
         path: "/upload",
     },
     {
+        name:"Dashboard",
+        path: "/dashboard",
+    },
+    {
         name: "About",
         path: "/about",
     },

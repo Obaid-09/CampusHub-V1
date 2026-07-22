@@ -1,4 +1,8 @@
+import useAuth from "../../hooks/useAuth";
+
 const WelcomeCard = () => {
+
+    const { user, loading } = useAuth();
 
     return (
 
@@ -21,7 +25,7 @@ const WelcomeCard = () => {
                     text-secondary
                 "
             >
-                Welcome Back, Obaid 👋
+                Welcome Back, {loading ? "..." : user?.fullname || "Student"} 👋
             </h1>
 
             <p

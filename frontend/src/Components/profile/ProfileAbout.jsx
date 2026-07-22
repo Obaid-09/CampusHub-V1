@@ -1,4 +1,8 @@
-const ProfileAbout = ({ profile }) => {
+import useAuth from "../../hooks/useAuth";
+
+const ProfileAbout = () => {
+
+    const { user } = useAuth();
 
     return (
 
@@ -32,7 +36,7 @@ const ProfileAbout = ({ profile }) => {
                     text-gray600
                 "
             >
-                {profile.bio}
+                {user?.bio || "No bio added yet."}
             </p>
 
         </div>

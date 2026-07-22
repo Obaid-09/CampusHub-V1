@@ -9,7 +9,7 @@ import {
     bookmarkResource,
     // getBookmarks,
     // getRecentlyViewed,
-    // getMyUploads,
+    getMyUploads,
     updateResource,
     deleteResource
 } from "../controllers/resource.controllers.js";
@@ -61,10 +61,10 @@ router.route("/")
 //     getRecentlyViewed
 // );
 
-// router.route("/my-uploads").get(
-//     verifyJWT,
-//     getMyUploads
-// );
+router.route("/my-uploads").get(
+    verifyJWT,
+    getMyUploads
+);
 
 router.route("/:resourceId").get(
     getResourceByIdValidator,

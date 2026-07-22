@@ -32,7 +32,7 @@ import AdminResourceDetails from "../pages/admin/AdminResourceDetails";
 import UserDetails from "../pages/admin/UserDetails";
 import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
-
+import ProtectedRoute from "./ProtectedRoute"
 
 const AppRoutes = () => {
     return (
@@ -77,7 +77,9 @@ const AppRoutes = () => {
 
             <Route
                 path="/upload"
-                element={<UploadResource />}
+                element={<ProtectedRoute>
+                        <UploadResource />
+                    </ProtectedRoute>}
             />
 
             {/* <Route
@@ -93,12 +95,20 @@ const AppRoutes = () => {
 
             <Route
                 path="/dashboard"
-                element={<Dashboard />}
+                element={
+                    <ProtectedRoute>
+                        <Dashboard/>
+                    </ProtectedRoute>
+                }
             />
 
             <Route
                 path="/profile"
-                element={<Profile />}
+                element={
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
+                }
             />
 
             <Route

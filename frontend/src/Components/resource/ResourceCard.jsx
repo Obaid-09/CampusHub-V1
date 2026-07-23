@@ -1,26 +1,21 @@
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
-import {
-    Eye,
-    Download,
-    Bookmark,
-    Star,
+import { Eye, Download, Bookmark, Star } from "lucide-react";
 
-} from "lucide-react";
+const ResourceCard = ({
+  resource,
+  variant = "default",
+  showBookmarkAction = false,
+  onRemoveBookmark,
+}) => {
+  const isCompact = variant === "compact";
+  const navigate = useNavigate();
 
-const ResourceCard = ({ resource, variant = "default", showBookmarkAction = false,
-    onRemoveBookmark,}) => {
-    const isCompact = variant === "compact";
-    const navigate = useNavigate();
-
-    return (
-        
-        <div
-            onClick={() =>
-                navigate(`/resources/${resource._id}`)
-            }
-            className={`
+  return (
+    <div
+      onClick={() => navigate(`/resources/${resource._id}`)}
+      className={`
                     relative
                     bg-white
                     rounded-2xl
@@ -31,16 +26,11 @@ const ResourceCard = ({ resource, variant = "default", showBookmarkAction = fals
                     hover:-translate-y-1
                     hover:shadow-xl
 
-                    ${
-                        isCompact
-                            ? "p-4"
-                            : "p-5"
-                    }
+                    ${isCompact ? "p-4" : "p-5"}
                 `}
-        >
-
-            {/* Thumbnail */}
-            {/* className={`
+    >
+      {/* Thumbnail */}
+      {/* className={`
                 w-full
                 object-cover
 
@@ -51,64 +41,37 @@ const ResourceCard = ({ resource, variant = "default", showBookmarkAction = fals
                 }
             `} */}
 
-
-            {
-                showBookmarkAction && (
-
-                    <button
-
-                        onClick={(e) => {
-
-                            e.stopPropagation();
-
-                            onRemoveBookmark?.(resource);
-
-                        }}
-
-                        className="
+      {showBookmarkAction && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemoveBookmark?.(resource);
+          }}
+          className="
                             absolute
                             top-4
                             right-4
-
                             w-10
                             h-10
-
                             rounded-full
-
                             bg-white
-
                             shadow-lg
-
                             flex
                             items-center
                             justify-center
-
                             hover:bg-red-50
                             hover:text-red-600
-
                             transition-all
-
                             z-20
                         "
-
-                    >
-
-                        <Bookmark
-                            size={18}
-                            fill="currentColor"
-                        />
-
-                    </button>
-
-                )
-            }
-            <img
-                src={
-                    resource.thumbnail ||
-                    "https://placehold.co/600x350"
-                }
-                alt={resource.title}
-                className={`
+        >
+          <Bookmark size={18} fill="currentColor" />
+        </button>
+      )}
+      <img
+        src={resource.thumbnail || "https://placehold.co/600x350"}
+        alt={resource.title}
+        className={`
                             h-48
                             w-full
                             object-cover
@@ -116,143 +79,100 @@ const ResourceCard = ({ resource, variant = "default", showBookmarkAction = fals
                             group-hover:scale-105
                             transition-all
                             duration-500
-                            ${
-                                isCompact
-                                    ? "h-36"
-                                    : "h-52"
-                            }
+                            ${isCompact ? "h-36" : "h-52"}
                         `}
+      />
 
-            />
+      <div className={isCompact ? "p-4" : "p-6"}>
+        <Badge>{resource.type}</Badge>
 
-            <div className={isCompact ? "p-4" : "p-6"}>
-                <Badge>
-                    {resource.type}
-                </Badge>
-
-                <h2
-                    className={`
+        <h2
+          className={`
                         mt-4
                         text-xl
                         font-heading
                         font-semibold
                         text-secondary
                         line-clamp-2
-                        ${
-                            isCompact
-                                ? "text-lg mt-4"
-                                : "text-xl mt-5"
-                        }
+                        ${isCompact ? "text-lg mt-4" : "text-xl mt-5"}
                     `}
-                >
-                    {resource.title}
-                </h2>
+        >
+          {resource.title}
+        </h2>
 
-                                {
-                    !isCompact && (
+        {!isCompact && (
+          <>
+            <p className="mt-2 text-gray500">{resource.subject}</p>
 
-                        <>
+            <p className="text-sm text-gray400">{resource.courseCode}</p>
+          </>
+        )}
 
-                            <p className="mt-2 text-gray500">
-
-                                {resource.subject}
-
-                            </p>
-
-                            <p className="text-sm text-gray400">
-
-                                {resource.courseCode}
-
-                            </p>
-
-                        </>
-
-                    )
-                }
-
-                {
-                    isCompact ? (
-
-                        <div
-                            className="
+        {isCompact ? (
+          <div
+            className="
                                 mt-5
                                 flex
                                 items-center
                                 justify-between
                             "
-                        >
-
-                            <div
-                                className="
+          >
+            <div
+              className="
                                     flex
                                     items-center
                                     gap-2
                                     text-gray600
                                 "
-                            >
+            >
+              <Download size={18} />
 
-                                <Download size={18}/>
+              <span>{resource.downloads}</span>
+            </div>
 
-                                <span>
-
-                                    {resource.downloads}
-
-                                </span>
-
-                            </div>
-
-                            <span
-                                className="
+            <span
+              className="
                                     text-xs
                                     text-primary
                                     font-medium
                                 "
-                            >
-
-                                Downloads
-
-                            </span>
-
-                        </div>
-
-                    ) : (
-
-                        <div
-                            className="
+            >
+              Downloads
+            </span>
+          </div>
+        ) : (
+          <div
+            className="
                                 flex
                                 justify-between
                                 mt-6
                                 text-sm
                                 text-gray500
                             "
-                        >
+          >
+            <span className="flex items-center gap-1">
+              <Eye size={16} />
+              {resource.views}
+            </span>
 
-                            <span className="flex items-center gap-1">
-                                <Eye size={16}/>
-                                {resource.views}
-                            </span>
+            <span className="flex items-center gap-1">
+              <Download size={16} />
+              {resource.downloads}
+            </span>
 
-                            <span className="flex items-center gap-1">
-                                <Download size={16}/>
-                                {resource.downloads}
-                            </span>
+            <span className="flex items-center gap-1">
+              <Bookmark size={16} />
+              {resource.bookmarks}
+            </span>
 
-                            <span className="flex items-center gap-1">
-                                <Bookmark size={16}/>
-                                {resource.bookmarks}
-                            </span>
+            <span className="flex items-center gap-1">
+              <Star size={16} />
+              {resource.averageRating}
+            </span>
+          </div>
+        )}
 
-                            <span className="flex items-center gap-1">
-                                <Star size={16}/>
-                                {resource.averageRating}
-                            </span>
-                        </div>
-
-                    )
-                }
-
-
-                {/* <Button
+        {/* <Button
                     className="
                         w-full
                         mt-6
@@ -262,32 +182,21 @@ const ResourceCard = ({ resource, variant = "default", showBookmarkAction = fals
                 >
                     View Details →
                 </Button> */}
-                <Button
-                    className={`
+        <Button
+          className={`
                         w-full
                         mt-6
                         opacity-90
                         group-hover:opacity-100
 
-                        ${
-                            isCompact
-                                ? "w-full h-11 text-sm"
-                                : "w-full"
-                        }
+                        ${isCompact ? "w-full h-11 text-sm" : "w-full"}
                     `}
-                >
-                    {
-                        isCompact
-                        ? "Open"
-                        : "View Details →"
-                    }
-                </Button>
-
-            </div>
-        </div>
-
-    );
-
+        >
+          {isCompact ? "Open" : "View Details →"}
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default ResourceCard;

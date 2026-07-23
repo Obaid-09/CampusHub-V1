@@ -7,6 +7,7 @@ import {
   User,
   Settings,
   LogOut,
+  Home,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -15,6 +16,11 @@ import Avatar from "../common/Avatar";
 import { successToast, errorToast } from "../../utils/toast";
 
 const links = [
+  {
+    name: "Home",
+    icon: Home,
+    path: "/",
+  },
   {
     name: "Dashboard",
     icon: LayoutDashboard,

@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/home/Home";
 import Resources from "../pages/resources/Resources";
-import ResourceDetails from "../pages/resources/ResourceDetails"
+import ResourceDetails from "../pages/resources/ResourceDetails";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -32,57 +32,64 @@ import AdminResourceDetails from "../pages/admin/AdminResourceDetails";
 import UserDetails from "../pages/admin/UserDetails";
 import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
-import ProtectedRoute from "./ProtectedRoute"
+import ProtectedRoute from "./ProtectedRoute";
+import ChangePassword from "../pages/dashboard/ChangePassword";
 
 const AppRoutes = () => {
-    return (
-        <Routes>
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
 
-            <Route path="/" element={<Home />} />
+      <Route path="/resources" element={<Resources />} />
 
-            <Route path="/resources" element={<Resources />} />
+      <Route path="/resources/:id" element={<ResourceDetails />} />
 
-            <Route
-                path="/resources/:id"
-                element={<ResourceDetails />}
-            />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
 
-            <Route
-                path="/login"
-                element={
-                    <PublicRoute>
-                        <Login />
-                    </PublicRoute>
-                }
-            />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
-            <Route
-                path="/register"
-                element={
-                    <PublicRoute>
-                        <Register />
-                    </PublicRoute>
-                }
-            />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route
+        path="/change-password"
+        element={
+          <ProtectedRoute>
+            <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/email-verified" element={<EmailVerified />} />
 
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route
+        path="/password-reset-success"
+        element={<PasswordResetSuccess />}
+      />
 
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route
+        path="/upload"
+        element={
+          <ProtectedRoute>
+            <UploadResource />
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/verify-email" element={<VerifyEmail />} />
-
-            <Route path="/email-verified" element={<EmailVerified />} />
-
-            <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
-
-            <Route
-                path="/upload"
-                element={<ProtectedRoute>
-                        <UploadResource />
-                    </ProtectedRoute>}
-            />
-
-            {/* <Route
+      {/* <Route
                 path="/profile"
                 element={
                     <ProtectedRoute>
@@ -91,57 +98,42 @@ const AppRoutes = () => {
                 }
             /> */}
 
-            <Route path="/about" element={<About />} />
+      <Route path="/about" element={<About />} />
 
-            <Route
-                path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard/>
-                    </ProtectedRoute>
-                }
-            />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
-            <Route
-                path="/profile"
-                element={
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                }
-            />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
 
-            <Route
-                path="/dashboard/resources"
-                element={<MyResources />}
-            />
+      <Route path="/dashboard/resources" element={<MyResources />} />
 
-            <Route
-                path="/dashboard/bookmarks"
-                element={<Bookmarks />}
-            />
+      <Route path="/dashboard/bookmarks" element={<Bookmarks />} />
 
-            <Route
-                path="/dashboard/resources/:id/edit"
-                element={<EditResource />}
-            />
+      <Route path="/dashboard/resources/:id/edit" element={<EditResource />} />
 
-            <Route
-                path="/dashboard/resources/:id/analytics"
-                element={<ResourceAnalyticsPage />}
-            />
+      <Route
+        path="/dashboard/resources/:id/analytics"
+        element={<ResourceAnalyticsPage />}
+      />
 
-            <Route
-                path="/dashboard/notifications"
-                element={<Notifications />}
-            />
+      <Route path="/dashboard/notifications" element={<Notifications />} />
 
-            <Route
-                path="/dashboard/settings"
-                element={<Settings />}
-            />
+      <Route path="/dashboard/settings" element={<Settings />} />
 
-            {/* <Route
+      {/* <Route
                 path="/dashboard/resources"
                 element={<MyResources />}
             />
@@ -160,7 +152,7 @@ const AppRoutes = () => {
                 element={<Notifications />}
             /> */}
 
-            {/* <Route
+      {/* <Route
                 path="/admin"
                 element={
                     <AdminRoute>
@@ -169,83 +161,40 @@ const AppRoutes = () => {
                 }
             /> */}
 
-            <Route path="/admin">
+      <Route path="/admin">
+        <Route index element={<AdminDashboard />} />
 
-                <Route
-                    index
-                    element={<AdminDashboard/>}
-                />
+        <Route path="pending" element={<PendingResources />} />
 
-                <Route
-                    path="pending"
-                    element={<PendingResources/>}
-                />
+        <Route path="resources" element={<AllResources />} />
 
-                <Route
-                    path="resources"
-                    element={<AllResources/>}
-                />
+        <Route path="users" element={<Users />} />
 
-                <Route
-                    path="users"
-                    element={<Users/>}
-                />
+        <Route path="reports" element={<Reports />} />
 
-                <Route
-                    path="reports"
-                    element={<Reports/>}
-                />
+        <Route path="categories" element={<Categories />} />
 
-                <Route
-                    path="categories"
-                    element={<Categories/>}
-                />
+        <Route path="analytics" element={<AdminAnalytics />} />
 
-                <Route
-                    path="analytics"
-                    element={<AdminAnalytics/>}
-                />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
 
-                <Route
-                    path="settings"
-                    element={<AdminSettings/>}
-                />
+      <Route path="/admin/resources/:id" element={<AdminResourceDetails />} />
 
-            </Route>
+      <Route path="/admin/resources/:id/edit" element={<EditResource />} />
 
-            <Route
-                    path="/admin/resources/:id"
-                    element={<AdminResourceDetails/>}
-                />
+      <Route path="/admin/users/:id" element={<UserDetails />} />
 
-                <Route
-                    path="/admin/resources/:id/edit"
-                    element={<EditResource />}
-                />
-
-                <Route
-                    path="/admin/users/:id"
-                    element={<UserDetails />}
-                />
-
-                <Route
-                    path="/admin/resources/:id/analytics"
-                    element={<ResourceAnalyticsPage />}
-                />
-            <Route
-
-                path="*"
-
-                element={<PageNotFound/>}
-
-            />
-
-        </Routes>
-    );
+      <Route
+        path="/admin/resources/:id/analytics"
+        element={<ResourceAnalyticsPage />}
+      />
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
+  );
 };
 
 export default AppRoutes;
-
 
 // 404 Page
 // Loading Components

@@ -12,83 +12,59 @@ import { dummyResources } from "../../constants/resources";
 import { useEffect } from "react";
 
 const ResourceDetails = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+  const { id } = useParams();
 
-    useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    }, []);
-    const { id } = useParams();
-    
-    const resource = dummyResources.find(
-        item => String(item._id) === id
-    );
-    console.log(id);
-    console.log(dummyResources);
-    console.log(resource);
-    return (
-        <section className="bg-background min-h-screen py-10">
+  const resource = dummyResources.find((item) => String(item._id) === id);
+  console.log(id);
+  console.log(dummyResources);
+  console.log(resource);
+  return (
+    <section className="bg-background min-h-screen py-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <ResourceBreadcrumb resource={resource} />
 
-            <div className="max-w-7xl mx-auto px-6">
-
-                <ResourceBreadcrumb
-                    resource={resource}
-                />
-
-                <div
-                    className="
+        <div
+          className="
                         mt-8
                         grid
                         lg:grid-cols-2
                         gap-12
                     "
-                >
+        >
+          <ResourcePreview resource={resource} />
 
-                    <ResourcePreview
-                        resource={resource}
-                    />
+          <ResourceInfo resource={resource} />
 
-                    <ResourceInfo
-                        resource={resource}
-                    />
+          <ResourceStats resource={resource} />
 
-                    <ResourceStats
-                        resource={resource}
-                    />
+          <ResourceActions resource={resource} />
 
-                    <ResourceActions />
+          <ResourceDescription resource={resource} />
 
-                    <ResourceDescription
-                        resource={resource}
-                    />
+          <ResourceUploader uploader={resource.uploadedBy} />
 
-                    <ResourceUploader
-                        uploader={resource.uploadedBy}
-                    />
+          <RatingSection reviews={resource.reviews} />
 
-                    <RatingSection
-                        reviews={resource.reviews}
-                    />
+          {/* <RelatedResources resources={dummyResources} /> */}
 
-                    {/* <RelatedResources resources={dummyResources} /> */}
-
-                    <RelatedResources
-                        resources={dummyResources.filter(
-                            (item) =>
-                                item._id !== resource._id &&
-                                item.branch === resource.branch
-                        ).slice(0,4)}
-                    />
-
-                </div>
-
-            </div>
-
-        </section>
-
-    );
-
+          <RelatedResources
+            resources={dummyResources
+              .filter(
+                (item) =>
+                  item._id !== resource._id && item.branch === resource.branch,
+              )
+              .slice(0, 4)}
+          />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ResourceDetails;

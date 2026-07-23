@@ -1,8 +1,9 @@
 import { Edit, GraduationCap, Calendar } from "lucide-react";
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
+import { Camera } from "lucide-react";
 
-const ProfileHeader = ({ isOwner, onEdit }) => {
+const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvatar }) => {
   const { user } = useAuth();
 
   return (
@@ -35,7 +36,7 @@ const ProfileHeader = ({ isOwner, onEdit }) => {
                         gap-6
                     "
         >
-          <img
+          {/* <img
             src={user?.avatar}
             alt={user?.fullname}
             className="
@@ -46,7 +47,52 @@ const ProfileHeader = ({ isOwner, onEdit }) => {
                             border-4
                             border-primary/20
                         "
-          />
+          /> */}
+
+          <div className="relative">
+            <img
+              src={user?.avatar}
+              alt={user?.fullname}
+              className="
+            w-36
+            h-36
+            rounded-full
+            object-cover
+            border-4
+            border-primary/20
+        "
+            />
+
+            {isOwner && (
+              <button
+                type="button"
+                onClick={onAvatarClick}
+                disabled={uploadingAvatar}
+                className="
+                absolute
+                bottom-2
+                right-2
+
+                w-10
+                h-10
+
+                rounded-full
+
+                bg-primary
+                text-white
+
+                flex
+                items-center
+                justify-center
+
+                hover:scale-105
+                transition-all
+            "
+              >
+                <Camera size={18} />
+              </button>
+            )}
+          </div>
 
           <div>
             <h1

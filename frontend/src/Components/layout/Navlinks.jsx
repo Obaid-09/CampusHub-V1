@@ -23,7 +23,7 @@ const links = [
     },
 ];
 
-const NavLinks = ({ mobile = false }) => {
+const NavLinks = ({ mobile = false, onNavigate, }) => {
     return (
         <div
             className={
@@ -36,6 +36,7 @@ const NavLinks = ({ mobile = false }) => {
                 <NavLink
                     key={link.path}
                     to={link.path}
+                    onClick={onNavigate}
                     className={({ isActive }) =>
                         `
                         font-medium

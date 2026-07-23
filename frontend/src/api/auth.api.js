@@ -39,7 +39,7 @@ export const authAPI = {
 
     updateAvatar: (formData) =>
         axiosInstance.patch(
-            "/users/avatar",
+            "/users/update-avatar",
             formData,
             {
                 headers: {

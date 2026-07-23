@@ -7,10 +7,15 @@ import ActivityTimeline from "../../components/profile/ActivityTimeline";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import EditProfileModal from "../../components/profile/EditProfileModal";
+import { useRef } from "react";
+import { authAPI } from "../../api/auth.api";
+import { successToast, errorToast } from "../../utils/toast";
 
 const Profile = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUser } = useAuth();
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const fileInputRef = useRef(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   if (loading) {
     return null;
@@ -18,6 +23,44 @@ const Profile = () => {
     // Later:
     // return <ProfileSkeleton />
   }
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      errorToast("Please select an image.");
+
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      errorToast("Maximum image size is 5 MB.");
+
+      return;
+    }
+
+    try {
+      setUploadingAvatar(true);
+      const formData = new FormData();
+      formData.append("avatar", file);
+      await authAPI.updateAvatar(formData);
+      await refreshUser();
+
+      successToast("Avatar updated successfully.");
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to update avatar.");
+    } finally {
+      setUploadingAvatar(false);
+
+      e.target.value = "";
+    }
+  };
 
   return (
     <section
@@ -34,7 +77,13 @@ const Profile = () => {
                     px-6
                 "
       >
-        <ProfileHeader isOwner={true} onEdit={() => setShowEditProfile(true)} />
+        <ProfileHeader
+          profile={user}
+          isOwner
+          uploadingAvatar={uploadingAvatar}
+          onAvatarClick={handleAvatarClick}
+          onEdit={() => setShowEditProfile(true)}
+        />
 
         <ProfileStats />
 
@@ -47,6 +96,13 @@ const Profile = () => {
         <EditProfileModal
           open={showEditProfile}
           onClose={() => setShowEditProfile(false)}
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleAvatarChange}
         />
       </div>
     </section>

@@ -23,6 +23,8 @@ const UploadForm = ({
     form,
     setForm,
     editMode = false,
+    onSubmit,
+    submitting = false,
 }) => {
 
     const update = (key, value) => {
@@ -34,7 +36,11 @@ const UploadForm = ({
 
     return (
 
-        <div
+        <form
+            onSubmit={(event) => {
+                event.preventDefault();
+                onSubmit?.();
+            }}
             className="
                 mt-8
                 bg-white
@@ -85,6 +91,20 @@ const UploadForm = ({
                     onChange={(e) => update("type", e.target.value)}
                 />
 
+                <Select
+                    label="Semester"
+                    value={form.semester}
+                    options={Array.from({ length: 8 }, (_, index) => ({ value: index + 1, label: `Semester ${index + 1}` }))}
+                    onChange={(e) => update("semester", e.target.value)}
+                />
+
+                <Select
+                    label="Year"
+                    value={form.year}
+                    options={Array.from({ length: 4 }, (_, index) => ({ value: index + 1, label: `Year ${index + 1}` }))}
+                    onChange={(e) => update("year", e.target.value)}
+                />
+
             </div>
 
             <TagInput
@@ -92,15 +112,17 @@ const UploadForm = ({
                 setTags={(tags) => update("tags", tags)}
             />
 
-            <Button className="w-full">
+            <Button className="w-full" type="submit" disabled={submitting}>
 
-                {editMode
+                {submitting
+                    ? (editMode ? "Saving..." : "Uploading...")
+                    : editMode
                     ? "Save Changes"
                     : "Upload Resource"}
 
             </Button>
 
-        </div>
+        </form>
 
     );
 

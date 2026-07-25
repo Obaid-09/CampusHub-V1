@@ -35,7 +35,7 @@ const ResourceStats = ({ resource }) => {
 
         {
             title: "Rating",
-            value: resource.rating,
+            value: resource.averageRating ?? 0,
             icon: Star,
             color: "text-yellow-500",
             bg: "bg-yellow-50",

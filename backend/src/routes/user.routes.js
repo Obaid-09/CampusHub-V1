@@ -95,6 +95,6 @@ router.route("/download-history").get(
     getDownloadHistory
 );
 
-router.route("/:username").get(verifyJWT, getUserProfile);
+router.route("/:username").get(getUserProfile);
 
 export default router;

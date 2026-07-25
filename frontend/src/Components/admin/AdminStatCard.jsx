@@ -1,30 +1,21 @@
-import {
-    Users,
-    Files,
-    Clock3,
-    Flag,
-} from "lucide-react";
+import { Users, Files, Clock3, Flag } from "lucide-react";
 
 const icons = {
+  users: Users,
 
-    users: Users,
+  files: Files,
 
-    files: Files,
+  clock: Clock3,
 
-    clock: Clock3,
-
-    flag: Flag,
-
+  flag: Flag,
 };
 
 const AdminStatCard = ({ stat }) => {
+  const Icon = icons[stat.icon];
 
-    const Icon = icons[stat.icon];
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -32,41 +23,30 @@ const AdminStatCard = ({ stat }) => {
                 shadow-card
                 p-6
             "
-        >
+    >
+      <Icon size={28} className={stat.color} />
 
-            <Icon
-                size={28}
-                className={stat.color}
-            />
-
-            <p
-                className="
+      <p
+        className="
                     mt-5
                     text-gray500
                 "
-            >
+      >
+        {stat.title}
+      </p>
 
-                {stat.title}
-
-            </p>
-
-            <h2
-                className="
+      <h2
+        className="
                     mt-2
                     text-4xl
                     font-bold
                     text-secondary
                 "
-            >
-
-                {stat.value}
-
-            </h2>
-
-        </div>
-
-    );
-
+      >
+        {stat.value}
+      </h2>
+    </div>
+  );
 };
 
 export default AdminStatCard;

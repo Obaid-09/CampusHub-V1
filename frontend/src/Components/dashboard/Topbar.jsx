@@ -1,11 +1,11 @@
 import { Bell } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Topbar = () => {
-
-    return (
-
-        <header
-            className="
+  const navigate = useNavigate();
+  return (
+    <header
+      className="
                 bg-white
                 border-b
                 border-gray100
@@ -17,50 +17,42 @@ const Topbar = () => {
                 justify-between
                 items-center
             "
-        >
-
-            <div>
-
-                <h2
-                    className="
+    >
+      <div>
+        <h2
+          className="
                         text-3xl
                         font-heading
                         font-bold
                         text-secondary
                     "
-                >
-                    Dashboard
-                </h2>
+        >
+          Dashboard
+        </h2>
 
-                <p className="text-gray600 mt-1">
+        <p className="text-gray600 mt-1">Welcome back 👋</p>
+      </div>
 
-                    Welcome back 👋
-
-                </p>
-
-            </div>
-
-            <div
-                className="
+      <div
+        className="
                     flex
                     items-center
                     gap-5
                 "
-            >
-
-                <button
-                    className="
+      >
+        <button
+          onClick={() => navigate("/dashboard/notifications")}
+          className="
                         relative
                         p-3
                         rounded-xl
                         hover:bg-background
                     "
-                >
+        >
+          <Bell size={22} />
 
-                    <Bell size={22} />
-
-                    <span
-                        className="
+          <span
+            className="
                             absolute
                             top-2
                             right-2
@@ -71,17 +63,13 @@ const Topbar = () => {
                             rounded-full
                             bg-primary
                         "
-                    />
+          />
+        </button>
 
-                </button>
-
-                <img
-
-                    src="https://i.pravatar.cc/100?img=12"
-
-                    alt="Profile"
-
-                    className="
+        <img
+          src="https://i.pravatar.cc/100?img=12"
+          alt="Profile"
+          className="
                         w-12
                         h-12
 
@@ -90,15 +78,10 @@ const Topbar = () => {
                         border-2
                         border-primary
                     "
-
-                />
-
-            </div>
-
-        </header>
-
-    );
-
+        />
+      </div>
+    </header>
+  );
 };
 
 export default Topbar;

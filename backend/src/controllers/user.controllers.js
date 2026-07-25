@@ -325,11 +325,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findOne({
     username: username.toLowerCase(),
   })
-    .select("-password -refreshToken -email")
-    .populate({
-      path: "uploadedResources",
-      select: "title thumbnail subject branch semester createdAt",
-    });
+    .select("-password -refreshToken -email");
 
   if (!user) {
     throw new ApiError(404, "User not found");

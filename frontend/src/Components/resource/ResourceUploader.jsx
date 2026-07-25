@@ -1,6 +1,8 @@
 import Button from "../ui/Button";
+import { useNavigate } from "react-router-dom";
 
 const ResourceUploader = ({ uploader = {} }) => {
+    const navigate = useNavigate();
 
     return (
 
@@ -77,6 +79,8 @@ const ResourceUploader = ({ uploader = {} }) => {
             <Button
                 variant="outline"
                 className="w-full mt-8"
+                disabled={!uploader.username}
+                onClick={() => navigate(`/users/${uploader.username}`)}
             >
                 View Profile
             </Button>

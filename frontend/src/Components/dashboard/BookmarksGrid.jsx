@@ -3,6 +3,7 @@ import EmptyBookmarks from "./EmptyBookmarks";
 
 const BookmarksGrid = ({
     resources,
+    onRemoveBookmark,
 }) => {
 
     if(!resources.length){
@@ -33,7 +34,7 @@ const BookmarksGrid = ({
                     showBookmarkAction={true}
 
                     onRemoveBookmark={(resource) =>
-                        console.log("Remove Bookmark", resource)
+                        onRemoveBookmark(resource)
                     }
 
                 />

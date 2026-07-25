@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 
-const RatingSection = ({ reviews }) => {
+const RatingSection = ({ reviews = [] }) => {
 
     return (
 
@@ -27,6 +27,7 @@ const RatingSection = ({ reviews }) => {
             </h2>
 
             <div className="space-y-8 mt-8">
+                {reviews.length === 0 && <p className="text-gray500">No ratings or reviews yet.</p>}
                 {reviews.map((review) => (
 
                     <div

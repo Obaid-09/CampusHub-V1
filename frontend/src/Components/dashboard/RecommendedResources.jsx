@@ -1,5 +1,4 @@
 import MiniResourceCard from "./MiniResourceCard";
-import { recommendedResources } from "../../constants/dashboard";
 
 // const recommendedResources = dummyResources.filter(
 //     (resource) =>
@@ -7,30 +6,44 @@ import { recommendedResources } from "../../constants/dashboard";
 //         resource.semester === user.semester
 // );
 
-const RecommendedResources = () => {
-
+const RecommendedResources = ({resources, loading}) => {
+  if (loading) {
     return (
-
-        <section className="mt-14">
-
-            <h2
-                className="
+      <section className="mt-14">
+        <h2
+          className="
                     text-3xl
                     font-heading
                     font-bold
                     text-secondary
                     mb-6
                 "
-            >
+        >
+          Recommended For You
+        </h2>
 
-                Recommended For You
+        <div>Loading...</div>
+      </section>
+    );
+  }
 
-            </h2>
+  return (
+    <section className="mt-14">
+      <h2
+        className="
+                    text-3xl
+                    font-heading
+                    font-bold
+                    text-secondary
+                    mb-6
+                "
+      >
+        Recommended For You
+      </h2>
 
-            <div className="overflow-hidden">
-
-            <div
-                className="
+      <div className="overflow-hidden">
+        <div
+          className="
                     flex
                     gap-6
                     overflow-x-auto
@@ -40,24 +53,14 @@ const RecommendedResources = () => {
                     scrollbar-thumb-primary/40
                     scrollbar-track-transparent
                 "
-            >
-
-                {recommendedResources.map(resource => (
-
-                    <MiniResourceCard
-                        key={resource._id}
-                        resource={resource}
-                    />
-
-                ))}
-
-            </div>
-            </div>
-
-        </section>
-
-    );
-
+        >
+          {resources.map((resource) => (
+            <MiniResourceCard key={resource._id} resource={resource} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default RecommendedResources;

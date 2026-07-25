@@ -22,4 +22,7 @@ export const userAPI = {
             "/resources/my-uploads"
         ),
 
+    getProfile: (username) =>
+        axiosInstance.get(`/users/${username}`),
+
 };

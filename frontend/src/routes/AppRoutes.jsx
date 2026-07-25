@@ -9,6 +9,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import UploadResource from "../pages/upload/UploadResource";
 import Profile from "../pages/profile/Profile";
+import UserProfile from "../pages/profile/UserProfile";
 import About from "../pages/about/About";
 import PageNotFound from "../pages/PageNotFound";
 import ForgotPassword from "../pages/auth/ForgotPassword";
@@ -34,7 +35,7 @@ import Settings from "../pages/dashboard/Settings";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import ChangePassword from "../pages/dashboard/ChangePassword";
-
+import DeletedResources from "../pages/admin/DeletedResources";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -43,6 +44,8 @@ const AppRoutes = () => {
       <Route path="/resources" element={<Resources />} />
 
       <Route path="/resources/:id" element={<ResourceDetails />} />
+
+      <Route path="/users/:username" element={<UserProfile />} />
 
       <Route
         path="/login"
@@ -179,11 +182,13 @@ const AppRoutes = () => {
         <Route path="settings" element={<AdminSettings />} />
       </Route>
 
+        <Route path="/admin/resources/deleted" element={<DeletedResources />} />
       <Route path="/admin/resources/:id" element={<AdminResourceDetails />} />
 
       <Route path="/admin/resources/:id/edit" element={<EditResource />} />
 
       <Route path="/admin/users/:id" element={<UserDetails />} />
+      
 
       <Route
         path="/admin/resources/:id/analytics"

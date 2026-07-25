@@ -169,18 +169,31 @@ const UploadedResources = () => {
         </button>
       </div>
 
-      <div
+      {/* <div
         className="
                     grid
                     grid-cols-2
-                    sm:grid-cols-3
+                    md:grid-cols-3
                     lg:grid-cols-4
                     gap-6
                 "
-      >
+      > */}
+      <div className="overflow-hidden">
+        <div
+          className="
+                        flex
+                        gap-6
+                        overflow-x-auto
+                        pb-4
+                        scrollbar-thin
+                        scrollbar-thumb-primary/40
+                        scrollbar-track-transparent
+                    "
+        >
         {resources.map((resource) => (
           <MiniResourceCard key={resource._id} resource={resource} />
         ))}
+      </div>
       </div>
     </section>
   );

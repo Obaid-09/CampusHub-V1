@@ -5,35 +5,26 @@ import Select from "../ui/Select";
 import Button from "../ui/Button";
 
 const sortOptions = [
+  {
+    value: "latest",
+    label: "Latest",
+  },
 
-    {
-        value:"latest",
-        label:"Latest",
-    },
+  {
+    value: "downloads",
+    label: "Most Downloaded",
+  },
 
-    {
-        value:"downloads",
-        label:"Most Downloaded",
-    },
-
-    {
-        value:"views",
-        label:"Most Viewed",
-    },
-
+  {
+    value: "views",
+    label: "Most Viewed",
+  },
 ];
 
-const MyResourcesToolbar = ({
-    search,
-    setSearch,
-    sort,
-    setSort,
-}) => {
-
-    return (
-
-        <div
-            className="
+const MyResourcesToolbar = ({ filters, setFilters }) => {
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 shadow-card
@@ -48,54 +39,38 @@ const MyResourcesToolbar = ({
 
                 gap-4
             "
-        >
+    >
+      <div className="flex-1">
+        <SearchBar
+          value={filters.search}
+          onChange={(e) =>
+            setFilters((prev) => ({
+              ...prev,
+              search: e.target.value,
+            }))
+          }
+          placeholder="Search resources..."
+        />
+      </div>
 
-            <div className="flex-1">
+      <div className="w-full lg:w-56">
+        <Select
+          value={filters.sort}
+          options={sortOptions}
+          onChange={(e) =>
+            setFilters((prev) => ({
+              ...prev,
+              sort: e.target.value,
+            }))
+          }
+        />
+      </div>
 
-                <SearchBar
-
-                    value={search}
-
-                    onChange={(e)=>
-                        setSearch(e.target.value)
-                    }
-
-                    placeholder="Search your resources..."
-
-                />
-
-            </div>
-
-            <div className="w-full lg:w-56">
-
-                <Select
-
-                    value={sort}
-
-                    options={sortOptions}
-
-                    onChange={(e)=>
-                        setSort(e.target.value)
-                    }
-
-                />
-
-            </div>
-
-            <Link to="/upload">
-
-                <Button>
-
-                    + Upload Resource
-
-                </Button>
-
-            </Link>
-
-        </div>
-
-    );
-
+      <Link to="/upload">
+        <Button>+ Upload Resource</Button>
+      </Link>
+    </div>
+  );
 };
 
 export default MyResourcesToolbar;

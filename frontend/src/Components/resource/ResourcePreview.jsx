@@ -15,7 +15,7 @@ const ResourcePreview = ({
             "
         >
             <img
-                src={resource.pdfThumbnail}
+                src={resource.thumbnail || "https://placehold.co/600x800/F8F6F3/C87740?text=Resource"}
                 alt={resource.title}
                 className="
                     w-full
@@ -36,11 +36,12 @@ const ResourcePreview = ({
                         {resource.totalPages} Pages
                     </span>
                     <span>
-                        {resource.fileSize}
+                        {resource.formattedFileSize || (resource.fileSize ? `${(resource.fileSize / 1024 / 1024).toFixed(1)} MB` : "—")}
                     </span>
                 </div>
                 <Button
                     className="w-full mt-6"
+                    onClick={() => window.open(resource.pdfUrl, "_blank", "noopener,noreferrer")}
                 >
                     <Eye size={18}/>
                     Preview PDF

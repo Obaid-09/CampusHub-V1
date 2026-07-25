@@ -1,21 +1,21 @@
 import { Upload, ArrowRight } from "lucide-react";
 import HeroSearch from "./HeroSearch";
 import Button from "../../components/ui/Button";
-
+import { useNavigate } from "react-router-dom";
+import hero from "../../assets/H2.png"
 const Hero = () => {
 
-    return (
-
-        <section
-            className="
+    const navigate = useNavigate();
+  return (
+    <section
+      className="
                 bg-background
                 pt-24
                 pb-20
             "
-        >
-
-            <div
-                className="
+    >
+      <div
+        className="
                     max-w-6xl
                     mx-auto
                     px-6
@@ -25,13 +25,12 @@ const Hero = () => {
                     gap-16
                     items-center
                 "
-            >
+      >
+        {/* Left */}
 
-                {/* Left */}
-
-                <div>
-                    <div
-                        className="
+        <div>
+          <div
+            className="
                             inline-flex
                             items-center
                             gap-2
@@ -44,12 +43,11 @@ const Hero = () => {
                             font-medium
                             mb-6
                         "
-                    >
-                        📚 Trusted by Engineering Students
-
-                    </div>
-                    <h1
-                        className="
+          >
+            📚 Trusted by Engineering Students
+          </div>
+          <h1
+            className="
                             text-5xl
                             lg:text-6xl
                             font-heading
@@ -57,92 +55,73 @@ const Hero = () => {
                             text-secondary
                             leading-tight
                         "
-                    >
-                        Find
-                        <span className="text-primary">
-                            {" "}Notes,
-                            {" "}PYQs &
-                            {" "}Study Resources
-                        </span>
+          >
+            Find
+            <span className="text-primary"> Notes, PYQs & Study Resources</span>
+            <br />
+            All in One Place
+          </h1>
 
-                        <br />
-                        All in One Place
-                    </h1>
-
-                    <p
-                        className="
+          <p
+            className="
                             mt-8
                             text-lg
                             text-gray600
                             leading-8
                             max-w-xl
                         "
-                    >
-                        Search thousands of verified notes,
-                        books, assignments, previous year
-                        questions and lab manuals uploaded
-                        by your seniors.
-                    </p>
+          >
+            Search thousands of verified notes, books, assignments, previous
+            year questions and lab manuals uploaded by your seniors.
+          </p>
 
-                    <HeroSearch />
+          <HeroSearch />
 
-                        <div className="mt-8 flex gap-5 flex-wrap">
-                            <Button>
-                                Browse Resources
-                                <ArrowRight size={18}/>
-                            </Button>
-                            <Button variant="outline">
-                                <Upload size={18}/>
-                                Upload Resource
-                            </Button>
-                        </div>
+          <div className="mt-8 flex gap-5 flex-wrap">
+            <Button
+                onClick={() => navigate("/resources")}>
+              Browse Resources
+              <ArrowRight size={18} />
+            </Button>
+            <Button 
+            onClick={() => navigate("/upload")}
+            variant="outline">
+              <Upload size={18} />
+              Upload Resource
+            </Button>
+          </div>
 
-                    <div
-                        className="
+          <div
+            className="
                             flex
                             gap-10
                             mt-14
                             flex-wrap
                         "
-                    >
-                        <div>
-                            <h2 className="text-3xl font-bold text-primary">
-                                10K+
-                            </h2>
-                            <p className="text-gray500">
-                                Resources
-                            </p>
-                        </div>
-                        <div>
-                            <h2 className="text-3xl font-bold text-primary">
-                                2K+
-                            </h2>
-                            <p className="text-gray500">
-                                Students
-                            </p>
-                        </div>
-                        <div>
-                            <h2 className="text-3xl font-bold text-primary">
-                                25K+
-                            </h2>
-                            <p className="text-gray500">
-                                Downloads
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                {/* Right */}
-                <div>
-                </div>
-
+          >
+            <div>
+              <h2 className="text-3xl font-bold text-primary">10K+</h2>
+              <p className="text-gray500">Resources</p>
             </div>
-            
-        </section>
+            <div>
+              <h2 className="text-3xl font-bold text-primary">2K+</h2>
+              <p className="text-gray500">Students</p>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-primary">25K+</h2>
+              <p className="text-gray500">Downloads</p>
+            </div>
+          </div>
+        </div>
 
-    );
-
+        {/* Right */}
+        <div>
+            <img src = {hero} alt = "Hero"
+            className="h-[700px] min-w-full"/>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Hero;

@@ -1,13 +1,25 @@
-import { recentUsers } from "../../constants/admin";
 import RecentUserRow from "./RecentUserRow";
 
-const RecentUsers = () => {
-
+const RecentUsers = ({ users, loading }) => {
+  if (loading) {
     return (
-
-        <div
-
-            className="
+      <div
+        className="
+        bg-white
+        rounded-2xl
+        shadow-card
+        border
+        border-gray100
+        p-6
+      "
+      >
+        Loading...
+      </div>
+    );
+  }
+  return (
+    <div
+      className="
                 bg-white
 
                 rounded-2xl
@@ -19,12 +31,9 @@ const RecentUsers = () => {
 
                 p-6
             "
-
-        >
-
-            <h2
-
-                className="
+    >
+      <h2
+        className="
                     text-2xl
                     font-heading
                     font-bold
@@ -32,33 +41,15 @@ const RecentUsers = () => {
 
                     mb-6
                 "
+      >
+        Recent Users
+      </h2>
 
-            >
-
-                Recent Users
-
-            </h2>
-
-            {
-
-                recentUsers.map((user) => (
-
-                    <RecentUserRow
-
-                        key={user.id}
-
-                        user={user}
-
-                    />
-
-                ))
-
-            }
-
-        </div>
-
-    );
-
+      {users.map((user) => (
+        <RecentUserRow key={user._id} user={user} />
+      ))}
+    </div>
+  );
 };
 
 export default RecentUsers;

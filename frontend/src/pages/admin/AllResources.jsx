@@ -1,122 +1,142 @@
 import { useState } from "react";
 
 import AdminLayout from "../../components/admin/AdminLayout";
-
+import { adminAPI } from "../../api/admin.api";
+import { successToast, errorToast } from "../../utils/toast";
 import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
 
 import AdminResourcesGrid from "../../components/admin/AdminResourceGrid";
 
 import DeleteResourceModal from "../../components/dashboard/DeleteResourceModal";
 
-import { dummyResources } from "../../constants/resources";
-
+import useAdminResources from "../../hooks/useAdminResources";
 const AllResources = () => {
+  const {
+    resources,
+    loading,
+    filters,
+    setFilters,
+    pagination,
+    refreshResources,
+  } = useAdminResources();
 
-    const [resources] = useState(dummyResources);
+  const [selectedResource, setSelectedResource] = useState(null);
 
-    const [search, setSearch] = useState("");
+  const [showDelete, setShowDelete] = useState(false);
+  const handleDelete = async () => {
+    if (!selectedResource) return;
+    try {
+      await adminAPI.deleteResource(selectedResource._id);
 
-    const [sort, setSort] = useState("latest");
+      successToast("Resource deleted successfully.");
 
-    const [selectedResource, setSelectedResource] = useState(null);
+      setShowDelete(false);
+      setSelectedResource(null);
 
-    const [showDelete, setShowDelete] = useState(false);
+      refreshResources();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to delete resource.");
+    }
+  };
 
-    const filtered = resources.filter((resource)=>
+  // const handleRestore = async (resource) => {
+  //   try {
+  //     await adminAPI.restoreResource(resource._id);
+  //     successToast("Resource restored successfully.");
+  //     refreshResources(resource._id);
+  //   } catch (error) {
+  //     errorToast(
+  //       error.response?.data?.message || "Failed to restore resource.",
+  //     );
+  //   }
+  // };
 
-        resource.title
-            .toLowerCase()
-            .includes(search.toLowerCase())
+  const handleRestore = async (resource) => {
+    try {
+      console.log("1");
+      await adminAPI.restoreResource(resource._id);
 
-    );
+      console.log("2");
+      successToast("Resource restored successfully.");
 
-    return (
+      console.log("3");
+      await refreshResources();
 
-        <AdminLayout>
+      console.log("4");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleApprove = async (resource) => {
+    try {
+      await adminAPI.approveResource(resource._id);
 
-            <div className="space-y-8">
+      successToast("Resource approved successfully.");
 
-                <div>
+      refreshResources();
+    } catch (error) {
+      errorToast(
+        error.response?.data?.message || "Failed to approve resource.",
+      );
+    }
+  };
 
-                    <h1
-                        className="
+  const handleReject = async (resource) => {
+    try {
+      await adminAPI.rejectResource(resource._id);
+
+      successToast("Resource rejected successfully.");
+
+      refreshResources();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to reject resource.");
+    }
+  };
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div>
+          <h1
+            className="
                             text-4xl
                             font-heading
                             font-bold
                             text-secondary
                         "
-                    >
+          >
+            All Resources
+          </h1>
 
-                        All Resources
+          <p className="mt-2 text-gray600">
+            Manage every resource uploaded on CampusHub.
+          </p>
+        </div>
 
-                    </h1>
+        <MyResourcesToolbar filters={filters} setFilters={setFilters} />
 
-                    <p className="mt-2 text-gray600">
+        <AdminResourcesGrid
+          resources={resources}
+          loading={loading}
+          onDelete={(resource) => {
+            setSelectedResource(resource);
+            setShowDelete(true);
+          }}
+          onRestore={handleRestore}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
 
-                        Manage every resource uploaded on CampusHub.
-
-                    </p>
-
-                </div>
-
-                <MyResourcesToolbar
-
-                    search={search}
-
-                    setSearch={setSearch}
-
-                    sort={sort}
-
-                    setSort={setSort}
-
-                />
-
-                <AdminResourcesGrid
-
-                  resources={filtered}
-
-                  onDelete={(resource) => {
-
-                      setSelectedResource(resource);
-
-                      setShowDelete(true);
-
-                  }}
-
-                  onApprove={(resource) => {
-
-                      console.log("Approve", resource);
-
-                  }}
-
-                  onReject={(resource) => {
-
-                      console.log("Reject", resource);
-
-                  }}
-
-              />
-
-                <DeleteResourceModal
-
-                    open={showDelete}
-
-                    onClose={()=>
-                        setShowDelete(false)
-                    }
-
-                    onConfirm={()=>
-                        console.log(selectedResource)
-                    }
-
-                />
-
-            </div>
-
-        </AdminLayout>
-
-    );
-
+        <DeleteResourceModal
+          open={showDelete}
+          onClose={() => {
+            setShowDelete(false);
+            setSelectedResource(null);
+          }}
+          onConfirm={handleDelete}
+        />
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default AllResources;

@@ -346,6 +346,11 @@ const getResourceById = asyncHandler(async (req, res) => {
   }
 
   const resourceObject = resource.toObject();
+  resourceObject.isBookmarked = Boolean(
+    req.user?.bookmarks?.some(
+      (bookmark) => bookmark.resource?.toString() === resource._id.toString()
+    )
+  );
   resourceObject.formattedFileSize = formatFileSize(resource.fileSize);
   resourceObject.formattedUploadDate =
     resource.createdAt.toLocaleDateString("en-IN");
@@ -356,6 +361,8 @@ const getResourceById = asyncHandler(async (req, res) => {
       new ApiResponse(200, resourceObject, "Resource fetched successfully")
     );
 });
+
+
 
 const viewResource = asyncHandler(async (req, res) => {
   const { resourceId } = req.params;
@@ -374,20 +381,32 @@ const viewResource = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Resource not found");
   }
 
-  // Increment Views
-  resource.views += 1;
-  await resource.save({ validateBeforeSave: false });
+  let countedAsNewView = false;
 
-  const user = await User.findById(req.user._id);
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-
-  // Logged-in user
+  // A view represents one signed-in user visiting one resource. Guests are
+  // intentionally not counted because they cannot be identified uniquely.
   if (req.user) {
     const user = await User.findById(req.user._id);
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
 
-    // Remove duplicate if already viewed
+    const hasViewedResource =
+      user.viewedResources.some(
+        (viewedResource) => viewedResource.toString() === resourceId
+      ) ||
+      // Honour legacy recent-view entries created before viewedResources existed.
+      user.recentlyViewed.some(
+        (item) => item.resource.toString() === resourceId
+      );
+
+    if (!hasViewedResource) {
+      user.viewedResources.push(resource._id);
+      resource.views += 1;
+      countedAsNewView = true;
+    }
+
+    // Keep a separate, capped history for the user's recent-resources page.
     user.recentlyViewed = user.recentlyViewed.filter(
       (item) => item.resource.toString() !== resourceId
     );
@@ -403,6 +422,10 @@ const viewResource = asyncHandler(async (req, res) => {
       user.recentlyViewed = user.recentlyViewed.slice(0, 20);
     }
     await user.save({ validateBeforeSave: false });
+
+    if (countedAsNewView) {
+      await resource.save({ validateBeforeSave: false });
+    }
   }
 
   return res.status(200).json(
@@ -410,8 +433,9 @@ const viewResource = asyncHandler(async (req, res) => {
       200,
       {
         views: resource.views,
+        countedAsNewView,
       },
-      "View recorded successfully"
+      countedAsNewView ? "Unique view recorded successfully" : "View already recorded"
     )
   );
 });
@@ -807,6 +831,20 @@ const updateResource = asyncHandler(async (req, res) => {
       : tags.split(",").map((tag) => tag.trim());
   }
 
+  // Optional PDF replacement
+  const pdfLocalPath = req.files?.pdf?.[0]?.path;
+  if (pdfLocalPath) {
+    const pdf = await uploadOnCloudinary(pdfLocalPath);
+    if (!pdf?.secure_url) {
+      throw new ApiError(500, "Error uploading PDF");
+    }
+    resource.pdfUrl = pdf.secure_url;
+    resource.pdfPublicId = pdf.public_id;
+    resource.fileSize = pdf.bytes || 0;
+    resource.totalPages = pdf.pages || 0;
+    resource.pdfOriginalName = pdf.original_filename || req.files.pdf[0].originalname;
+  }
+
   // Optional Thumbnail Update
   const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
   if (thumbnailLocalPath) {
@@ -871,4 +909,5 @@ export {
   updateResource,
   deleteResource,
   getMyUploads,
+  getBookmarks,
 };

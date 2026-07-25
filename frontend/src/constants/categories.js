@@ -1,144 +1,116 @@
 import {
-    BookOpen,
-    FileText,
-    ClipboardList,
-    FlaskConical,
-    Library,
-    Presentation,
+  BookOpen,
+  FileText,
+  ClipboardList,
+  FlaskConical,
+  Library,
+  Presentation,
 } from "lucide-react";
 
 export const categories = [
+  {
+    id: 1,
+    title: "Notes",
+    type: "Notes",
+    count: "1200+",
+    color: "bg-primaryLight",
+    iconColor: "text-primary",
+    icon: BookOpen,
+  },
 
-    {
-        id: 1,
-        title: "Notes",
-        count: "1200+",
-        color: "bg-primaryLight",
-        iconColor: "text-primary",
-        icon: BookOpen,
-    },
+  {
+    id: 2,
+    title: "PYQs",
+    type: "PYQ",
+    count: "860+",
+    color: "bg-blue-100",
+    iconColor: "text-blue-600",
+    icon: FileText,
+  },
 
-    {
-        id: 2,
-        title: "PYQs",
-        count: "860+",
-        color: "bg-blue-100",
-        iconColor: "text-blue-600",
-        icon: FileText,
-    },
+  {
+    id: 3,
+    title: "Assignments",
+    type: "Assignment",
+    count: "420+",
+    color: "bg-purple-100",
+    iconColor: "text-purple-600",
+    icon: ClipboardList,
+  },
 
-    {
-        id: 3,
-        title: "Assignments",
-        count: "420+",
-        color: "bg-purple-100",
-        iconColor: "text-purple-600",
-        icon: ClipboardList,
-    },
+  {
+    id: 4,
+    title: "Lab Manuals",
+    type: "Lab Manual",
+    count: "350+",
+    color: "bg-teal-100",
+    iconColor: "text-teal-600",
+    icon: FlaskConical,
+  },
 
-    {
-        id: 4,
-        title: "Lab Manuals",
-        count: "350+",
-        color: "bg-teal-100",
-        iconColor: "text-teal-600",
-        icon: FlaskConical,
-    },
+  {
+    id: 5,
+    title: "Books",
+    type: "Book",
+    count: "270+",
+    color: "bg-yellow-100",
+    iconColor: "text-yellow-600",
+    icon: Library,
+  },
 
-    {
-        id: 5,
-        title: "Books",
-        count: "270+",
-        color: "bg-yellow-100",
-        iconColor: "text-yellow-600",
-        icon: Library,
-    },
-
-    {
-        id: 6,
-        title: "Presentations",
-        count: "160+",
-        color: "bg-pink-100",
-        iconColor: "text-pink-600",
-        icon: Presentation,
-    },
-
+  {
+    id: 6,
+    title: "Presentations",
+    type: "Presentation",
+    count: "160+",
+    color: "bg-pink-100",
+    iconColor: "text-pink-600",
+    icon: Presentation,
+  },
 ];
 
 export const categoryTabs = [
+  "Branches",
 
-    "Branches",
+  "Semesters",
 
-    "Semesters",
+  "Subjects",
 
-    "Subjects",
-
-    "Resource Types",
-
+  "Resource Types",
 ];
 
 export const categoryData = {
+  Branches: ["CSE", "ECE", "EEE", "Mechanical", "Civil"],
 
-    Branches: [
+  Semesters: [
+    "Semester 1",
 
-        "CSE",
+    "Semester 2",
 
-        "ECE",
+    "Semester 3",
 
-        "EEE",
+    "Semester 4",
 
-        "Mechanical",
+    "Semester 5",
 
-        "Civil",
+    "Semester 6",
 
-    ],
+    "Semester 7",
 
-    Semesters: [
+    "Semester 8",
+  ],
 
-        "Semester 1",
+  Subjects: [
+    "Operating Systems",
 
-        "Semester 2",
+    "DBMS",
 
-        "Semester 3",
+    "Computer Networks",
 
-        "Semester 4",
+    "OOPS",
 
-        "Semester 5",
+    "Machine Learning",
+  ],
 
-        "Semester 6",
-
-        "Semester 7",
-
-        "Semester 8",
-
-    ],
-
-    Subjects: [
-
-        "Operating Systems",
-
-        "DBMS",
-
-        "Computer Networks",
-
-        "OOPS",
-
-        "Machine Learning",
-
-    ],
-
-    "Resource Types":[
-
-        "Notes",
-
-        "PYQ",
-
-        "Assignment",
-
-        "Lab Manual",
-
-        "Book",
-
-    ],
-
+  "Resource Types": ["Notes", "PYQ", "Assignment", "Lab Manual", "Book"],
 };

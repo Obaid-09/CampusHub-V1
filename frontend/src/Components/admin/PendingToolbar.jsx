@@ -2,11 +2,9 @@ import SearchBar from "../ui/SearchBar";
 import Select from "../ui/Select";
 
 const PendingToolbar = () => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 shadow-card
@@ -19,76 +17,60 @@ const PendingToolbar = () => {
                 lg:flex-row
                 gap-4
             "
-        >
+    >
+      <div className="flex-1">
+        <SearchBar placeholder="Search resources..." />
+      </div>
 
-            <div className="flex-1">
+      <Select
+        options={[
+          {
+            value: "",
+            label: "All Branches",
+          },
 
-                <SearchBar
-                    placeholder="Search resources..."
-                />
+          {
+            value: "CSE",
+            label: "CSE",
+          },
 
-            </div>
+          {
+            value: "ECE",
+            label: "ECE",
+          },
 
-            <Select
+          {
+            value: "EEE",
+            label: "EEE",
+          },
+        ]}
+      />
 
-                options={[
+      <Select
+        options={[
+          {
+            value: "",
+            label: "All Types",
+          },
 
-                    {
-                        value:"",
-                        label:"All Branches",
-                    },
+          {
+            value: "Notes",
+            label: "Notes",
+          },
 
-                    {
-                        value:"CSE",
-                        label:"CSE",
-                    },
+          {
+            value: "PYQ",
+            label: "PYQ",
+          },
 
-                    {
-                        value:"ECE",
-                        label:"ECE",
-                    },
-
-                    {
-                        value:"EEE",
-                        label:"EEE",
-                    },
-
-                ]}
-
-            />
-
-            <Select
-
-                options={[
-
-                    {
-                        value:"",
-                        label:"All Types",
-                    },
-
-                    {
-                        value:"Notes",
-                        label:"Notes",
-                    },
-
-                    {
-                        value:"PYQ",
-                        label:"PYQ",
-                    },
-
-                    {
-                        value:"Assignment",
-                        label:"Assignment",
-                    },
-
-                ]}
-
-            />
-
-        </div>
-
-    );
-
+          {
+            value: "Assignment",
+            label: "Assignment",
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
 export default PendingToolbar;

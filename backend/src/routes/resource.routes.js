@@ -7,7 +7,7 @@ import {
     downloadResource,
     // getDownloadHistory,
     bookmarkResource,
-    // getBookmarks,
+    getBookmarks,
     // getRecentlyViewed,
     getMyUploads,
     updateResource,
@@ -51,10 +51,10 @@ router.route("/")
 //     getDownloadHistory
 // );
 
-// router.route("/bookmarks").get(
-//     verifyJWT,
-//     getBookmarks
-// );
+router.route("/bookmarks").get(
+    verifyJWT,
+    getBookmarks
+);
 
 // router.route("/recently-viewed").get(
 //     verifyJWT,
@@ -69,6 +69,7 @@ router.route("/my-uploads").get(
 router.route("/:resourceId").get(
     getResourceByIdValidator,
     validate,
+    optionalVerifyJWT,
     getResourceById
 );
 
@@ -76,6 +77,10 @@ router.route("/:resourceId")
 .patch(
     verifyJWT,
     upload.fields([
+        {
+            name: "pdf",
+            maxCount: 1
+        },
         {
             name: "thumbnail",
             maxCount: 1

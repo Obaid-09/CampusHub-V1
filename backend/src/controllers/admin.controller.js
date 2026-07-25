@@ -4,1046 +4,1016 @@ import { User } from "../models/user.models.js";
 import { Resource } from "../models/resource.models.js";
 import mongoose from "mongoose";
 import { ApiError } from "../utils/ApiError.js";
+import { formatFileSize } from "../utils/formatFileSize.js";
 
 const adminDashboard = asyncHandler(async (req, res) => {
+  // User Statistics
+  // ==========================
+  const [
+    totalUsers,
+    totalStudents,
+    totalAdmins,
 
-    // User Statistics
-    // ==========================
-    const totalUsers = await User.countDocuments();
-    const totalStudents = await User.countDocuments({
-        role: "student"
-    });
-    const totalAdmins = await User.countDocuments({
-        role: "admin"
-    });
+    totalResources,
+    pendingResources,
+    approvedResources,
+    rejectedResources,
+    deletedResources,
 
+    recentResources,
+    recentUsers,
+    stats,
+  ] = await Promise.all([
+    User.countDocuments(),
 
-    // Resource Statistics
-    // ==========================
-    const totalResources = await Resource.countDocuments({
-        isDeleted: false
-    });
+    User.countDocuments({
+      role: "student",
+    }),
 
-    const pendingResources = await Resource.countDocuments({
-        status: "pending",
-        isDeleted: false
-    });
+    User.countDocuments({
+      role: "admin",
+    }),
 
-    const approvedResources = await Resource.countDocuments({
-        status: "approved",
-        isDeleted: false
-    });
+    Resource.countDocuments({
+      isDeleted: false,
+    }),
 
-    const rejectedResources = await Resource.countDocuments({
-        status: "rejected",
-        isDeleted: false
-    });
+    Resource.countDocuments({
+      status: "pending",
+      isDeleted: false,
+    }),
 
-    const deletedResources = await Resource.countDocuments({
-        isDeleted: true
-    });
+    Resource.countDocuments({
+      status: "approved",
+      isDeleted: false,
+    }),
 
+    Resource.countDocuments({
+      status: "rejected",
+      isDeleted: false,
+    }),
 
-    // Platform Statistics
-    // ==========================
-    const stats = await Resource.aggregate([
-        {
-            $group: {
-                _id: null,
+    Resource.countDocuments({
+      isDeleted: true,
+    }),
 
-                totalDownloads: {
-                    $sum: "$downloads"
-                },
+    Resource.find({
+      isDeleted: false,
+    })
+      .populate("uploadedBy", "fullname username avatar")
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean(),
 
-                totalViews: {
-                    $sum: "$views"
-                },
+    User.find()
+      .select("fullname username avatar role createdAt")
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean(),
 
-                totalBookmarks: {
-                    $sum: "$bookmarks"
-                }
-            }
-        }
-    ]);
+    Resource.aggregate([
+      {
+        $group: {
+          _id: null,
 
-    const platformStats = stats[0] || {
-        totalDownloads: 0,
-        totalViews: 0,
-        totalBookmarks: 0
-    };
+          totalDownloads: {
+            $sum: "$downloads",
+          },
 
+          totalViews: {
+            $sum: "$views",
+          },
 
-    // Response
-    // ==========================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                users: {
-                    totalUsers,
-                    totalStudents,
-                    totalAdmins
-                },
+          totalBookmarks: {
+            $sum: "$bookmarks",
+          },
+        },
+      },
+    ]),
+  ]);
 
-                resources: {
-                    totalResources,
-                    pendingResources,
-                    approvedResources,
-                    rejectedResources,
-                    deletedResources
-                },
+  const platformStats = stats[0] || {
+    totalDownloads: 0,
+    totalViews: 0,
+    totalBookmarks: 0,
+  };
 
-                platform: {
-                    totalDownloads: platformStats.totalDownloads,
-                    totalViews: platformStats.totalViews,
-                    totalBookmarks: platformStats.totalBookmarks
-                }
-            },
-            "Dashboard statistics fetched successfully"
-        )
-    );
+  // Response
+  // ==========================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        users: {
+          totalUsers,
+          totalStudents,
+          totalAdmins,
+        },
 
+        resources: {
+          totalResources,
+          pendingResources,
+          approvedResources,
+          rejectedResources,
+          deletedResources,
+        },
+
+        platform: {
+          totalDownloads: platformStats.totalDownloads,
+          totalViews: platformStats.totalViews,
+          totalBookmarks: platformStats.totalBookmarks,
+        },
+        recentResources,
+        recentUsers,
+      },
+      "Dashboard statistics fetched successfully"
+    )
+  );
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
+  // Query Parameters
+  // ==========================================
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    role,
+    branch,
+    year,
+    semester,
+    sort = "latest",
+  } = req.query;
 
-    // Query Parameters
-    // ==========================================
-    const {
-        page = 1,
-        limit = 10,
-        search,
-        role,
-        branch,
-        year,
-        semester,
-        sort = "latest"
-    } = req.query;
+  // Pagination
+  // ==========================================
+  const pageNumber = Math.max(Number(page), 1);
+  const limitNumber = Math.max(Number(limit), 1);
+  const skip = (pageNumber - 1) * limitNumber;
 
+  // Filters
+  // ==========================================
+  const filter = {};
+  if (role) {
+    filter.role = role;
+  }
+  if (branch) {
+    filter.branch = branch.toUpperCase();
+  }
+  if (year) {
+    filter.year = Number(year);
+  }
+  if (semester) {
+    filter.semester = Number(semester);
+  }
 
-    // Pagination
-    // ==========================================
-    const pageNumber = Math.max(Number(page), 1);
-    const limitNumber = Math.max(Number(limit), 1);
-    const skip = (pageNumber - 1) * limitNumber;
+  // Search
+  // ==========================================
+  if (search) {
+    filter.$or = [
+      {
+        fullname: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        username: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        email: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
 
+  // Sorting
+  // ==========================================
+  let sortOption = {};
+  switch (sort) {
+    case "oldest":
+      sortOption = {
+        createdAt: 1,
+      };
+      break;
 
-    // Filters
-    // ==========================================
-    const filter = {};
-    if (role) {
-        filter.role = role;
-    }
-    if (branch) {
-        filter.branch = branch.toUpperCase();
-    }
-    if (year) {
-        filter.year = Number(year);
-    }
-    if (semester) {
-        filter.semester = Number(semester);
-    }
+    case "fullname":
+      sortOption = {
+        fullname: 1,
+      };
+      break;
 
+    case "latest":
+    default:
+      sortOption = {
+        createdAt: -1,
+      };
+  }
 
-    // Search
-    // ==========================================
-    if (search) {
-        filter.$or = [
-            {
-                fullname: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                username: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                email: {
-                    $regex: search,
-                    $options: "i"
-                }
-            }
-        ];
-    }
-
-
-    // Sorting
-    // ==========================================
-    let sortOption = {};
-    switch (sort) {
-        case "oldest":
-            sortOption = {
-                createdAt: 1
-            };
-            break;
-
-        case "fullname":
-            sortOption = {
-                fullname: 1
-            };
-            break;
-
-        case "latest":
-        default:
-            sortOption = {
-                createdAt: -1
-            };
-    }
-
-
-    // Fetch Users
-    // ==========================================
-    const users = await User.find(filter)
+  // Fetch Users
+  // ==========================================
+  const users = await User.find(filter)
     .select(
-        "fullname username email avatar role branch year semester college lastLogin createdAt")
+      "fullname username email avatar role branch year semester college lastLogin createdAt"
+    )
     .select("-password -refreshToken -__v")
     .sort(sortOption)
     .skip(skip)
     .limit(limitNumber)
     .lean();
 
+  // Total Count
+  // ==========================================
+  const totalUsers = await User.countDocuments(filter);
+  const totalPages = Math.ceil(totalUsers / limitNumber);
 
-    // Total Count
-    // ==========================================
-    const totalUsers = await User.countDocuments(filter);
-    const totalPages = Math.ceil(totalUsers / limitNumber);
-
-
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                page: pageNumber,
-                limit: limitNumber,
-                totalUsers,
-                totalPages,
-                hasNextPage: pageNumber < totalPages,
-                hasPreviousPage: pageNumber > 1,
-                users
-            },
-            "Users fetched successfully"
-        )
-    );
-
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        page: pageNumber,
+        limit: limitNumber,
+        totalUsers,
+        totalPages,
+        hasNextPage: pageNumber < totalPages,
+        hasPreviousPage: pageNumber > 1,
+        users,
+      },
+      "Users fetched successfully"
+    )
+  );
 });
 
 const getUserById = asyncHandler(async (req, res) => {
+  // Validate User ID
+  // ============================
+  const { userId } = req.params;
+  const { ObjectId } = mongoose.Types;
+  if (!ObjectId.isValid(userId)) {
+    throw new ApiError(400, "Invalid User ID");
+  }
 
+  // Find User
+  // ============================
+  const user = await User.findById(userId)
+    .select("-password -refreshToken -__v")
+    .lean();
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
-    // Validate User ID
-    // ============================
-    const { userId } = req.params;
-    const { ObjectId } = mongoose.Types;
-    if (!ObjectId.isValid(userId)) {
-        throw new ApiError(400, "Invalid User ID");
-    }
+  // Upload Statistics
+  // ============================
+  const uploadsCount = await Resource.countDocuments({
+    uploadedBy: user._id,
+    isDeleted: false,
+  });
+  const deletedUploads = await Resource.countDocuments({
+    uploadedBy: user._id,
+    isDeleted: true,
+  });
 
+  // Response
+  // ============================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...user,
+        uploadsCount,
+        deletedUploads,
+        bookmarksCount: user.bookmarks?.length || 0,
 
-    // Find User
-    // ============================
-    const user = await User.findById(userId)
-        .select("-password -refreshToken -__v")
-        .lean();
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
+        recentlyViewedCount: user.recentlyViewed?.length || 0,
 
-
-    // Upload Statistics
-    // ============================
-    const uploadsCount = await Resource.countDocuments({
-        uploadedBy: user._id,
-        isDeleted: false
-    });
-    const deletedUploads = await Resource.countDocuments({
-        uploadedBy: user._id,
-        isDeleted: true
-    });
-
-
-    // Response
-    // ============================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                ...user,
-                uploadsCount,
-                deletedUploads,
-                bookmarksCount:
-                    user.bookmarks?.length || 0,
-
-                recentlyViewedCount:
-                    user.recentlyViewed?.length || 0,
-
-                downloadsCount:
-                    user.downloads?.length || 0
-            },
-            "User fetched successfully"
-        )
-    );
+        downloadsCount: user.downloads?.length || 0,
+      },
+      "User fetched successfully"
+    )
+  );
 });
 
 const getPendingResources = asyncHandler(async (req, res) => {
+  // Query Parameters
+  // ==========================================
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    branch,
+    semester,
+    type,
+    subject,
+    college,
+    sort = "latest",
+  } = req.query;
 
-    // Query Parameters
-    // ==========================================
-    const {
-        page = 1,
-        limit = 10,
-        search,
-        branch,
-        semester,
-        type,
-        subject,
-        college,
-        sort = "latest"
-    } = req.query;
+  // Pagination
+  // ==========================================
+  const pageNumber = Math.max(Number(page), 1);
+  const limitNumber = Math.max(Number(limit), 1);
+  const skip = (pageNumber - 1) * limitNumber;
 
-
-    // Pagination
-    // ==========================================
-    const pageNumber = Math.max(Number(page), 1);
-    const limitNumber = Math.max(Number(limit), 1);
-    const skip = (pageNumber - 1) * limitNumber;
-
-    // Filters
-    // ==========================================
-    const filter = {
-        status: "pending",
-        isDeleted: false
+  // Filters
+  // ==========================================
+  const filter = {
+    status: "pending",
+    isDeleted: false,
+  };
+  if (branch) {
+    filter.branch = branch.toUpperCase();
+  }
+  if (semester) {
+    filter.semester = Number(semester);
+  }
+  if (type) {
+    filter.type = type;
+  }
+  if (subject) {
+    filter.subject = {
+      $regex: subject,
+      $options: "i",
     };
-    if (branch) {
-        filter.branch = branch.toUpperCase();
-    }
-    if (semester) {
-        filter.semester = Number(semester);
-    }
-    if (type) {
-        filter.type = type;
-    }
-    if (subject) {
-        filter.subject = {
-            $regex: subject,
-            $options: "i"
-        };
-    }
-    if (college) {
-        filter.college = {
-            $regex: college,
-            $options: "i"
-        };
-    }
+  }
+  if (college) {
+    filter.college = {
+      $regex: college,
+      $options: "i",
+    };
+  }
 
+  // Search
+  // ==========================================
+  if (search) {
+    filter.$or = [
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        subject: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        courseCode: {
+          $regex: search.toUpperCase(),
+          $options: "i",
+        },
+      },
+    ];
+  }
 
-    // Search
-    // ==========================================
-    if (search) {
-        filter.$or = [
-            {
-                title: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                subject: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                courseCode: {
-                    $regex: search.toUpperCase(),
-                    $options: "i"
-                }
-            }
-        ];
-    }
+  // Sorting
+  // ==========================================
+  let sortOption = {};
 
+  switch (sort) {
+    case "oldest":
+      sortOption = {
+        createdAt: 1,
+      };
+      break;
+    case "downloads":
+      sortOption = {
+        downloads: -1,
+      };
+      break;
+    case "views":
+      sortOption = {
+        views: -1,
+      };
+      break;
+    default:
+      sortOption = {
+        createdAt: -1,
+      };
+  }
 
-    // Sorting
-    // ==========================================
-    let sortOption = {};
+  // Fetch Pending Resources
+  // ==========================================
+  const resources = await Resource.find(filter)
+    .populate(
+      "uploadedBy",
+      "fullname username avatar branch year semester college"
+    )
+    .select("-pdfPublicId -thumbnailPublicId -__v")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limitNumber)
+    .lean();
 
-    switch (sort) {
-        case "oldest":
-            sortOption = {
-                createdAt: 1
-            };
-            break;
-        case "downloads":
-            sortOption = {
-                downloads: -1
-            };
-            break;
-        case "views":
-            sortOption = {
-                views: -1
-            };
-            break;
-        default:
-            sortOption = {
-                createdAt: -1
-            };
-    }
+  // Total Count
+  // ==========================================
+  const totalResources = await Resource.countDocuments(filter);
+  const totalPages = Math.ceil(totalResources / limitNumber);
 
-
-    // Fetch Pending Resources
-    // ==========================================
-    const resources = await Resource.find(filter)
-        .populate(
-            "uploadedBy",
-            "fullname username avatar branch year semester college"
-        )
-        .select("-pdfPublicId -thumbnailPublicId -__v")
-        .sort(sortOption)
-        .skip(skip)
-        .limit(limitNumber)
-        .lean();
-
-
-    // Total Count
-    // ==========================================
-    const totalResources = await Resource.countDocuments(filter);
-    const totalPages = Math.ceil(
-        totalResources / limitNumber
-    );
-
-
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                page: pageNumber,
-                limit: limitNumber,
-                totalResources,
-                totalPages,
-                hasNextPage:
-                    pageNumber < totalPages,
-                hasPreviousPage:
-                    pageNumber > 1,
-                resources
-            },
-            "Pending resources fetched successfully"
-        )
-    );
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        page: pageNumber,
+        limit: limitNumber,
+        totalResources,
+        totalPages,
+        hasNextPage: pageNumber < totalPages,
+        hasPreviousPage: pageNumber > 1,
+        resources,
+      },
+      "Pending resources fetched successfully"
+    )
+  );
 });
 
 const approveResource = asyncHandler(async (req, res) => {
+  const { resourceId } = req.params;
+  const { ObjectId } = mongoose.Types;
 
-    const { resourceId } = req.params;
-    const { ObjectId } = mongoose.Types;
+  // Validate Resource ID
+  if (!ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid Resource ID");
+  }
 
-    // Validate Resource ID
-    if (!ObjectId.isValid(resourceId)) {
-        throw new ApiError(400, "Invalid Resource ID");
-    }
+  // Find Resource
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    throw new ApiError(404, "Resource not found");
+  }
 
-    // Find Resource
-    const resource = await Resource.findById(resourceId);
-    if (!resource) {
-        throw new ApiError(404, "Resource not found");
-    }
+  // Prevent approving deleted resource
+  if (resource.isDeleted) {
+    throw new ApiError(400, "Deleted resources cannot be approved");
+  }
 
-    // Prevent approving deleted resource
-    if (resource.isDeleted) {
-        throw new ApiError(
-            400,
-            "Deleted resources cannot be approved"
-        );
-    }
+  // Already approved
+  if (resource.status === "approved") {
+    throw new ApiError(400, "Resource is already approved");
+  }
 
-    // Already approved
-    if (resource.status === "approved") {
-        throw new ApiError(
-            400,
-            "Resource is already approved"
-        );
-    }
+  // Update Status
+  resource.status = "approved";
+  resource.isVerified = true;
+  resource.approvedBy = req.user._id;
+  resource.approvedAt = new Date();
+  await resource.save({
+    validateBeforeSave: false,
+  });
 
-    // Update Status
-    resource.status = "approved";
-    resource.isVerified = true;
-    resource.approvedBy = req.user._id;
-    resource.approvedAt = new Date();
-    await resource.save({
-        validateBeforeSave: false
-    });
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            resource,
-            "Resource approved successfully"
-        )
-    );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, resource, "Resource approved successfully"));
 });
 
 const rejectResource = asyncHandler(async (req, res) => {
+  const { resourceId } = req.params;
+  const { ObjectId } = mongoose.Types;
 
-    const { resourceId } = req.params;
-    const { ObjectId } = mongoose.Types;
+  // Validate Resource ID
+  if (!ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid Resource ID");
+  }
 
-    // Validate Resource ID
-    if (!ObjectId.isValid(resourceId)) {
-        throw new ApiError(400, "Invalid Resource ID");
-    }
+  // Find Resource
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    throw new ApiError(404, "Resource not found");
+  }
 
-    // Find Resource
-    const resource = await Resource.findById(resourceId);
-    if (!resource) {
-        throw new ApiError(404, "Resource not found");
-    }
+  // Prevent rejecting deleted resource
+  if (resource.isDeleted) {
+    throw new ApiError(400, "Deleted resources cannot be rejected");
+  }
 
-    // Prevent rejecting deleted resource
-    if (resource.isDeleted) {
-        throw new ApiError(
-            400,
-            "Deleted resources cannot be rejected"
-        );
-    }
+  // Already rejected
+  if (resource.status === "rejected") {
+    throw new ApiError(400, "Resource is already rejected");
+  }
 
-    // Already rejected
-    if (resource.status === "rejected") {
-        throw new ApiError(
-            400,
-            "Resource is already rejected"
-        );
-    }
+  // Update Status
+  resource.status = "rejected";
+  resource.isVerified = false;
+  resource.rejectedBy = req.user._id;
+  resource.rejectedAt = new Date();
+  //resource.rejectionReason = req.body.reason || "";
+  await resource.save({
+    validateBeforeSave: false,
+  });
 
-    // Update Status
-    resource.status = "rejected";
-    resource.isVerified = false;
-    resource.rejectedBy = req.user._id;
-    resource.rejectedAt = new Date();
-    //resource.rejectionReason = req.body.reason || "";
-    await resource.save({
-        validateBeforeSave: false
-    });
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            resource,
-            "Resource rejected successfully"
-        )
-    );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, resource, "Resource rejected successfully"));
 });
 
 const getAllResourcesForAdmin = asyncHandler(async (req, res) => {
+  // Query Parameters
+  // ==========================================
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    status,
+    branch,
+    semester,
+    year,
+    type,
+    subject,
+    courseCode,
+    college,
+    visibility,
+    uploadedBy,
+    showDeleted = "false",
+    sort = "latest",
+  } = req.query;
 
-    // Query Parameters
-    // ==========================================
-    const {
-        page = 1,
-        limit = 10,
-        search,
-        status,
-        branch,
-        semester,
-        year,
-        type,
-        subject,
-        courseCode,
-        college,
-        visibility,
-        uploadedBy,
-        showDeleted = "false",
-        sort = "latest"
-    } = req.query;
+  // Pagination
+  // ==========================================
+  const pageNumber = Math.max(Number(page), 1);
+  const limitNumber = Math.max(Number(limit), 1);
+  const skip = (pageNumber - 1) * limitNumber;
 
+  // Filters
+  // ==========================================
+  const filter = {};
 
-    // Pagination
-    // ==========================================
-    const pageNumber = Math.max(Number(page), 1);
-    const limitNumber = Math.max(Number(limit), 1);
-    const skip = (pageNumber - 1) * limitNumber;
+  // Deleted Resources
+  filter.isDeleted = showDeleted === "true";
+  if (status) filter.status = status;
+  if (branch) {
+    filter.branch = {
+      $in: branch.split(",").map((item) => item.trim().toUpperCase()),
+    };
+  }
+  if (semester) filter.semester = Number(semester);
+  if (year) filter.year = Number(year);
+  if (type) filter.type = type;
+  if (visibility) filter.visibility = visibility;
+  if (uploadedBy) filter.uploadedBy = uploadedBy;
+  if (subject) {
+    filter.subject = {
+      $regex: subject.trim(),
+      $options: "i",
+    };
+  }
+  if (courseCode) {
+    filter.courseCode = {
+      $regex: courseCode.toUpperCase(),
+      $options: "i",
+    };
+  }
+  if (college) {
+    filter.college = {
+      $regex: college.trim(),
+      $options: "i",
+    };
+  }
 
-    // Filters
-    // ==========================================
-    const filter = {};
+  // Search
+  // ==========================================
+  if (search) {
+    filter.$or = [
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        subject: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        courseCode: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
 
-    // Deleted Resources
-    filter.isDeleted = showDeleted === "true";
-    if (status) filter.status = status;
-    if (branch) {
-        filter.branch = {
-            $in: branch
-                .split(",")
-                .map(item => item.trim().toUpperCase())
-        };
-    }
-    if (semester) filter.semester = Number(semester);
-    if (year) filter.year = Number(year);
-    if (type) filter.type = type;
-    if (visibility) filter.visibility = visibility;
-    if (uploadedBy) filter.uploadedBy = uploadedBy;
-    if (subject) {
-        filter.subject = {
-            $regex: subject.trim(),
-            $options: "i"
-        };
-    }
-    if (courseCode) {
-        filter.courseCode = {
-            $regex: courseCode.toUpperCase(),
-            $options: "i"
-        };
-    }
-    if (college) {
-        filter.college = {
-            $regex: college.trim(),
-            $options: "i"
-        };
-    }
+  // Sorting
+  // ==========================================
+  let sortOption = {};
+  switch (sort) {
+    case "downloads":
+      sortOption = { downloads: -1 };
+      break;
+    case "views":
+      sortOption = { views: -1 };
+      break;
+    case "rating":
+      sortOption = { averageRating: -1 };
+      break;
+    case "bookmarks":
+      sortOption = { bookmarks: -1 };
+      break;
+    case "oldest":
+      sortOption = { createdAt: 1 };
+      break;
+    case "title-asc":
+      sortOption = { title: 1 };
+      break;
+    case "title-desc":
+      sortOption = { title: -1 };
+      break;
+    case "latest":
+    default:
+      sortOption = { createdAt: -1 };
+  }
 
+  // Fetch Resources
+  // ==========================================
+  const resources = await Resource.find(filter)
+    .populate(
+      "uploadedBy",
+      "fullname username avatar email branch semester year college role"
+    )
+    .select("-pdfPublicId -thumbnailPublicId -__v")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limitNumber)
+    .lean();
 
-    // Search
-    // ==========================================
-    if (search) {
-        filter.$or = [
-            {
-                title: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                subject: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                courseCode: {
-                    $regex: search,
-                    $options: "i"
-                }
-            }
-        ];
-    }
+  // Total Count
+  // ==========================================
+  const totalResources = await Resource.countDocuments(filter);
+  const totalPages = Math.ceil(totalResources / limitNumber);
 
-
-    // Sorting
-    // ==========================================
-    let sortOption = {};
-    switch (sort) {
-        case "downloads":
-            sortOption = { downloads: -1 };
-            break;
-        case "views":
-            sortOption = { views: -1 };
-            break;
-        case "rating":
-            sortOption = { averageRating: -1 };
-            break;
-        case "bookmarks":
-            sortOption = { bookmarks: -1 };
-            break;
-        case "oldest":
-            sortOption = { createdAt: 1 };
-            break;
-        case "title-asc":
-            sortOption = { title: 1 };
-            break;
-        case "title-desc":
-            sortOption = { title: -1 };
-            break;
-        case "latest":
-        default:
-            sortOption = { createdAt: -1 };
-    }
-
-
-    // Fetch Resources
-    // ==========================================
-    const resources = await Resource.find(filter)
-        .populate(
-            "uploadedBy",
-            "fullname username avatar email branch semester year college role"
-        )
-        .select("-pdfPublicId -thumbnailPublicId -__v")
-        .sort(sortOption)
-        .skip(skip)
-        .limit(limitNumber)
-        .lean();
-
-
-    // Total Count
-    // ==========================================
-    const totalResources = await Resource.countDocuments(filter);
-    const totalPages = Math.ceil(
-        totalResources / limitNumber
-    );
-
-
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                page: pageNumber,
-                limit: limitNumber,
-                totalResources,
-                totalPages,
-                hasNextPage:
-                    pageNumber < totalPages,
-                hasPreviousPage:
-                    pageNumber > 1,
-                resources
-            },
-            "Resources fetched successfully"
-        )
-    );
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        page: pageNumber,
+        limit: limitNumber,
+        totalResources,
+        totalPages,
+        hasNextPage: pageNumber < totalPages,
+        hasPreviousPage: pageNumber > 1,
+        resources,
+      },
+      "Resources fetched successfully"
+    )
+  );
 });
 
 const deleteAnyResource = asyncHandler(async (req, res) => {
+  // Validate Resource ID
+  // ==========================================
+  const { resourceId } = req.params;
+  const { ObjectId } = mongoose.Types;
+  if (!ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid Resource ID");
+  }
 
-    // Validate Resource ID
-    // ==========================================
-    const { resourceId } = req.params;
-    const { ObjectId } = mongoose.Types;
-    if (!ObjectId.isValid(resourceId)) {
-        throw new ApiError(400, "Invalid Resource ID");
-    }
+  // Find Resource
+  // ==========================================
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    throw new ApiError(404, "Resource not found");
+  }
+  if (resource.isDeleted) {
+    throw new ApiError(400, "Resource is already deleted");
+  }
 
+  // Soft Delete
+  // ==========================================
+  resource.isDeleted = true;
+  resource.deletedAt = new Date();
+  resource.deletedBy = req.user._id;
+  await resource.save({
+    validateBeforeSave: false,
+  });
 
-    // Find Resource
-    // ==========================================
-    const resource = await Resource.findById(resourceId);
-    if (!resource) {
-        throw new ApiError(404, "Resource not found");
-    }
-    if (resource.isDeleted) {
-        throw new ApiError(
-            400,
-            "Resource is already deleted"
-        );
-    }
-
-
-    // Soft Delete
-    // ==========================================
-    resource.isDeleted = true;
-    resource.deletedAt = new Date();
-    resource.deletedBy = req.user._id;
-    await resource.save({
-        validateBeforeSave: false
-    });
-
-
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            resource,
-            "Resource deleted successfully"
-        )
-    );
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, resource, "Resource deleted successfully"));
 });
 
 const restoreResource = asyncHandler(async (req, res) => {
+  // Validate Resource ID
+  // ==========================================
+  const { resourceId } = req.params;
+  const { ObjectId } = mongoose.Types;
+  if (!ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid Resource ID");
+  }
 
+  // Find Resource
+  // ==========================================
+  const resource = await Resource.findById(resourceId);
+  if (!resource) {
+    throw new ApiError(404, "Resource not found");
+  }
+  if (!resource.isDeleted) {
+    throw new ApiError(400, "Resource is already active");
+  }
 
-    // Validate Resource ID
-    // ==========================================
-    const { resourceId } = req.params;
-    const { ObjectId } = mongoose.Types;
-    if (!ObjectId.isValid(resourceId)) {
-        throw new ApiError(400, "Invalid Resource ID");
-    }
+  // Restore Resource
+  // ==========================================
+  resource.isDeleted = false;
+  resource.deletedAt = null;
+  resource.deletedBy = null;
+  await resource.save({
+    validateBeforeSave: false,
+  });
 
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, resource, "Resource restored successfully"));
+});
 
-    // Find Resource
-    // ==========================================
-    const resource = await Resource.findById(resourceId);
-    if (!resource) {
-        throw new ApiError(404, "Resource not found");
-    }
-    if (!resource.isDeleted) {
-        throw new ApiError(
-            400,
-            "Resource is already active"
-        );
-    }
+const getResourceByIdForAdmin = asyncHandler(async (req, res) => {
+  const { resourceId } = req.params;
+  const { ObjectId } = mongoose.Types;
 
+  if (!ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid Resource ID");
+  }
 
-    // Restore Resource
-    // ==========================================
-    resource.isDeleted = false;
-    resource.deletedAt = null;
-    resource.deletedBy = null;
-    await resource.save({
-        validateBeforeSave: false
-    });
+  const resource = await Resource.findById(resourceId)
+    .populate({
+      path: "uploadedBy",
+      select: "-password -refreshToken -__v",
+    })
+    .populate({
+      path: "approvedBy",
+      select: "fullname",
+    })
+    .populate({
+      path: "rejectedBy",
+      select: "fullname",
+    })
+    .select("-__v -pdfPublicId -thumbnailPublicId");
 
+  if (!resource) {
+    throw new ApiError(404, "Resource not found");
+  }
 
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            resource,
-            "Resource restored successfully"
-        )
+  const resourceObject = resource.toObject();
+
+  //resourceObject.formattedFileSize = formatFileSize(resource.fileSize);
+  resourceObject.formattedUploadDate =
+    resource.createdAt.toLocaleDateString("en-IN");
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, resourceObject, "Resource fetched successfully")
     );
 });
 
 const getDeletedResources = asyncHandler(async (req, res) => {
+  // Query Parameters
+  // ==========================================
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    branch,
+    semester,
+    type,
+    sort = "latest",
+  } = req.query;
 
-    // Query Parameters
-    // ==========================================
-    const {
-        page = 1,
-        limit = 10,
-        search,
-        branch,
-        semester,
-        type,
-        sort = "latest"
-    } = req.query;
+  // Pagination
+  // ==========================================
+  const pageNumber = Math.max(Number(page), 1);
+  const limitNumber = Math.max(Number(limit), 1);
+  const skip = (pageNumber - 1) * limitNumber;
 
-    // Pagination
-    // ==========================================
-    const pageNumber = Math.max(Number(page), 1);
-    const limitNumber = Math.max(Number(limit), 1);
-    const skip = (pageNumber - 1) * limitNumber;
+  // Filters
+  // ==========================================
+  const filter = {
+    isDeleted: true,
+  };
+  if (branch) {
+    filter.branch = branch.toUpperCase();
+  }
+  if (semester) {
+    filter.semester = Number(semester);
+  }
+  if (type) {
+    filter.type = type;
+  }
 
-    // Filters
-    // ==========================================
-    const filter = {
-        isDeleted: true
-    };
-    if (branch) {
-        filter.branch = branch.toUpperCase();
-    }
-    if (semester) {
-        filter.semester = Number(semester);
-    }
-    if (type) {
-        filter.type = type;
-    }
+  // Search
+  // ==========================================
+  if (search) {
+    filter.$or = [
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        subject: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        courseCode: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
 
-    // Search
-    // ==========================================
-    if (search) {
-        filter.$or = [
-            {
-                title: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                subject: {
-                    $regex: search,
-                    $options: "i"
-                }
-            },
-            {
-                courseCode: {
-                    $regex: search,
-                    $options: "i"
-                }
-            }
-        ];
-    }
+  // Sorting
+  // ==========================================
+  let sortOption = {};
+  switch (sort) {
+    case "oldest":
+      sortOption = { createdAt: 1 };
+      break;
 
-    // Sorting
-    // ==========================================
-    let sortOption = {};
-    switch (sort) {
-        case "oldest":
-            sortOption = { createdAt: 1 };
-            break;
+    case "downloads":
+      sortOption = { downloads: -1 };
+      break;
 
-        case "downloads":
-            sortOption = { downloads: -1 };
-            break;
+    case "views":
+      sortOption = { views: -1 };
+      break;
 
-        case "views":
-            sortOption = { views: -1 };
-            break;
+    default:
+      sortOption = { createdAt: -1 };
+  }
 
-        default:
-            sortOption = { createdAt: -1 };
-    }
+  // Fetch Resources
+  // ==========================================
+  const resources = await Resource.find(filter)
+    .populate(
+      "uploadedBy",
+      "fullname username avatar email branch semester year"
+    )
+    .select("-pdfPublicId -thumbnailPublicId -__v")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limitNumber)
+    .lean();
 
-    // Fetch Resources
-    // ==========================================
-    const resources = await Resource.find(filter)
-        .populate(
-            "uploadedBy",
-            "fullname username avatar email branch semester year"
-        )
-        .select("-pdfPublicId -thumbnailPublicId -__v")
-        .sort(sortOption)
-        .skip(skip)
-        .limit(limitNumber)
-        .lean();
+  // Total Count
+  // ==========================================
+  const totalResources = await Resource.countDocuments(filter);
+  const totalPages = Math.ceil(totalResources / limitNumber);
 
-    // Total Count
-    // ==========================================
-    const totalResources = await Resource.countDocuments(filter);
-    const totalPages = Math.ceil(
-        totalResources / limitNumber
-    );
-
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                page: pageNumber,
-                limit: limitNumber,
-                totalResources,
-                totalPages,
-                hasNextPage:
-                    pageNumber < totalPages,
-                hasPreviousPage:
-                    pageNumber > 1,
-                resources
-            },
-            "Deleted resources fetched successfully"
-        )
-    );
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        page: pageNumber,
+        limit: limitNumber,
+        totalResources,
+        totalPages,
+        hasNextPage: pageNumber < totalPages,
+        hasPreviousPage: pageNumber > 1,
+        resources,
+      },
+      "Deleted resources fetched successfully"
+    )
+  );
 });
 
 const getAnalytics = asyncHandler(async (req, res) => {
-
-
-    // Platform Statistics
-    // ==========================================
-    const platformStats = await Resource.aggregate([
-        {
-            $match: {
-                isDeleted: false
-            }
+  // Platform Statistics
+  // ==========================================
+  const platformStats = await Resource.aggregate([
+    {
+      $match: {
+        isDeleted: false,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalResources: {
+          $sum: 1,
         },
-        {
-            $group: {
-                _id: null,
-                totalResources: {
-                    $sum: 1
-                },
-                totalDownloads: {
-                    $sum: "$downloads"
-                },
-                totalViews: {
-                    $sum: "$views"
-                },
-                totalBookmarks: {
-                    $sum: "$bookmarks"
-                },
-                averageRating: {
-                    $avg: "$averageRating"
-                }
-            }
-        }
-    ]);
-
-
-    // Resources By Branch
-    // ==========================================
-    const branchWiseResources = await Resource.aggregate([
-        {
-            $match: {
-                isDeleted: false
-            }
+        totalDownloads: {
+          $sum: "$downloads",
         },
-        {
-            $group: {
-                _id: "$branch",
-                count: {
-                    $sum: 1
-                }
-            }
+        totalViews: {
+          $sum: "$views",
         },
-        {
-            $sort: {
-                count: -1
-            }
-        }
-    ]);
-
-
-    // Resources By Type
-    // ==========================================
-    const typeWiseResources = await Resource.aggregate([
-        {
-            $match: {
-                isDeleted: false
-            }
+        totalBookmarks: {
+          $sum: "$bookmarks",
         },
-        {
-            $group: {
-                _id: "$type",
-                count: {
-                    $sum: 1
-                }
-            }
+        averageRating: {
+          $avg: "$averageRating",
         },
-        {
-            $sort: {
-                count: -1
-            }
-        }
-    ]);
+      },
+    },
+  ]);
 
+  // Resources By Branch
+  // ==========================================
+  const branchWiseResources = await Resource.aggregate([
+    {
+      $match: {
+        isDeleted: false,
+      },
+    },
+    {
+      $group: {
+        _id: "$branch",
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ]);
 
-    // Resources By Status
-    // ==========================================
-    const statusWiseResources = await Resource.aggregate([
-        {
-            $group: {
-                _id: "$status",
-                count: {
-                    $sum: 1
-                }
-            }
-        }
-    ]);
+  // Resources By Type
+  // ==========================================
+  const typeWiseResources = await Resource.aggregate([
+    {
+      $match: {
+        isDeleted: false,
+      },
+    },
+    {
+      $group: {
+        _id: "$type",
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ]);
 
+  // Resources By Status
+  // ==========================================
+  const statusWiseResources = await Resource.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        count: {
+          $sum: 1,
+        },
+      },
+    },
+  ]);
 
-    // Response
-    // ==========================================
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                platform:
-                    platformStats[0] || {},
-                branchWiseResources,
-                typeWiseResources,
-                statusWiseResources
-            },
-            "Analytics fetched successfully"
-        )
-    );
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        platform: platformStats[0] || {},
+        branchWiseResources,
+        typeWiseResources,
+        statusWiseResources,
+      },
+      "Analytics fetched successfully"
+    )
+  );
 });
 
-export { adminDashboard,
-    getAllUsers,
-    getUserById,
-    getPendingResources,
-    approveResource,
-    rejectResource,
-    getAllResourcesForAdmin,
-    deleteAnyResource,
-    restoreResource,
-    getDeletedResources,
-    getAnalytics
- };
-
+export {
+  adminDashboard,
+  getAllUsers,
+  getUserById,
+  getPendingResources,
+  approveResource,
+  rejectResource,
+  getAllResourcesForAdmin,
+  deleteAnyResource,
+  restoreResource,
+  getDeletedResources,
+  getAnalytics,
+  getResourceByIdForAdmin,
+};

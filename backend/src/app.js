@@ -43,11 +43,15 @@ app.get("/", (req, res) => {
 import userRouter from './routes/user.routes.js'
 import resourceRouter from './routes/resource.routes.js'
 import adminRouter from './routes/admin.routes.js'
+import dashboardRouter from "./routes/dashboard.routes.js";
+import profileRouter from "./routes/profile.routes.js";
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/resources", resourceRouter)
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/profile", profileRouter);
 // http://localhost:8000/api/v1/users/register
 
 
@@ -56,6 +60,6 @@ app.use("/api/v1/admin", adminRouter);
 swaggerDocs(app);
 
 // Global Error Handler
-//app.use(errorHandler);
+app.use(errorHandler);
 
 export { app };

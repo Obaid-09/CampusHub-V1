@@ -10,12 +10,16 @@ import EditProfileModal from "../../components/profile/EditProfileModal";
 import { useRef } from "react";
 import { authAPI } from "../../api/auth.api";
 import { successToast, errorToast } from "../../utils/toast";
+import useProfile from "../../hooks/useProfile";
+import RecentlyViewed from "../../components/profile/RecentlyViewed";
 
 const Profile = () => {
   const { user, loading, refreshUser } = useAuth();
   const [showEditProfile, setShowEditProfile] = useState(false);
   const fileInputRef = useRef(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const { profile } = useProfile();
+  console.log(profile);
 
   if (loading) {
     return null;
@@ -85,14 +89,19 @@ const Profile = () => {
           onEdit={() => setShowEditProfile(true)}
         />
 
-        <ProfileStats />
+        <ProfileStats stats={profile.stats} loading={loading} />
 
         <ProfileAbout />
+
+        <RecentlyViewed resources={profile.recentlyViewed} loading={loading} />
 
         <UploadedResources />
 
         <Achievements />
-        <ActivityTimeline />
+        <ActivityTimeline
+          activities={profile.recentActivity}
+          loading={loading}
+        />
         <EditProfileModal
           open={showEditProfile}
           onClose={() => setShowEditProfile(false)}

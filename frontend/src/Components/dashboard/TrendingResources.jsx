@@ -1,7 +1,28 @@
 import MiniResourceCard from "./MiniResourceCard";
-import { trendingResources } from "../../constants/dashboard";
 
-const TrendingResources = () => {
+const TrendingResources = ({resources, loading}) => {
+
+    if (loading) {
+    return (
+        <section className="mt-14">
+            <h2
+                className="
+                    text-3xl
+                    font-heading
+                    font-bold
+                    text-secondary
+                    mb-6
+                "
+            >
+                Trending Resources
+            </h2>
+
+            <div className="text-gray500">
+                Loading...
+            </div>
+        </section>
+    );
+}
 
     return (
 
@@ -36,7 +57,7 @@ const TrendingResources = () => {
                     "
                 >
 
-                    {trendingResources.map(resource => (
+                    {resources.map(resource => (
 
                         <MiniResourceCard
                             key={resource._id}

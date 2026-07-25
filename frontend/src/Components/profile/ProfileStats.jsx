@@ -82,30 +82,27 @@
 
 // export default ProfileStats;
 
-import useAuth from "../../hooks/useAuth";
-
-const ProfileStats = () => {
-  const { user } = useAuth();
+const ProfileStats = ({ stats, loading }) => {
+  if (loading) {
+    return <div className="mt-8 text-center">Loading...</div>;
+  }
 
   const profileStats = [
     {
       label: "Uploads",
-      value: user?.uploadsCount ?? 0,
+      value: stats?.uploads ?? 0,
     },
-
     {
       label: "Downloads",
-      value: user?.downloadsCount ?? 0,
+      value: stats?.downloads ?? 0,
     },
-
     {
       label: "Bookmarks",
-      value: user?.bookmarksCount ?? 0,
+      value: stats?.bookmarks ?? 0,
     },
-
     {
-      label: "Reputation",
-      value: user?.reputation ?? 0,
+      label: "Views",
+      value: stats?.views ?? 0,
     },
   ];
 

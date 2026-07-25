@@ -47,11 +47,11 @@ const ResourceInfo = ({ resource }) => {
                     />
 
                     <span className="font-semibold text-secondary">
-                        {resource.rating}
+                        {resource.averageRating ?? 0}
                     </span>
 
                     <span className="text-gray500">
-                        (126 Ratings)
+                        ({resource.ratingsCount ?? 0} Ratings)
                     </span>
                 </div>
             </div>
@@ -108,13 +108,13 @@ const ResourceInfo = ({ resource }) => {
                 <InfoRow
                     icon={<User size={18} />}
                     label="Uploaded By"
-                    value={resource.uploadedBy.fullname}
+                    value={resource.uploadedBy?.fullname || "Unknown"}
                 />
 
                 <InfoRow
                     icon={<Calendar size={18} />}
                     label="Uploaded"
-                    value="12 July 2026"
+                    value={resource.formattedUploadDate || new Date(resource.createdAt).toLocaleDateString("en-IN")}
                 />
             </div>
         </div>

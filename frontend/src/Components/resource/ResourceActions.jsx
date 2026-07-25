@@ -2,8 +2,20 @@ import Button from "../ui/Button";
 import { Download, Share2, Flag } from "lucide-react";
 
 import ResourceBookmark from "./ResourceBookmark";
+import { resourceAPI } from "../../api/resource.api";
+import { errorToast, successToast } from "../../utils/toast";
 
 const ResourceActions = ({ resource }) => {
+  const handleDownload = async () => {
+    try {
+      const response = await resourceAPI.downloadResource(resource._id);
+      window.open(response.data.data.pdfUrl, "_blank", "noopener,noreferrer");
+      successToast(response.data.message);
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Unable to download this resource.");
+    }
+  };
+
   return (
     <div
       className="
@@ -16,7 +28,7 @@ const ResourceActions = ({ resource }) => {
                 space-y-4
             "
     >
-      <Button className="w-full flex justify-center items-center gap-2">
+      <Button onClick={handleDownload} className="w-full flex justify-center items-center gap-2">
         <Download size={18} />
         Download PDF
       </Button>

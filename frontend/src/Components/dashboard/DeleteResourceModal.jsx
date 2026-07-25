@@ -4,6 +4,7 @@ const DeleteResourceModal = ({
     open,
     onClose,
     onConfirm,
+    deleting = false,
 }) => {
 
     if(!open) return null;
@@ -69,6 +70,7 @@ const DeleteResourceModal = ({
                         className="flex-1"
 
                         onClick={onClose}
+                        disabled={deleting}
 
                     >
 
@@ -84,10 +86,11 @@ const DeleteResourceModal = ({
                         "
 
                         onClick={onConfirm}
+                        disabled={deleting}
 
                     >
 
-                        Delete
+                        {deleting ? "Deleting..." : "Delete"}
 
                     </Button>
 

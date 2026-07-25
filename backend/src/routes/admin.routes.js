@@ -11,7 +11,8 @@ import { adminDashboard,
     deleteAnyResource,
     restoreResource,
     getDeletedResources,
-    getAnalytics
+    getAnalytics,
+    getResourceByIdForAdmin
  } from "../controllers/admin.controller.js";
 
 const router = Router();
@@ -46,6 +47,12 @@ router.route("/resources/pending").get(
     getPendingResources
 );
 
+router.route("/resources/deleted").get(
+    verifyJWT,
+    verifyAdmin,
+    getDeletedResources
+);
+
 router.route("/resources/:resourceId/approve").patch(
     verifyJWT,
     verifyAdmin,
@@ -64,6 +71,12 @@ router.route("/resources").get(
     getAllResourcesForAdmin
 );
 
+router.route("/resources/:resourceId").get(
+    verifyJWT,
+    verifyAdmin,
+    getResourceByIdForAdmin
+);
+
 router.route("/resources/:resourceId")
 .delete(
     verifyJWT,
@@ -78,11 +91,6 @@ router.route("/resources/:resourceId/restore")
     restoreResource
 );
 
-router.route("/resources/deleted").get(
-    verifyJWT,
-    verifyAdmin,
-    getDeletedResources
-);
 
 router.route("/analytics").get(
     verifyJWT,

@@ -1,25 +1,17 @@
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const CategoryCard = ({
-    title,
-    count,
-    color,
-    iconColor,
-    icon: Icon,
-}) => {
+const CategoryCard = ({ title, type, count, color, iconColor, icon: Icon }) => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/resources?type=${encodeURIComponent(type)}`);
+  };
 
-    const handleClick = () => {
-        navigate(`/resources?type=${encodeURIComponent(title)}`);
-    };
-
-    return (
-
-        <div
-            onClick={handleClick}
-            className="
+  return (
+    <div
+      onClick={handleClick}
+      className="
                 group
                 bg-white
                 rounded-2xl
@@ -33,10 +25,9 @@ const CategoryCard = ({
                 duration-300
                 cursor-pointer
             "
-        >
-
-            <div
-                className={`
+    >
+      <div
+        className={`
                     w-16
                     h-16
                     rounded-2xl
@@ -45,23 +36,18 @@ const CategoryCard = ({
                     items-center
                     justify-center
                 `}
-            >
-                <Icon
-                    size={30}
-                    className={iconColor}
-                />
-            </div>
+      >
+        <Icon size={30} className={iconColor} />
+      </div>
 
-            <h3 className="mt-6 text-2xl font-heading font-semibold text-secondary">
-                {title}
-            </h3>
+      <h3 className="mt-6 text-2xl font-heading font-semibold text-secondary">
+        {title}
+      </h3>
 
-            <p className="mt-2 text-gray500">
-                {count} Resources
-            </p>
+      <p className="mt-2 text-gray500">{count} Resources</p>
 
-            <div
-                className="
+      <div
+        className="
                     mt-6
                     flex
                     items-center
@@ -72,14 +58,12 @@ const CategoryCard = ({
                     group-hover:opacity-100
                     transition-all
                 "
-            >
-                Explore
-                <ArrowRight size={18}/>
-            </div>
-
-        </div>
-
-    );
+      >
+        Explore
+        <ArrowRight size={18} />
+      </div>
+    </div>
+  );
 };
 
 export default CategoryCard;

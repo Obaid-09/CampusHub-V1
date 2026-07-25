@@ -9,69 +9,47 @@ import ReportsSection from "../../components/admin/resource/ReportsSection";
 
 import ModerationHistory from "../../components/admin/resource/ModerationHistory";
 import ResourceActions from "../../components/admin/resource/ResourceActions";
-import { adminResource } from "../../constants/admin";
+import useAdminResource from "../../hooks/useAdminResource";
+const AdminResourceDetails = () => {
+  const { resource, loading } = useAdminResource();
 
-const AdminResourceDetails = ()=>{
+  if (loading) {
+    return <AdminLayout>Loading...</AdminLayout>;
+  }
 
-    return(
+  if (!resource) {
+    return <AdminLayout>Resource not found.</AdminLayout>;
+  }
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <ResourceHeader resource={resource} />
 
-        <AdminLayout>
+        <ResourcePreview resource={resource} />
 
-            <div className="space-y-8">
-
-                <ResourceHeader
-
-                    resource={adminResource}
-
-                />
-
-                <ResourcePreview
-
-                    resource={adminResource}
-
-                />
-
-                <div
-                    className="
+        <div
+          className="
                         grid
                         xl:grid-cols-3
                         gap-8
                     "
-                >
+        >
+          <div className="xl:col-span-2">
+            <ResourceInformation resource={resource} />
+          </div>
 
-                    <div className="xl:col-span-2">
+          <UploaderCard uploader={resource.uploadedBy} />
+        </div>
 
-                        <ResourceInformation
-                            resource={adminResource}
-                        />
+        <ResourceStatistics resource={resource} />
+        <ReportsSection />
 
-                    </div>
+        <ModerationHistory />
 
-                    <UploaderCard
-                        uploader={adminResource.uploader}
-                    />
-
-                </div>
-
-                <ResourceStatistics
-                    resource={adminResource}
-                />
-                <ReportsSection/>
-
-                <ModerationHistory/>
-
-                <ResourceActions
-
-                    resource={adminResource}
-
-                />
-
-            </div>
-
-        </AdminLayout>
-
-    );
-
+        <ResourceActions resource={resource} />
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default AdminResourceDetails;

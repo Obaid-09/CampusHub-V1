@@ -1,11 +1,103 @@
-import { recentActivities } from "../../constants/dashboard";
+// import { recentActivities } from "../../constants/dashboard";
 
-const RecentActivity = () => {
+// const RecentActivity = () => {
 
+//     return (
+
+//         <div
+//             className="
+//                 bg-white
+//                 rounded-2xl
+//                 border
+//                 border-gray100
+//                 shadow-card
+//                 p-6
+//             "
+//         >
+
+//             <h2
+//                 className="
+//                     text-2xl
+//                     font-heading
+//                     font-bold
+//                     text-secondary
+//                 "
+//             >
+
+//                 Recent Activity
+
+//             </h2>
+
+//             <div className="mt-6 space-y-5">
+
+//                 {recentActivities.map((item) => (
+
+//                     <div
+//                         key={item.id}
+//                         className="
+//                             flex
+//                             justify-between
+//                             items-center
+//                             border-b
+//                             border-gray100
+//                             pb-4
+//                         "
+//                     >
+
+//                         <p className="text-gray700">
+
+//                             {item.title}
+
+//                         </p>
+
+//                         <span
+//                             className="
+//                                 text-sm
+//                                 text-gray500
+//                             "
+//                         >
+
+//                             {item.time}
+
+//                         </span>
+
+//                     </div>
+
+//                 ))}
+
+//             </div>
+
+//         </div>
+
+//     );
+
+// };
+
+// export default RecentActivity;
+
+
+const RecentActivity = ({activities, loading}) => {
+
+  if (loading) {
     return (
+      <div
+        className="
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-gray100
+                    shadow-card
+                    p-6
+                "
+      >
+        Loading...
+      </div>
+    );
+  }
 
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -13,28 +105,23 @@ const RecentActivity = () => {
                 shadow-card
                 p-6
             "
-        >
-
-            <h2
-                className="
+    >
+      <h2
+        className="
                     text-2xl
                     font-heading
                     font-bold
                     text-secondary
                 "
-            >
+      >
+        Recent Activity
+      </h2>
 
-                Recent Activity
-
-            </h2>
-
-            <div className="mt-6 space-y-5">
-
-                {recentActivities.map((item) => (
-
-                    <div
-                        key={item.id}
-                        className="
+      <div className="mt-6 space-y-5">
+        {activities.map((item) => (
+          <div
+            key={item._id}
+            className="
                             flex
                             justify-between
                             items-center
@@ -42,35 +129,26 @@ const RecentActivity = () => {
                             border-gray100
                             pb-4
                         "
-                    >
+          >
+            <div>
+              <p className="text-gray700 font-medium">{item.resource.title}</p>
 
-                        <p className="text-gray700">
+              <p className="text-sm text-gray500">{item.resource.subject}</p>
+            </div>
 
-                            {item.title}
-
-                        </p>
-
-                        <span
-                            className="
+            <span
+              className="
                                 text-sm
                                 text-gray500
                             "
-                        >
-
-                            {item.time}
-
-                        </span>
-
-                    </div>
-
-                ))}
-
-            </div>
-
-        </div>
-
-    );
-
+            >
+              {new Date(item.viewedAt).toLocaleDateString()}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default RecentActivity;

@@ -1,68 +1,39 @@
 import axiosInstance from "./axios";
 
 export const adminAPI = {
+  getDashboard: () => axiosInstance.get("/admin/dashboard"),
 
-    getDashboard: () =>
-        axiosInstance.get(
-            "/admin/dashboard"
-        ),
+  getAllUsers: (params) =>
+    axiosInstance.get("/admin/users", {
+      params,
+    }),
 
-    getAllUsers: (params) =>
-        axiosInstance.get(
-            "/admin/users",
-            {
-                params,
-            }
-        ),
+  getUserById: (userId) => axiosInstance.get(`/admin/users/${userId}`),
 
-    getUserById: (userId) =>
-        axiosInstance.get(
-            `/admin/users/${userId}`
-        ),
+  getPendingResources: () => axiosInstance.get("/admin/resources/pending"),
 
-    getPendingResources: () =>
-        axiosInstance.get(
-            "/admin/resources/pending"
-        ),
+  approveResource: (resourceId) =>
+    axiosInstance.patch(`/admin/resources/${resourceId}/approve`),
 
-    approveResource: (resourceId) =>
-        axiosInstance.patch(
-            `/admin/resources/${resourceId}/approve`
-        ),
+  rejectResource: (resourceId) =>
+    axiosInstance.patch(`/admin/resources/${resourceId}/reject`),
 
-    rejectResource: (resourceId) =>
-        axiosInstance.patch(
-            `/admin/resources/${resourceId}/reject`
-        ),
+  getAllResources: (params) =>
+    axiosInstance.get("/admin/resources", {
+      params,
+    }),
 
-    getAllResources: (params) =>
-        axiosInstance.get(
-            "/admin/resources",
-            {
-                params,
-            }
-        ),
+  getResourceById: (resourceId) =>
+    axiosInstance.get(`/admin/resources/${resourceId}`),
+  deleteResource: (resourceId) =>
+    axiosInstance.delete(`/admin/resources/${resourceId}`),
 
-    deleteResource: (resourceId) =>
-        axiosInstance.delete(
-            `/admin/resources/${resourceId}`
-        ),
+  restoreResource: (resourceId) =>
+    axiosInstance.patch(`/admin/resources/${resourceId}/restore`),
 
-    restoreResource: (resourceId) =>
-        axiosInstance.patch(
-            `/admin/resources/${resourceId}/restore`
-        ),
+  getDeletedResources: () => axiosInstance.get("/admin/resources/deleted"),
 
-    getDeletedResources: () =>
-        axiosInstance.get(
-            "/admin/resources/deleted"
-        ),
-
-    getAnalytics: () =>
-        axiosInstance.get(
-            "/admin/analytics"
-        ),
-
+  getAnalytics: () => axiosInstance.get("/admin/analytics"),
 };
 
 // import api from "./axios";
@@ -85,14 +56,9 @@ export const adminAPI = {
 // export const suspendUser=(id)=>
 //     api.patch(`/admin/users/${id}/suspend`);
 
-
 // import axiosInstance from "./axios";
 
-
-
 // export const adminAPI = {
-
-
 
 //     getDashboard: () =>
 
@@ -101,8 +67,6 @@ export const adminAPI = {
 //             "/admin/dashboard"
 
 //         ),
-
-
 
 //     getAllUsers: (params) =>
 
@@ -118,8 +82,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     getUserById: (userId) =>
 
 //         axiosInstance.get(
@@ -127,8 +89,6 @@ export const adminAPI = {
 //             `/admin/users/${userId}`
 
 //         ),
-
-
 
 //     getPendingResources: () =>
 
@@ -138,8 +98,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     approveResource: (resourceId) =>
 
 //         axiosInstance.patch(
@@ -148,8 +106,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     rejectResource: (resourceId) =>
 
 //         axiosInstance.patch(
@@ -157,8 +113,6 @@ export const adminAPI = {
 //             `/admin/resources/${resourceId}/reject`
 
 //         ),
-
-
 
 //     getAllResources: (params) =>
 
@@ -174,8 +128,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     deleteResource: (resourceId) =>
 
 //         axiosInstance.delete(
@@ -183,8 +135,6 @@ export const adminAPI = {
 //             `/admin/resources/${resourceId}`
 
 //         ),
-
-
 
 //     restoreResource: (resourceId) =>
 
@@ -194,8 +144,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     getDeletedResources: () =>
 
 //         axiosInstance.get(
@@ -203,8 +151,6 @@ export const adminAPI = {
 //             "/admin/resources/deleted"
 
 //         ),
-
-
 
 //     getAnalytics: () =>
 
@@ -214,19 +160,11 @@ export const adminAPI = {
 
 //         ),
 
-
-
 // };
-
-
 
 // import axiosInstance from "./axios";
 
-
-
 // export const authAPI = {
-
-
 
 //     register: (formData) =>
 
@@ -248,31 +186,21 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     login: (data) =>
 
 //         axiosInstance.post("/users/login", data),
-
-
 
 //     logout: () =>
 
 //         axiosInstance.post("/users/logout"),
 
-
-
 //     getCurrentUser: () =>
 
 //         axiosInstance.get("/users/current-user"),
 
-
-
 //     refreshToken: () =>
 
 //         axiosInstance.post("/users/refresh-token"),
-
-
 
 //     changePassword: (data) =>
 
@@ -284,8 +212,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     updateProfile: (data) =>
 
 //         axiosInstance.patch(
@@ -295,8 +221,6 @@ export const adminAPI = {
 //             data
 
 //         ),
-
-
 
 //     updateAvatar: (formData) =>
 
@@ -320,15 +244,9 @@ export const adminAPI = {
 
 // };
 
-
-
 // import axiosInstance from "./axios";
 
-
-
 // export const resourceAPI = {
-
-
 
 //     getResources: (params) =>
 
@@ -344,8 +262,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     getResourceById: (resourceId) =>
 
 //         axiosInstance.get(
@@ -353,8 +269,6 @@ export const adminAPI = {
 //             `/resources/${resourceId}`
 
 //         ),
-
-
 
 //     uploadResource: (formData) =>
 
@@ -377,8 +291,6 @@ export const adminAPI = {
 //             }
 
 //         ),
-
-
 
 //     updateResource: (
 
@@ -408,8 +320,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     deleteResource: (resourceId) =>
 
 //         axiosInstance.delete(
@@ -417,8 +327,6 @@ export const adminAPI = {
 //             `/resources/${resourceId}`
 
 //         ),
-
-
 
 //     bookmarkResource: (resourceId) =>
 
@@ -428,8 +336,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     viewResource: (resourceId) =>
 
 //         axiosInstance.patch(
@@ -437,8 +343,6 @@ export const adminAPI = {
 //             `/resources/${resourceId}/view`
 
 //         ),
-
-
 
 //     downloadResource: (resourceId) =>
 
@@ -448,19 +352,11 @@ export const adminAPI = {
 
 //         ),
 
-
-
 // };
-
-
 
 // import axiosInstance from "./axios";
 
-
-
 // export const userAPI = {
-
-
 
 //     getBookmarks: () =>
 
@@ -470,8 +366,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     getDownloadHistory: () =>
 
 //         axiosInstance.get(
@@ -479,8 +373,6 @@ export const adminAPI = {
 //             "/resources/download-history"
 
 //         ),
-
-
 
 //     getRecentlyViewed: () =>
 
@@ -490,8 +382,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 //     getMyUploads: () =>
 
 //         axiosInstance.get(
@@ -500,9 +390,6 @@ export const adminAPI = {
 
 //         ),
 
-
-
 // };
 
-
-// Once go through thius code some code is mising ion the code you have provided 
+// Once go through thius code some code is mising ion the code you have provided

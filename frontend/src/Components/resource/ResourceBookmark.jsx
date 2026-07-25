@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bookmark } from "lucide-react";
 
 import Button from "../ui/Button";
@@ -10,6 +10,10 @@ const ResourceBookmark = ({ resource, variant = "button" }) => {
   const [bookmarked, setBookmarked] = useState(resource?.isBookmarked || false);
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setBookmarked(Boolean(resource?.isBookmarked));
+  }, [resource?._id, resource?.isBookmarked]);
 
   const handleBookmark = async (e) => {
     e?.stopPropagation();

@@ -1,11 +1,8 @@
 import { Edit, GraduationCap, Calendar } from "lucide-react";
 import Button from "../ui/Button";
-import useAuth from "../../hooks/useAuth";
 import { Camera } from "lucide-react";
 
 const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvatar }) => {
-  const { user } = useAuth();
-
   return (
     <div
       className="
@@ -51,8 +48,8 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
 
           <div className="relative">
             <img
-              src={user?.avatar}
-              alt={user?.fullname}
+              src={profile?.avatar}
+              alt={profile?.fullname}
               className="
             w-36
             h-36
@@ -103,7 +100,7 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
                                 text-secondary
                             "
             >
-              {user?.fullname}
+              {profile?.fullname}
             </h1>
 
             <p
@@ -113,7 +110,7 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
                                 font-medium
                             "
             >
-              @{user?.username}
+              @{profile?.username}
             </p>
 
             <div
@@ -127,12 +124,12 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
             >
               <span className="flex items-center gap-2">
                 <GraduationCap size={18} />
-                {user?.branch}
+                {profile?.branch}
               </span>
 
-              <span>Semester {user?.semester}</span>
+              <span>Semester {profile?.semester}</span>
 
-              <span>{user?.college}</span>
+              <span>{profile?.college}</span>
             </div>
 
             <div
@@ -146,8 +143,8 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
             >
               <Calendar size={16} />
               Joined{" "}
-              {user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString(
+              {profile?.createdAt || profile?.joinedAt
+                ? new Date(profile.createdAt || profile.joinedAt).toLocaleDateString(
                     "en-IN",
 
                     {

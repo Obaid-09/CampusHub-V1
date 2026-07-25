@@ -15,6 +15,12 @@ export const resourceAPI = {
             `/resources/${resourceId}`
         ),
 
+    getMyUploads: () =>
+        axiosInstance.get("/resources/my-uploads"),
+
+    getBookmarks: () =>
+        axiosInstance.get("/resources/bookmarks"),
+
     uploadResource: (formData) =>
         axiosInstance.post(
             "/resources/upload",

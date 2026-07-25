@@ -44,6 +44,12 @@ const userSchema = new Schema(
             },
         },
     ],
+    viewedResources: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Resource",
+        },
+    ],
     bookmarks: [
         {
             resource: {

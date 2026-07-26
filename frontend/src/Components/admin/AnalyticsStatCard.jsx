@@ -1,32 +1,29 @@
 import {
-    Users,
-    FileText,
-    Download,
-    Clock3,
+  Users,
+  FileText,
+  Download,
+  Eye,
+  Bookmark,
+  Star,
+  Trash2,
 } from "lucide-react";
 
 const icons = {
-
-    users:Users,
-
-    file:FileText,
-
-    download:Download,
-
-    clock:Clock3,
-
+  users: Users,
+  file: FileText,
+  download: Download,
+  eye: Eye,
+  bookmark: Bookmark,
+  star: Star,
+  trash: Trash2,
 };
 
-const AnalyticsStatCard = ({
-    stat,
-}) => {
+const AnalyticsStatCard = ({ stat }) => {
+  const Icon = icons[stat.icon];
 
-    const Icon = icons[stat.icon];
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -34,36 +31,23 @@ const AnalyticsStatCard = ({
                 shadow-card
                 p-6
             "
-        >
+    >
+      <Icon size={30} className={stat.color} />
 
-            <Icon
-                size={30}
-                className={stat.color}
-            />
+      <p className="mt-5 text-gray500">{stat.title}</p>
 
-            <p className="mt-5 text-gray500">
-
-                {stat.title}
-
-            </p>
-
-            <h2
-                className="
+      <h2
+        className="
                     mt-2
                     text-4xl
                     font-bold
                     text-secondary
                 "
-            >
-
-                {stat.value}
-
-            </h2>
-
-        </div>
-
-    );
-
+      >
+        {stat.value}
+      </h2>
+    </div>
+  );
 };
 
 export default AnalyticsStatCard;

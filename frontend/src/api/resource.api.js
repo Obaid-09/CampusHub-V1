@@ -1,73 +1,47 @@
 import axiosInstance from "./axios";
 
 export const resourceAPI = {
+  getResources: (params) =>
+    axiosInstance.get("/resources", {
+      params,
+    }),
 
-    getResources: (params) =>
-        axiosInstance.get(
-            "/resources",
-            {
-                params,
-            }
-        ),
+  getResourceById: (resourceId) =>
+    axiosInstance.get(`/resources/${resourceId}`),
 
-    getResourceById: (resourceId) =>
-        axiosInstance.get(
-            `/resources/${resourceId}`
-        ),
+  getMyUploads: () => axiosInstance.get("/resources/my-uploads"),
 
-    getMyUploads: () =>
-        axiosInstance.get("/resources/my-uploads"),
+  getBookmarks: () => axiosInstance.get("/resources/bookmarks"),
 
-    getBookmarks: () =>
-        axiosInstance.get("/resources/bookmarks"),
+  uploadResource: (formData) =>
+    axiosInstance.post("/resources/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 
-    uploadResource: (formData) =>
-        axiosInstance.post(
-            "/resources/upload",
-            formData,
-            {
-                headers: {
-                    "Content-Type":
-                        "multipart/form-data",
-                },
-            }
-        ),
+  updateResource: (resourceId, formData) =>
+    axiosInstance.patch(`/resources/${resourceId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 
-    updateResource: (
-        resourceId,
-        formData
-    ) =>
-        axiosInstance.patch(
-            `/resources/${resourceId}`,
-            formData,
-            {
-                headers: {
-                    "Content-Type":
-                        "multipart/form-data",
-                },
-            }
-        ),
+  deleteResource: (resourceId) =>
+    axiosInstance.delete(`/resources/${resourceId}`),
 
-    deleteResource: (resourceId) =>
-        axiosInstance.delete(
-            `/resources/${resourceId}`
-        ),
+  bookmarkResource: (resourceId) =>
+    axiosInstance.patch(`/resources/${resourceId}/bookmark`),
 
-    bookmarkResource: (resourceId) =>
-        axiosInstance.patch(
-            `/resources/${resourceId}/bookmark`
-        ),
+  viewResource: (resourceId) =>
+    axiosInstance.patch(`/resources/${resourceId}/view`),
 
-    viewResource: (resourceId) =>
-        axiosInstance.patch(
-            `/resources/${resourceId}/view`
-        ),
+  downloadResource: (resourceId) =>
+    axiosInstance.patch(`/resources/${resourceId}/download`),
 
-    downloadResource: (resourceId) =>
-        axiosInstance.patch(
-            `/resources/${resourceId}/download`
-        ),
-
+  reportResource(resourceId, data) {
+    return axiosInstance.post(`/resources/${resourceId}/report`, data);
+  },
 };
 
 // import api from "./axios";

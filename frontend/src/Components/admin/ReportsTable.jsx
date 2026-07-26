@@ -1,101 +1,87 @@
 import ReportRow from "./ReportRow";
 
-const ReportsTable = ({
-    reports,
-    onView,
-    onResolve,
-    onDismiss,
-}) => {
-
-    return (
-
-        <div
-            className="
+const ReportsTable = ({ reports, onView, onResolve, onDismiss }) => {
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 shadow-card
                 overflow-x-auto
             "
-        >
+    >
+      <table className="w-full min-w-[1000px]">
+        <thead>
+          <tr className="border-b">
+            <th className="px-6 py-5 text-left">Report</th>
 
-            <table className="w-full min-w-[1000px]">
+            <th className="px-6 py-5 text-left">Reporter</th>
 
-                <thead>
+            <th className="px-6 py-5 text-left">Reason</th>
 
-                    <tr className="border-b">
+            <th className="px-6 py-5 text-left">Status</th>
 
-                        <th className="px-6 py-5 text-left">
+            <th className="px-6 py-5 text-left">Date</th>
 
-                            Report
+            <th className="px-6 py-5 text-left">Actions</th>
+          </tr>
+        </thead>
 
-                        </th>
+        <tbody>
+          {reports.map((report) => (
+            <ReportRow
+              key={report._id}
+              report={report}
+              onView={onView}
+              onResolve={onResolve}
+              onDismiss={onDismiss}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
 
-                        <th>
+//     <div
+//       className="
+//     bg-white
+//     rounded-2xl
+//     shadow-card
+//     border
+//     border-gray100
+//     overflow-hidden
+//   "
+//     >
+//       <table className="w-full table-fixed">
+//         <thead>
+//           <tr className="border-b border-gray100">
+//             <th className="w-[28%] px-6 py-4 text-left">Resource</th>
 
-                            Reporter
+//             <th className="w-[22%] text-left">Reporter</th>
 
-                        </th>
+//             <th className="w-[14%] text-center">Reason</th>
 
-                        <th>
+//             <th className="w-[12%] text-center">Status</th>
 
-                            Reason
+//             <th className="w-[12%] text-center">Reported</th>
 
-                        </th>
+//             <th className="w-[22%] text-center">Actions</th>
+//           </tr>
+//         </thead>
 
-                        <th>
-
-                            Status
-
-                        </th>
-
-                        <th>
-
-                            Date
-
-                        </th>
-
-                        <th>
-
-                            Actions
-
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {
-
-                        reports.map(report=>(
-
-                            <ReportRow
-
-                                key={report._id}
-
-                                report={report}
-
-                                onView={onView}
-
-                                onResolve={onResolve}
-
-                                onDismiss={onDismiss}
-
-                            />
-
-                        ))
-
-                    }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    );
-
+//         <tbody>
+//           {reports.map((report) => (
+//             <ReportRow
+//               key={report._id}
+//               report={report}
+//               onView={onView}
+//               onResolve={onResolve}
+//               onDismiss={onDismiss}
+//             />
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+  );
 };
 
 export default ReportsTable;

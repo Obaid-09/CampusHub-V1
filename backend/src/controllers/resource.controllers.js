@@ -7,6 +7,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { formatFileSize } from "../utils/formatFileSize.js";
+import { Report } from "../models/report.models.js";
 
 const uploadResource = asyncHandler(async (req, res) => {
   const {
@@ -362,8 +363,6 @@ const getResourceById = asyncHandler(async (req, res) => {
     );
 });
 
-
-
 const viewResource = asyncHandler(async (req, res) => {
   const { resourceId } = req.params;
   const { ObjectId } = mongoose.Types;
@@ -435,7 +434,9 @@ const viewResource = asyncHandler(async (req, res) => {
         views: resource.views,
         countedAsNewView,
       },
-      countedAsNewView ? "Unique view recorded successfully" : "View already recorded"
+      countedAsNewView
+        ? "Unique view recorded successfully"
+        : "View already recorded"
     )
   );
 });
@@ -842,7 +843,8 @@ const updateResource = asyncHandler(async (req, res) => {
     resource.pdfPublicId = pdf.public_id;
     resource.fileSize = pdf.bytes || 0;
     resource.totalPages = pdf.pages || 0;
-    resource.pdfOriginalName = pdf.original_filename || req.files.pdf[0].originalname;
+    resource.pdfOriginalName =
+      pdf.original_filename || req.files.pdf[0].originalname;
   }
 
   // Optional Thumbnail Update
@@ -899,6 +901,55 @@ const deleteResource = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Resource deleted successfully"));
 });
 
+const reportResource = asyncHandler(async (req, res) => {
+  const { resourceId } = req.params;
+  const { reason, description } = req.body;
+
+  // Validate Resource ID
+  if (!mongoose.Types.ObjectId.isValid(resourceId)) {
+    throw new ApiError(400, "Invalid resource ID.");
+  }
+
+  // Check Resource
+  const resource = await Resource.findOne({
+    _id: resourceId,
+    isDeleted: false,
+    status: "approved",
+  });
+
+  if (!resource) {
+    throw new ApiError(404, "Resource not found.");
+  }
+
+  // Prevent reporting own resource
+  if (resource.uploadedBy.toString() === req.user._id.toString()) {
+    throw new ApiError(400, "You cannot report your own resource.");
+  }
+
+  // Prevent duplicate report
+  const existingReport = await Report.findOne({
+    resource: resourceId,
+    reportedBy: req.user._id,
+    status: "pending",
+  });
+
+  if (existingReport) {
+    throw new ApiError(400, "You have already reported this resource.");
+  }
+
+  // Create Report
+  const report = await Report.create({
+    resource: resourceId,
+    reportedBy: req.user._id,
+    reason,
+    description,
+  });
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, report, "Report submitted successfully."));
+});
+
 export {
   uploadResource,
   getAllResources,
@@ -910,4 +961,5 @@ export {
   deleteResource,
   getMyUploads,
   getBookmarks,
+  reportResource
 };

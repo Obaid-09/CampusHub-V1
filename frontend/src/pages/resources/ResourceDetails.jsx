@@ -13,12 +13,14 @@ import Loader from "../../components/ui/Loader";
 import EmptyState from "../../components/ui/EmptyState";
 import { resourceAPI } from "../../api/resource.api";
 
+import ReportResourceModal from "../../components/resource/ReportResourceModal";
+import { successToast, errorToast } from "../../utils/toast";
 const ResourceDetails = () => {
   const { id } = useParams();
   const [resource, setResource] = useState(null);
   const [relatedResources, setRelatedResources] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [showReport, setShowReport] = useState(false);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
@@ -52,12 +54,31 @@ const ResourceDetails = () => {
     fetchResource();
   }, [id]);
 
+  const handleReport = async (data) => {
+    try {
+      await resourceAPI.reportResource(resource._id, data);
+
+      successToast("Report submitted successfully.");
+
+      setShowReport(false);
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to submit report.");
+    }
+  };
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><Loader /></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (!resource) {
-    return <div className="min-h-screen flex items-center justify-center px-6"><EmptyState title="Resource not found" /></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <EmptyState title="Resource not found" />
+      </div>
+    );
   }
 
   return (
@@ -68,13 +89,21 @@ const ResourceDetails = () => {
           <ResourcePreview resource={resource} />
           <ResourceInfo resource={resource} />
           <ResourceStats resource={resource} />
-          <ResourceActions resource={resource} />
+          <ResourceActions
+            resource={resource}
+            onReport={() => setShowReport(true)}
+          />
           <ResourceDescription resource={resource} />
           <ResourceUploader uploader={resource.uploadedBy} />
           <RatingSection reviews={resource.reviews || []} />
           <RelatedResources resources={relatedResources} />
         </div>
       </div>
+      <ReportResourceModal
+        open={showReport}
+        onClose={() => setShowReport(false)}
+        onSubmit={handleReport}
+      />
     </section>
   );
 };

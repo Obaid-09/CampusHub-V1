@@ -1,43 +1,74 @@
-const UserStatCard = ({
-    stat,
-}) => {
+// const UserStatCard = ({ stat }) => {
+//   return (
+//     <div
+//       className="
+//                 bg-white
+//                 rounded-2xl
+//                 border
+//                 border-gray100
+//                 shadow-card
+//                 p-6
+//             "
+//     >
+//       <p className="text-gray500">{stat.title}</p>
 
-    return (
+//       <h2
+//         className="
+//                     mt-3
+//                     text-4xl
+//                     font-bold
+//                     text-secondary
+//                 "
+//       >
+//         {stat.value}
+//       </h2>
+//     </div>
+//   );
+// };
 
-        <div
-            className="
-                bg-white
-                rounded-2xl
-                border
-                border-gray100
-                shadow-card
-                p-6
-            "
-        >
+// export default UserStatCard;
 
-            <p className="text-gray500">
+import { Files, Download, Bookmark, Trash2 } from "lucide-react";
 
-                {stat.title}
+const icons = {
+  files: Files,
+  download: Download,
+  bookmark: Bookmark,
+  trash: Trash2,
+};
 
-            </p>
+const UserStatCard = ({ stat }) => {
+  const Icon = icons[stat.icon];
 
-            <h2
-                className="
-                    mt-3
-                    text-4xl
-                    font-bold
-                    text-secondary
-                "
-            >
+  return (
+    <div
+      className="
+        bg-white
+        rounded-2xl
+        border
+        border-gray100
+        shadow-card
+        p-6
+      "
+    >
+      <div className="flex items-center justify-between">
+        <p className="text-gray500">{stat.title}</p>
 
-                {stat.value}
+        {Icon && <Icon size={24} className={stat.color} />}
+      </div>
 
-            </h2>
-
-        </div>
-
-    );
-
+      <h2
+        className="
+          mt-4
+          text-4xl
+          font-bold
+          text-secondary
+        "
+      >
+        {stat.value}
+      </h2>
+    </div>
+  );
 };
 
 export default UserStatCard;

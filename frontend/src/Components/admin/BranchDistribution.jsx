@@ -1,153 +1,149 @@
+// import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+
+// import { branchDistribution } from "../../constants/admin";
+
+// const COLORS = ["#D97706", "#2563EB", "#16A34A", "#9333EA", "#EF4444"];
+
+// const BranchDistribution = () => {
+//   return (
+//     <div
+//       className="
+//                 grid
+//                 lg:grid-cols-2
+//                 gap-6
+//                 items-center
+//             "
+//     >
+//       <ResponsiveContainer width="100%" height={320}>
+//         <PieChart>
+//           <Pie
+//             data={branchDistribution}
+//             dataKey="value"
+//             nameKey="name"
+//             outerRadius={110}
+//           >
+//             {branchDistribution.map((entry, index) => (
+//               <Cell key={index} fill={COLORS[index]} />
+//             ))}
+//           </Pie>
+
+//           <Tooltip />
+//         </PieChart>
+//       </ResponsiveContainer>
+
+//       <div className="space-y-4">
+//         {branchDistribution.map((branch, index) => (
+//           <div
+//             key={branch.name}
+//             className="
+//                                 flex
+//                                 items-center
+//                                 justify-between
+//                             "
+//           >
+//             <div
+//               className="
+//                                     flex
+//                                     items-center
+//                                     gap-3
+//                                 "
+//             >
+//               <div
+//                 className="w-4 h-4 rounded-full"
+//                 style={{
+//                   backgroundColor: COLORS[index],
+//                 }}
+//               />
+
+//               <span className="font-medium">{branch.name}</span>
+//             </div>
+
+//             <span className="text-gray500">{branch.value}%</span>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BranchDistribution;
+
 import {
-
-    ResponsiveContainer,
-
-    PieChart,
-
-    Pie,
-
-    Cell,
-
-    Tooltip,
-
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
 } from "recharts";
 
-
-
-import { branchDistribution } from "../../constants/admin";
+import ChartCard from "./ChartCard";
 
 const COLORS = [
-
-    "#D97706",
-
-    "#2563EB",
-
-    "#16A34A",
-
-    "#9333EA",
-
-    "#EF4444",
-
+  "#D97706",
+  "#2563EB",
+  "#16A34A",
+  "#9333EA",
+  "#EF4444",
+  "#0891B2",
+  "#EA580C",
 ];
 
-const BranchDistribution = () => {
+const BranchDistribution = ({ branches }) => {
+  const chartData =
+    branches?.map((branch) => ({
+      name: branch._id,
+      value: branch.count,
+    })) || [];
 
-    return (
-
-        <div
-            className="
-                grid
-                lg:grid-cols-2
-                gap-6
-                items-center
-            "
-        >
-
-            <ResponsiveContainer
-                width="100%"
-                height={320}
+  return (
+    <ChartCard title="Resources by Branch">
+      <div className="grid lg:grid-cols-2 gap-6 items-center">
+        <ResponsiveContainer width="100%" height={320}>
+          <PieChart>
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={110}
+              label
             >
+              {chartData.map((entry, index) => (
+                <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
 
-                <PieChart>
+            {/* <Tooltip /> */}
 
-                    <Pie
+          </PieChart>
+        </ResponsiveContainer>
 
-                        data={branchDistribution}
+        <div className="space-y-4">
+          {chartData.map((branch, index) => (
+            <div
+              key={branch.name}
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-4 h-4 rounded-full"
+                  style={{
+                    backgroundColor: COLORS[index % COLORS.length],
+                  }}
+                />
 
-                        dataKey="value"
+                <span className="font-medium">{branch.name}</span>
+              </div>
 
-                        nameKey="name"
-
-                        outerRadius={110}
-
-                    >
-
-                        {
-
-                            branchDistribution.map((entry,index)=>(
-
-                                <Cell
-
-                                    key={index}
-
-                                    fill={COLORS[index]}
-
-                                />
-
-                            ))
-
-                        }
-
-                    </Pie>
-
-                    <Tooltip/>
-
-                </PieChart>
-
-            </ResponsiveContainer>
-
-            <div className="space-y-4">
-
-                {
-
-                    branchDistribution.map((branch,index)=>(
-
-                        <div
-
-                            key={branch.name}
-
-                            className="
-                                flex
-                                items-center
-                                justify-between
-                            "
-
-                        >
-
-                            <div
-                                className="
-                                    flex
-                                    items-center
-                                    gap-3
-                                "
-                            >
-
-                                <div
-
-                                    className="w-4 h-4 rounded-full"
-
-                                    style={{
-                                        backgroundColor: COLORS[index]
-                                    }}
-
-                                />
-
-                                <span className="font-medium">
-
-                                    {branch.name}
-
-                                </span>
-
-                            </div>
-
-                            <span className="text-gray500">
-
-                                {branch.value}%
-
-                            </span>
-
-                        </div>
-
-                    ))
-
-                }
-
+              <span className="font-semibold text-secondary">
+                {branch.value}
+              </span>
             </div>
-
+          ))}
         </div>
-
-    );
-
+      </div>
+    </ChartCard>
+  );
 };
 
 export default BranchDistribution;

@@ -33,7 +33,41 @@ export const adminAPI = {
 
   getDeletedResources: () => axiosInstance.get("/admin/resources/deleted"),
 
-  getAnalytics: () => axiosInstance.get("/admin/analytics"),
+  // Analytics
+  getAnalytics() {
+    return axiosInstance.get("/admin/analytics");
+  },
+
+  promoteUser(userId, role) {
+    return axiosInstance.patch(`/admin/users/${userId}/role`, {
+      role,
+    });
+  },
+
+  deleteUser(userId) {
+    return axiosInstance.delete(`/admin/users/${userId}`);
+  },
+
+  // Reports
+  getAllReports(params) {
+    return axiosInstance.get("/admin/reports", { params });
+  },
+
+  getReportById(reportId) {
+    return axiosInstance.get(`/admin/reports/${reportId}`);
+  },
+
+  resolveReport(reportId, adminNotes) {
+    return axiosInstance.patch(`/admin/reports/${reportId}/resolve`, {
+      adminNotes,
+    });
+  },
+
+  dismissReport(reportId, adminNotes) {
+    return axiosInstance.patch(`/admin/reports/${reportId}/dismiss`, {
+      adminNotes,
+    });
+  },
 };
 
 // import api from "./axios";

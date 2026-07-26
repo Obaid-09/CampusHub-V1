@@ -3,9 +3,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 import { Resource } from "../models/resource.models.js";
 import mongoose from "mongoose";
+import { Report } from "../models/report.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { formatFileSize } from "../utils/formatFileSize.js";
-
 const adminDashboard = asyncHandler(async (req, res) => {
   // User Statistics
   // ==========================
@@ -13,13 +13,11 @@ const adminDashboard = asyncHandler(async (req, res) => {
     totalUsers,
     totalStudents,
     totalAdmins,
-
     totalResources,
     pendingResources,
     approvedResources,
     rejectedResources,
     deletedResources,
-
     recentResources,
     recentUsers,
     stats,
@@ -154,6 +152,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
   // Filters
   // ==========================================
   const filter = {};
+  filter._id = {
+    $ne: req.user._id,
+  };
   if (role) {
     filter.role = role;
   }
@@ -280,6 +281,23 @@ const getUserById = asyncHandler(async (req, res) => {
     isDeleted: true,
   });
 
+  const uploadedResources = await Resource.find({
+    uploadedBy: user._id,
+    isDeleted: false,
+  })
+    .select("title subject type downloads status createdAt")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  const userWithDownloads = await User.findById(userId)
+    .populate({
+      path: "downloads.resource",
+      select: "title subject thumbnail",
+    })
+    .populate({
+      path: "bookmarks.resource",
+      select: "title subject thumbnail",
+    });
   // Response
   // ============================
   return res.status(200).json(
@@ -290,14 +308,68 @@ const getUserById = asyncHandler(async (req, res) => {
         uploadsCount,
         deletedUploads,
         bookmarksCount: user.bookmarks?.length || 0,
-
         recentlyViewedCount: user.recentlyViewed?.length || 0,
-
         downloadsCount: user.downloads?.length || 0,
+        uploadedResources,
       },
       "User fetched successfully"
     )
   );
+});
+
+const promoteUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const { role } = req.body;
+
+  const validRoles = ["student", "moderator", "admin"];
+
+  if (!validRoles.includes(role)) {
+    throw new ApiError(400, "Invalid role.");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found.");
+  }
+
+  if (user._id.toString() === req.user._id.toString()) {
+    throw new ApiError(400, "You cannot change your own role.");
+  }
+
+  user.role = role;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User role updated successfully."));
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new ApiError(400, "Invalid user id");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if (user._id.toString() === req.user._id.toString()) {
+    throw new ApiError(400, "You cannot delete your own account.");
+  }
+  if (user.role === "admin") {
+    throw new ApiError(403, "Admin cannot be deleted");
+  }
+
+  await User.findByIdAndDelete(userId);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User deleted successfully"));
 });
 
 const getPendingResources = asyncHandler(async (req, res) => {
@@ -897,9 +969,129 @@ const getDeletedResources = asyncHandler(async (req, res) => {
   );
 });
 
+// const getAnalytics = asyncHandler(async (req, res) => {
+//   // Platform Statistics
+//   // ==========================================
+//   const platformStats = await Resource.aggregate([
+//     {
+//       $match: {
+//         isDeleted: false,
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: null,
+//         totalResources: {
+//           $sum: 1,
+//         },
+//         totalDownloads: {
+//           $sum: "$downloads",
+//         },
+//         totalViews: {
+//           $sum: "$views",
+//         },
+//         totalBookmarks: {
+//           $sum: "$bookmarks",
+//         },
+//         averageRating: {
+//           $avg: "$averageRating",
+//         },
+//       },
+//     },
+//   ]);
+
+//   // Resources By Branch
+//   // ==========================================
+//   const branchWiseResources = await Resource.aggregate([
+//     {
+//       $match: {
+//         isDeleted: false,
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: "$branch",
+//         count: {
+//           $sum: 1,
+//         },
+//       },
+//     },
+//     {
+//       $sort: {
+//         count: -1,
+//       },
+//     },
+//   ]);
+
+//   // Resources By Type
+//   // ==========================================
+//   const typeWiseResources = await Resource.aggregate([
+//     {
+//       $match: {
+//         isDeleted: false,
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: "$type",
+//         count: {
+//           $sum: 1,
+//         },
+//       },
+//     },
+//     {
+//       $sort: {
+//         count: -1,
+//       },
+//     },
+//   ]);
+
+//   // Resources By Status
+//   // ==========================================
+//   const statusWiseResources = await Resource.aggregate([
+//     {
+//       $group: {
+//         _id: "$status",
+//         count: {
+//           $sum: 1,
+//         },
+//       },
+//     },
+//   ]);
+
+//   // Response
+//   // ==========================================
+//   return res.status(200).json(
+//     new ApiResponse(
+//       200,
+//       {
+//         platform: platformStats[0] || {},
+//         branchWiseResources,
+//         typeWiseResources,
+//         statusWiseResources,
+//       },
+//       "Analytics fetched successfully"
+//     )
+//   );
+// });
+
 const getAnalytics = asyncHandler(async (req, res) => {
   // Platform Statistics
   // ==========================================
+  const [
+    totalUsers,
+    totalDeletedResources,
+    totalPendingReports,
+    totalResolvedReports,
+    totalDismissedReports,
+  ] = await Promise.all([
+    User.countDocuments(),
+    Resource.countDocuments({ isDeleted: true }),
+    Report.countDocuments({ status: "pending" }),
+    Report.countDocuments({ status: "resolved" }),
+    Report.countDocuments({ status: "dismissed" }),
+  ]);
+
   const platformStats = await Resource.aggregate([
     {
       $match: {
@@ -918,11 +1110,30 @@ const getAnalytics = asyncHandler(async (req, res) => {
         totalViews: {
           $sum: "$views",
         },
-        totalBookmarks: {
-          $sum: "$bookmarks",
-        },
         averageRating: {
           $avg: "$averageRating",
+        },
+      },
+    },
+  ]);
+
+  // Total Bookmarks
+  // ==========================================
+  const bookmarkStats = await User.aggregate([
+    {
+      $project: {
+        bookmarksCount: {
+          $size: {
+            $ifNull: ["$bookmarks", []],
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalBookmarks: {
+          $sum: "$bookmarksCount",
         },
       },
     },
@@ -987,20 +1198,276 @@ const getAnalytics = asyncHandler(async (req, res) => {
     },
   ]);
 
+  // Monthly Uploads
+  // ==========================================
+  const uploadsPerMonth = await Resource.aggregate([
+    {
+      $match: {
+        isDeleted: false,
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: {
+            $year: "$createdAt",
+          },
+          month: {
+            $month: "$createdAt",
+          },
+        },
+        uploads: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        "_id.year": 1,
+        "_id.month": 1,
+      },
+    },
+  ]);
+
   // Response
   // ==========================================
   return res.status(200).json(
     new ApiResponse(
       200,
       {
-        platform: platformStats[0] || {},
+        platform: {
+          totalUsers,
+          totalResources: platformStats[0]?.totalResources || 0,
+          totalDownloads: platformStats[0]?.totalDownloads || 0,
+          totalViews: platformStats[0]?.totalViews || 0,
+          totalBookmarks: bookmarkStats[0]?.totalBookmarks || 0,
+          averageRating: Number(platformStats[0]?.averageRating || 0).toFixed(
+            1
+          ),
+          deletedResources: totalDeletedResources,
+        },
+
+        reports: {
+          pending: totalPendingReports,
+          resolved: totalResolvedReports,
+          dismissed: totalDismissedReports,
+        },
+
         branchWiseResources,
         typeWiseResources,
         statusWiseResources,
+        uploadsPerMonth,
       },
-      "Analytics fetched successfully"
+      "Analytics fetched successfully."
     )
   );
+});
+const getAllReports = asyncHandler(async (req, res) => {
+  // Query Parameters
+  // ==========================================
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    status,
+    reason,
+    sort = "latest",
+  } = req.query;
+
+  // Pagination
+  // ==========================================
+  const pageNumber = Math.max(Number(page), 1);
+  const limitNumber = Math.max(Number(limit), 1);
+  const skip = (pageNumber - 1) * limitNumber;
+
+  // Filters
+  // ==========================================
+  const filter = {};
+
+  if (status) {
+    filter.status = status;
+  }
+
+  if (reason) {
+    filter.reason = reason;
+  }
+
+  // Search
+  // ==========================================
+  if (search) {
+    const resources = await Resource.find({
+      title: {
+        $regex: search,
+        $options: "i",
+      },
+    }).select("_id");
+
+    filter.resource = {
+      $in: resources.map((resource) => resource._id),
+    };
+  }
+
+  // Sorting
+  // ==========================================
+  let sortOption = {};
+
+  switch (sort) {
+    case "oldest":
+      sortOption = {
+        createdAt: 1,
+      };
+      break;
+
+    default:
+      sortOption = {
+        createdAt: -1,
+      };
+  }
+
+  // Fetch Reports
+  // ==========================================
+  const reports = await Report.find(filter)
+    .populate("resource", "title subject courseCode thumbnail status")
+    .populate("reportedBy", "fullname username avatar")
+    .populate("reviewedBy", "fullname username")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(limitNumber)
+    .lean();
+
+  // Count
+  // ==========================================
+  const totalReports = await Report.countDocuments(filter);
+  const totalPages = Math.ceil(totalReports / limitNumber);
+
+  // Response
+  // ==========================================
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        page: pageNumber,
+        limit: limitNumber,
+        totalReports,
+        totalPages,
+        hasNextPage: pageNumber < totalPages,
+        hasPreviousPage: pageNumber > 1,
+        reports,
+      },
+      "Reports fetched successfully."
+    )
+  );
+});
+
+const getReportById = asyncHandler(async (req, res) => {
+  // Validate Report ID
+  // ==========================================
+  const { reportId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(reportId)) {
+    throw new ApiError(400, "Invalid report ID.");
+  }
+
+  // Fetch Report
+  // ==========================================
+  const report = await Report.findById(reportId)
+    .populate({
+      path: "resource",
+      select: "-pdfPublicId -thumbnailPublicId -__v -isDeleted",
+      populate: {
+        path: "uploadedBy",
+        select: "fullname username avatar email",
+      },
+    })
+    .populate("reportedBy", "fullname username avatar email")
+    .populate("reviewedBy", "fullname username avatar")
+    .lean();
+
+  if (!report) {
+    throw new ApiError(404, "Report not found.");
+  }
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, report, "Report fetched successfully."));
+});
+
+const resolveReport = asyncHandler(async (req, res) => {
+  // Validate Report ID
+  // ==========================================
+  const { reportId } = req.params;
+  const { adminNotes = "" } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(reportId)) {
+    throw new ApiError(400, "Invalid report ID.");
+  }
+
+  // Find Report
+  // ==========================================
+  const report = await Report.findById(reportId);
+
+  if (!report) {
+    throw new ApiError(404, "Report not found.");
+  }
+
+  if (report.status !== "pending") {
+    throw new ApiError(400, "Report has already been reviewed.");
+  }
+
+  // Update Report
+  // ==========================================
+  report.status = "resolved";
+  report.reviewedBy = req.user._id;
+  report.reviewedAt = new Date();
+  report.adminNotes = adminNotes;
+
+  await report.save({ validateBeforeSave: false });
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, report, "Report resolved successfully."));
+});
+
+const dismissReport = asyncHandler(async (req, res) => {
+  // Validate Report ID
+  // ==========================================
+  const { reportId } = req.params;
+  const { adminNotes = "" } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(reportId)) {
+    throw new ApiError(400, "Invalid report ID.");
+  }
+
+  // Find Report
+  // ==========================================
+  const report = await Report.findById(reportId);
+
+  if (!report) {
+    throw new ApiError(404, "Report not found.");
+  }
+
+  if (report.status !== "pending") {
+    throw new ApiError(400, "Report has already been reviewed.");
+  }
+
+  // Update Report
+  // ==========================================
+  report.status = "dismissed";
+  report.reviewedBy = req.user._id;
+  report.reviewedAt = new Date();
+  report.adminNotes = adminNotes;
+
+  await report.save({ validateBeforeSave: false });
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, report, "Report dismissed successfully."));
 });
 
 export {
@@ -1016,4 +1483,10 @@ export {
   getDeletedResources,
   getAnalytics,
   getResourceByIdForAdmin,
+  promoteUser,
+  deleteUser,
+  getAllReports,
+  getReportById,
+  resolveReport,
+  dismissReport,
 };

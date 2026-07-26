@@ -2,55 +2,105 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import UserStatsGrid from "../../components/admin/UserStatsGrid";
 import UserProfileCard from "../../components/admin/UserProfileCard";
 import UserResourcesTable from "../../components/admin/UserResourcesTable";
-import { adminUser } from "../../constants/admin";
-import RecentDownloads from "../../components/admin/RecentDownloads";
-import BookmarksActivity from "../../components/admin/BookmarksActivity";
-import ReportsActivity from "../../components/admin/ReportsActivity";
+import useAdminUser from "../../hooks/useAdminUser";
+// import RecentDownloads from "../../components/admin/RecentDownloads";
+// import BookmarksActivity from "../../components/admin/BookmarksActivity";
+// import ReportsActivity from "../../components/admin/ReportsActivity";
 import UserActions from "../../components/admin/UserActions";
+import { useState, useEffect } from "react";
+import { successToast, errorToast } from "../../utils/toast.js";
+import { adminAPI } from "../../api/admin.api.js";
+import PromoteUserModal from "../../components/admin/PromoteUserModal";
+import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
-
+  const { user, loading, refreshUser } = useAdminUser();
+  const [showPromote, setShowPromote] = useState(false);
+  const [role, setRole] = useState(user?.role || "");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      setRole(user.role);
+    }
+  }, [user]);
+  if (loading) {
     return (
+      <AdminLayout>
+        <div className="text-center py-16 text-gray500">Loading user...</div>
+      </AdminLayout>
+    );
+  }
 
-        <AdminLayout>
+  if (!user) {
+    return (
+      <AdminLayout>
+        <div className="text-center py-16 text-red-500">User not found.</div>
+      </AdminLayout>
+    );
+  }
 
-            <div className="space-y-8">
+  const handlePromote = async () => {
+    try {
+      await adminAPI.promoteUser(user._id, role);
 
-                <UserProfileCard
+      successToast("Role updated successfully.");
 
-                    user={adminUser}
+      setShowPromote(false);
 
-                />
-                <UserStatsGrid/>
+      refreshUser();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to update role.");
+    }
+  };
 
-                <UserResourcesTable/>
+  const handleDelete = async () => {
+    try {
+      await adminAPI.deleteUser(user._id);
+      successToast("User deleted successfully.");
+      navigate("/admin/users");
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to delete user.");
+    }
+  };
 
-                <div
-                    className="
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <UserProfileCard user={user} />
+        <UserStatsGrid user={user} />
+
+        <UserResourcesTable resources={user.uploadedResources} />
+
+        {/* <div
+          className="
                         grid
                         xl:grid-cols-3
                         gap-8
                     "
-                >
+        >
+          <RecentDownloads />
 
-                    <RecentDownloads/>
+          <BookmarksActivity />
 
-                    <BookmarksActivity/>
+          <ReportsActivity />
+        </div> */}
 
-                    <ReportsActivity/>
+        <UserActions
+          user={user}
+          onPromote={() => setShowPromote(true)}
+          onDelete={handleDelete}
+        />
 
-                </div>
-
-                <UserActions
-                    user={adminUser}
-                />
-
-            </div>
-
-        </AdminLayout>
-
-    );
-
+        <PromoteUserModal
+          open={showPromote}
+          role={role}
+          setRole={setRole}
+          onClose={() => setShowPromote(false)}
+          onPromote={handlePromote}
+        />
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default UserDetails;

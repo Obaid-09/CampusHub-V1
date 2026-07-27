@@ -10,47 +10,23 @@ import AnalyticsAudience from "../../components/dashboard/AnalyticsAudience";
 import { dummyResource } from "../../constants/resources";
 
 const ResourceAnalyticsPage = () => {
+  return (
+    <DashboardLayout>
+      <div className="space-y-8">
+        <AnalyticsHeader resource={dummyResource} />
+        <AnalyticsStats resource={dummyResource} />
+        <AnalyticsInfo resource={dummyResource} />
+        <AnalyticsActions resource={dummyResource} />
+        <AnalyticsCharts />
+        <div className="grid lg:grid-cols-2 gap-8">
+          <RatingDistribution />
+          <AnalyticsAudience />
+        </div>
 
-    return (
-
-        <DashboardLayout>
-
-            <div className="space-y-8">
-
-                <AnalyticsHeader
-                    resource={dummyResource}
-                />
-
-                <AnalyticsStats
-                    resource={dummyResource}
-                />
-
-                <AnalyticsInfo
-                    resource={dummyResource}
-                />
-
-                <AnalyticsActions
-                    resource={dummyResource}
-                />
-
-                <AnalyticsCharts />
-
-                <div className="grid lg:grid-cols-2 gap-8">
-
-                    <RatingDistribution />
-
-                    <AnalyticsAudience />
-
-                </div>
-
-                <RecentReviews />
-
-            </div>
-
-        </DashboardLayout>
-
-    );
-
+        <RecentReviews />
+      </div>
+    </DashboardLayout>
+  );
 };
 
 export default ResourceAnalyticsPage;

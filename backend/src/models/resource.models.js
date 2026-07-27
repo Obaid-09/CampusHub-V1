@@ -171,7 +171,7 @@ const resourceSchema = new Schema(
       max: 5,
     },
 
-    ratingsCount: {
+    totalRatings: {
       type: Number,
       default: 0,
     },

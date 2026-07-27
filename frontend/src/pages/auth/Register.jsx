@@ -4,64 +4,40 @@ import AuthCard from "../../components/auth/AuthCard";
 import RegisterForm from "../../components/auth/RegisterForm";
 import useAuth from "../../hooks/useAuth";
 import { authAPI } from "../../api/auth.api";
-import {
-    successToast,
-    errorToast,
-} from "../../utils/toast";
+import { successToast, errorToast } from "../../utils/toast";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
-    const navigate = useNavigate();
-    const { refreshUser } = useAuth();
+  const handleRegister = async (formData) => {
+    try {
+      await authAPI.register(formData);
+      await refreshUser();
+      successToast("Account created successfully!");
 
-    const handleRegister = async (formData) => {
-        try {
-            await authAPI.register(formData);
-            await refreshUser();
-            successToast(
-                "Account created successfully!"
-            );
+      navigate("/", {
+        replace: true,
+      });
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Registration failed");
+    }
+  };
 
-            navigate(
-                "/",
-                {
-                    replace: true,
-                }
-            );
-        }
+  return (
+    <AuthLayout>
+      {(isOn) => (
+        <AuthCard isOn={isOn}>
+          <RegisterForm isOn={isOn} onSubmit={handleRegister} />
+        </AuthCard>
+      )}
+    </AuthLayout>
+    // <AuthCard>
 
-        catch (error) {
-            errorToast(
-                error.response?.data?.message ||
-                "Registration failed"
-            );
-        }
-    };
+    //     <RegisterForm />
 
-    return (
-
-        <AuthLayout>
-
-            {(isOn) => (
-
-                <AuthCard isOn={isOn}>
-                    <RegisterForm
-                        isOn={isOn}
-                        onSubmit={handleRegister}
-                    />
-                </AuthCard>
-
-            )}
-
-        </AuthLayout>
-        // <AuthCard>
-
-        //     <RegisterForm />
-
-        // </AuthCard>
-
-    );
-
+    // </AuthCard>
+  );
 };
 
 export default Register;

@@ -19,7 +19,13 @@ import {
   getReportById,
   getAllReports,
   resolveReport,
-  dismissReport
+  dismissReport,
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getSettings,
+  updateSettings,
 } from "../controllers/admin.controller.js";
 
 const router = Router();
@@ -80,4 +86,21 @@ router
   .route("/reports/:reportId/dismiss")
   .patch(verifyJWT, verifyAdmin, dismissReport);
 
+// Categories
+// ==========================================
+router
+  .route("/categories")
+  .get(verifyJWT, verifyAdmin, getCategories)
+  .post(verifyJWT, verifyAdmin, createCategory);
+
+router
+  .route("/categories/:categoryId")
+  .patch(updateCategory)
+  .delete(deleteCategory);
+
+router
+  .route("/settings")
+  .get(verifyJWT, verifyAdmin, getSettings)
+  .patch(verifyJWT, verifyAdmin, updateSettings);
+  
 export default router;

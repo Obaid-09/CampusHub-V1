@@ -1,168 +1,332 @@
+// import { useState } from "react";
+
+// import AdminLayout from "../../components/admin/AdminLayout";
+// import CategoryTabs from "../../components/admin/CategoryTabs";
+// import CategoryToolbar from "../../components/admin/CategoryToolbar";
+// import CategoryTable from "../../components/admin/CategoryTable";
+// import EditCategoryModal from "../../components/admin/EditCategoryModal";
+// import DeleteCategoryModal from "../../components/admin/DeleteCategoryModal";
+// import AddCategoryModal from "../../components/admin/AddCategoryModal";
+
+// import {
+
+//     categoryTabs,
+
+//     categoryData,
+
+// } from "../../constants/categories";
+
+// const Categories = () => {
+
+//     const [active, setActive] = useState("Branches");
+//     const [search,setSearch]=useState("");
+//     const [showAdd,setShowAdd]=useState(false);
+
+//     const [showEdit,setShowEdit]=useState(false);
+
+//     const [showDelete,setShowDelete]=useState(false);
+
+//     const [selectedCategory,setSelectedCategory]=useState(null);
+
+//     const filteredData = categoryData[active].filter(item=>
+
+//         item.toLowerCase().includes(search.toLowerCase())
+
+//     );
+//     return (
+
+//         <AdminLayout>
+
+//             <div className="space-y-8">
+
+//                 <div>
+
+//                     <h1
+//                         className="
+//                             text-4xl
+//                             font-heading
+//                             font-bold
+//                             text-secondary
+//                         "
+//                     >
+
+//                         Categories
+
+//                     </h1>
+
+//                     <p className="mt-2 text-gray600">
+
+//                         Manage branches, semesters, subjects and resource types.
+
+//                     </p>
+
+//                 </div>
+
+//                 <CategoryToolbar
+
+//                     search={search}
+
+//                     setSearch={setSearch}
+
+//                     onAdd={()=>setShowAdd(true)}
+
+//                 />
+
+//                 <CategoryTabs
+
+//                     tabs={categoryTabs}
+
+//                     active={active}
+
+//                     setActive={setActive}
+
+//                 />
+
+//                 <CategoryTable
+
+//                     data={filteredData}
+
+//                     onEdit={(item)=>{
+
+//                         setSelectedCategory(item);
+
+//                         setShowEdit(true);
+
+//                     }}
+
+//                     onDelete={(item)=>{
+
+//                         setSelectedCategory(item);
+
+//                         setShowDelete(true);
+
+//                     }}
+
+//                 />
+
+//                 <AddCategoryModal
+
+//                     open={showAdd}
+
+//                     onClose={()=>setShowAdd(false)}
+
+//                     onSave={(name)=>{
+
+//                         console.log(name);
+
+//                         setShowAdd(false);
+
+//                     }}
+
+//                 />
+
+//                 <EditCategoryModal
+
+//                     open={showEdit}
+
+//                     value={selectedCategory}
+
+//                     onClose={()=>setShowEdit(false)}
+
+//                     onSave={(value)=>{
+
+//                         console.log(value);
+
+//                         setShowEdit(false);
+
+//                     }}
+
+//                 />
+
+//                 <DeleteCategoryModal
+
+//                     open={showDelete}
+
+//                     category={selectedCategory}
+
+//                     onClose={()=>setShowDelete(false)}
+
+//                     onDelete={()=>{
+
+//                         console.log(selectedCategory);
+
+//                         setShowDelete(false);
+
+//                     }}
+
+//                 />
+
+//             </div>
+
+//         </AdminLayout>
+
+//     );
+
+// };
+
+// export default Categories;
+
 import { useState } from "react";
 
 import AdminLayout from "../../components/admin/AdminLayout";
 import CategoryTabs from "../../components/admin/CategoryTabs";
 import CategoryToolbar from "../../components/admin/CategoryToolbar";
 import CategoryTable from "../../components/admin/CategoryTable";
+import AddCategoryModal from "../../components/admin/AddCategoryModal";
 import EditCategoryModal from "../../components/admin/EditCategoryModal";
 import DeleteCategoryModal from "../../components/admin/DeleteCategoryModal";
-import AddCategoryModal from "../../components/admin/AddCategoryModal";
 
-import {
-
-    categoryTabs,
-
-    categoryData,
-
-} from "../../constants/categories";
-
+import useAdminCategories from "../../hooks/useAdminCategories";
+import { adminAPI } from "../../api/admin.api";
+import { successToast, errorToast } from "../../utils/toast";
 
 const Categories = () => {
-
-    const [active, setActive] = useState("Branches");
-    const [search,setSearch]=useState("");
-    const [showAdd,setShowAdd]=useState(false);
-
-    const [showEdit,setShowEdit]=useState(false);
-
-    const [showDelete,setShowDelete]=useState(false);
-
-    const [selectedCategory,setSelectedCategory]=useState(null);
-
-    const filteredData = categoryData[active].filter(item=>
-
-        item.toLowerCase().includes(search.toLowerCase())
-
-    );
-    return (
-
-        <AdminLayout>
-
-            <div className="space-y-8">
-
-                <div>
-
-                    <h1
-                        className="
-                            text-4xl
-                            font-heading
-                            font-bold
-                            text-secondary
-                        "
-                    >
-
-                        Categories
-
-                    </h1>
-
-                    <p className="mt-2 text-gray600">
-
-                        Manage branches, semesters, subjects and resource types.
-
-                    </p>
-
-                </div>
-
-                <CategoryToolbar
-
-                    search={search}
-
-                    setSearch={setSearch}
-
-                    onAdd={()=>setShowAdd(true)}
-
-                />
-
-                <CategoryTabs
-
-                    tabs={categoryTabs}
-
-                    active={active}
-
-                    setActive={setActive}
-
-                />
-
-                <CategoryTable
-
-                    data={filteredData}
-
-                    onEdit={(item)=>{
-
-                        setSelectedCategory(item);
-
-                        setShowEdit(true);
-
-                    }}
-
-                    onDelete={(item)=>{
-
-                        setSelectedCategory(item);
-
-                        setShowDelete(true);
-
-                    }}
-
-                />
-
-                <AddCategoryModal
-
-                    open={showAdd}
-
-                    onClose={()=>setShowAdd(false)}
-
-                    onSave={(name)=>{
-
-                        console.log(name);
-
-                        setShowAdd(false);
-
-                    }}
-
-                />
-
-                <EditCategoryModal
-
-                    open={showEdit}
-
-                    value={selectedCategory}
-
-                    onClose={()=>setShowEdit(false)}
-
-                    onSave={(value)=>{
-
-                        console.log(value);
-
-                        setShowEdit(false);
-
-                    }}
-
-                />
-
-                <DeleteCategoryModal
-
-                    open={showDelete}
-
-                    category={selectedCategory}
-
-                    onClose={()=>setShowDelete(false)}
-
-                    onDelete={()=>{
-
-                        console.log(selectedCategory);
-
-                        setShowDelete(false);
-
-                    }}
-
-                />
-
-            </div>
-
-        </AdminLayout>
-
-    );
-
+  const { categories, loading, filters, setFilters, refreshCategories } =
+    useAdminCategories();
+
+  const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const tabs = [
+    {
+      label: "Branches",
+      value: "branch",
+    },
+    {
+      label: "Subjects",
+      value: "subject",
+    },
+    {
+      label: "Resource Types",
+      value: "resourceType",
+    },
+  ];
+
+  const handleCreateCategory = async (data) => {
+    try {
+      await adminAPI.createCategory(data);
+
+      successToast("Category created successfully.");
+
+      setShowAdd(false);
+
+      refreshCategories();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to create category.");
+    }
+  };
+
+  const handleUpdateCategory = async (data) => {
+    try {
+      await adminAPI.updateCategory(selectedCategory._id, data);
+
+      successToast("Category updated successfully.");
+
+      setShowEdit(false);
+      setSelectedCategory(null);
+
+      refreshCategories();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to update category.");
+    }
+  };
+
+  const handleDeleteCategory = async () => {
+    try {
+      await adminAPI.deleteCategory(selectedCategory._id);
+
+      successToast("Category deleted successfully.");
+
+      setShowDelete(false);
+      setSelectedCategory(null);
+
+      refreshCategories();
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to delete category.");
+    }
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-4xl font-heading font-bold text-secondary">
+            Categories
+          </h1>
+
+          <p className="mt-2 text-gray600">
+            Manage branches, subjects and resource types.
+          </p>
+        </div>
+
+        <CategoryToolbar
+          search={filters.search}
+          setSearch={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              search: value,
+              page: 1,
+            }))
+          }
+          onAdd={() => setShowAdd(true)}
+        />
+
+        <CategoryTabs
+          tabs={tabs}
+          active={filters.type}
+          setActive={(type) =>
+            setFilters((prev) => ({
+              ...prev,
+              type,
+              page: 1,
+            }))
+          }
+        />
+
+        <CategoryTable
+          categories={categories}
+          loading={loading}
+          onEdit={(category) => {
+            setSelectedCategory(category);
+            setShowEdit(true);
+          }}
+          onDelete={(category) => {
+            setSelectedCategory(category);
+            setShowDelete(true);
+          }}
+        />
+
+        <AddCategoryModal
+          open={showAdd}
+          onClose={() => setShowAdd(false)}
+          onCreate={handleCreateCategory}
+        />
+
+        <EditCategoryModal
+          open={showEdit}
+          category={selectedCategory}
+          onClose={() => {
+            setShowEdit(false);
+            setSelectedCategory(null);
+          }}
+          onSave={handleUpdateCategory}
+        />
+
+        <DeleteCategoryModal
+          open={showDelete}
+          category={selectedCategory}
+          onClose={() => {
+            setShowDelete(false);
+            setSelectedCategory(null);
+          }}
+          onDelete={handleDeleteCategory}
+        />
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default Categories;

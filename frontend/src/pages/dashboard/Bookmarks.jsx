@@ -9,94 +9,99 @@ import { resourceAPI } from "../../api/resource.api";
 import { errorToast, successToast } from "../../utils/toast";
 
 const Bookmarks = () => {
+  const [search, setSearch] = useState("");
 
-    const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("latest");
+  const [bookmarkedResources, setBookmarkedResources] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const [sort, setSort] = useState("latest");
-    const [bookmarkedResources, setBookmarkedResources] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchBookmarks = async () => {
-            try {
-                const response = await resourceAPI.getBookmarks();
-                setBookmarkedResources(
-                    (response.data.data || [])
-                        .map((bookmark) => bookmark.resource)
-                        .filter(Boolean),
-                );
-            } catch (error) {
-                errorToast(error.response?.data?.message || "Could not load bookmarks.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchBookmarks();
-    }, []);
-
-    const filteredResources = useMemo(() => bookmarkedResources
-        .filter((resource) => resource.title.toLowerCase().includes(search.toLowerCase()))
-        .sort((first, second) => {
-            if (sort === "rating") return (second.averageRating || 0) - (first.averageRating || 0);
-            if (sort === "downloads") return second.downloads - first.downloads;
-            return new Date(second.createdAt) - new Date(first.createdAt);
-        }), [bookmarkedResources, search, sort]);
-
-    const removeBookmark = async (resource) => {
-        try {
-            const response = await resourceAPI.bookmarkResource(resource._id);
-            if (!response.data.data.bookmarked) {
-                setBookmarkedResources((current) => current.filter((item) => item._id !== resource._id));
-            }
-            successToast(response.data.message);
-        } catch (error) {
-            errorToast(error.response?.data?.message || "Could not remove bookmark.");
-        }
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      try {
+        const response = await resourceAPI.getBookmarks();
+        setBookmarkedResources(
+          (response.data.data || [])
+            .map((bookmark) => bookmark.resource)
+            .filter(Boolean),
+        );
+      } catch (error) {
+        errorToast(
+          error.response?.data?.message || "Could not load bookmarks.",
+        );
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchBookmarks();
+  }, []);
 
-    return (
+  const filteredResources = useMemo(
+    () =>
+      bookmarkedResources
+        .filter((resource) =>
+          resource.title.toLowerCase().includes(search.toLowerCase()),
+        )
+        .sort((first, second) => {
+          if (sort === "rating")
+            return (second.averageRating || 0) - (first.averageRating || 0);
+          if (sort === "downloads") return second.downloads - first.downloads;
+          return new Date(second.createdAt) - new Date(first.createdAt);
+        }),
+    [bookmarkedResources, search, sort],
+  );
 
-        <DashboardLayout>
+  const removeBookmark = async (resource) => {
+    try {
+      const response = await resourceAPI.bookmarkResource(resource._id);
+      if (!response.data.data.bookmarked) {
+        setBookmarkedResources((current) =>
+          current.filter((item) => item._id !== resource._id),
+        );
+      }
+      successToast(response.data.message);
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Could not remove bookmark.");
+    }
+  };
 
-            <div className="space-y-8">
-
-                <div>
-
-                    <h1
-                        className="
+  return (
+    <DashboardLayout>
+      <div className="space-y-8">
+        <div>
+          <h1
+            className="
                             text-4xl
                             font-heading
                             font-bold
                             text-secondary
                         "
-                    >
-                        Bookmarks
-                    </h1>
+          >
+            Bookmarks
+          </h1>
 
-                    <p className="mt-2 text-gray600">
-                        Quickly access your saved resources.
-                    </p>
+          <p className="mt-2 text-gray600">
+            Quickly access your saved resources.
+          </p>
+        </div>
 
-                </div>
+        <BookmarksToolbar
+          search={search}
+          setSearch={setSearch}
+          sort={sort}
+          setSort={setSort}
+        />
 
-                <BookmarksToolbar
-                    search={search}
-                    setSearch={setSearch}
-                    sort={sort}
-                    setSort={setSort}
-                />
-
-                {loading ? <Loader text="Loading bookmarks..." /> : <BookmarksGrid
-                    resources={filteredResources}
-                    onRemoveBookmark={removeBookmark}
-                />}
-
-            </div>
-
-        </DashboardLayout>
-
-    );
-
+        {loading ? (
+          <Loader text="Loading bookmarks..." />
+        ) : (
+          <BookmarksGrid
+            resources={filteredResources}
+            onRemoveBookmark={removeBookmark}
+          />
+        )}
+      </div>
+    </DashboardLayout>
+  );
 };
 
 export default Bookmarks;

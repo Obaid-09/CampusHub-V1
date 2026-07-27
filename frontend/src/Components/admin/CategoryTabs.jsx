@@ -1,69 +1,70 @@
-const CategoryTabs = ({
-    tabs,
-    active,
-    setActive,
-}) => {
+// const CategoryTabs = ({ tabs, active, setActive }) => {
+//   return (
+//     <div
+//       className="
+//                 flex
+//                 flex-wrap
+//                 gap-3
+//             "
+//     >
+//       {tabs.map((tab) => (
+//         <button
+//           key={tab}
+//           onClick={() => setActive(tab)}
+//           className={`
 
-    return (
+//                             px-5
 
-        <div
-            className="
-                flex
-                flex-wrap
-                gap-3
-            "
-        >
+//                             py-3
 
-            {
+//                             rounded-xl
 
-                tabs.map(tab=>(
+//                             font-medium
 
-                    <button
+//                             transition-all
 
-                        key={tab}
+//                             ${
+//                               active === tab
+//                                 ? "bg-primary text-white"
+//                                 : "bg-white border border-gray100 text-secondary"
+//                             }
 
-                        onClick={()=>setActive(tab)}
+//                         `}
+//         >
+//           {tab}
+//         </button>
+//       ))}
+//     </div>
+//   );
+// };
 
-                        className={`
+// export default CategoryTabs;
 
-                            px-5
+const CategoryTabs = ({ tabs, active, setActive }) => {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {tabs.map((tab) => (
+        <button
+          key={tab.value}
+          onClick={() => setActive(tab.value)}
+          className={`
+            py-3
+            rounded-xl
+            font-medium
+            transition-all
 
-                            py-3
-
-                            rounded-xl
-
-                            font-medium
-
-                            transition-all
-
-                            ${
-                                active===tab
-
-                                ?
-
-                                "bg-primary text-white"
-
-                                :
-
-                                "bg-white border border-gray100 text-secondary"
-
-                            }
-
-                        `}
-                    >
-
-                        {tab}
-
-                    </button>
-
-                ))
-
+            ${
+              active === tab.value
+                ? "bg-primary text-white shadow-md"
+                : "bg-white border border-gray200 text-secondary hover:bg-gray50"
             }
-
-        </div>
-
-    );
-
+          `}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default CategoryTabs;

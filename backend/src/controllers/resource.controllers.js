@@ -356,6 +356,9 @@ const getResourceById = asyncHandler(async (req, res) => {
   resourceObject.formattedUploadDate =
     resource.createdAt.toLocaleDateString("en-IN");
 
+  console.log(resource.averageRating);
+  console.log(resource.totalRatings);
+  
   return res
     .status(200)
     .json(
@@ -961,5 +964,5 @@ export {
   deleteResource,
   getMyUploads,
   getBookmarks,
-  reportResource
+  reportResource,
 };

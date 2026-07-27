@@ -59,7 +59,6 @@
 //                         file={file}
 //                     />
 
-
 //                 </div>
 
 //                 {!success && (
@@ -80,17 +79,10 @@
 
 // export default UploadResource;
 
-
 import ResourceEditor from "./ResourceEditor";
 
 const UploadResource = () => {
-
-    return (
-
-        <ResourceEditor />
-
-    );
-
+  return <ResourceEditor />;
 };
 
 export default UploadResource;
@@ -101,10 +93,10 @@ export default UploadResource;
 //  File selection
 // Phase 2
 // Resource form
-  // Validation
-  // Tag input
-  // Thumbnail preview
+// Validation
+// Tag input
+// Thumbnail preview
 // Phase 3
-  // Live preview card
-  // Upload progress UI
-  // Success screen
+// Live preview card
+// Upload progress UI
+// Success screen

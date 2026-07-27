@@ -12,6 +12,7 @@ import { successToast, errorToast } from "../../utils/toast.js";
 import { adminAPI } from "../../api/admin.api.js";
 import PromoteUserModal from "../../components/admin/PromoteUserModal";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/ui/Loader.jsx";
 
 const UserDetails = () => {
   const { user, loading, refreshUser } = useAdminUser();
@@ -26,7 +27,7 @@ const UserDetails = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="text-center py-16 text-gray500">Loading user...</div>
+        <Loader/>
       </AdminLayout>
     );
   }

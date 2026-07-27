@@ -1,180 +1,341 @@
+// import AdminLayout from "../../components/admin/AdminLayout";
+// import SettingsSection from "../../components/admin/SettingsSection";
+// import ToggleSetting from "../../components/admin/ToggleSetting";
+// import SecuritySettings from "../../components/admin/SecuritySettings";
+// import UploadSettings from "../../components/admin/UploadSettings";
+// import Input from "../../components/ui/Input";
+// import Button from "../../components/ui/Button";
+// import BackupSettings from "../../components/admin/BackupSettings";
+// import EmailSettings from "../../components/admin/EmailSettings";
+// import DangerZone from "../../components/admin/DangerZone";
+// import { useEffect, useState } from "react";
+// import Loader from "../../components/ui/Loader";
+// import useAdminSettings from "../../hooks/useAdminSettings";
+// import { adminAPI } from "../../api/admin.api";
+// import { successToast, errorToast } from "../../utils/toast";
+
+// const AdminSettings = () => {
+//   const { settings, loading, refreshSettings } = useAdminSettings();
+
+//   const [form, setForm] = useState(null);
+//   if (loading || !form) {
+//     return (
+//       <AdminLayout>
+//         <div className="flex justify-center py-20">
+//           <Loader />
+//         </div>
+//       </AdminLayout>
+//     );
+//   }
+
+//   const updateSetting = (section, field, value) => {
+//     setForm((prev) => ({
+//       ...prev,
+//       [section]: {
+//         ...prev[section],
+//         [field]: value,
+//       },
+//     }));
+//   };
+
+//   const handleSave = async () => {
+//     try {
+//       await adminAPI.updateSettings(form);
+
+//       await refreshSettings();
+
+//       successToast("Settings updated successfully.");
+//     } catch (error) {
+//       errorToast(error.response?.data?.message || "Failed to update settings.");
+//     }
+//   };
+//   useEffect(() => {
+//     if (settings) {
+//       setForm(settings);
+//     }
+//   }, [settings]);
+
+//   return (
+//     <AdminLayout>
+//       <div className="space-y-8">
+//         <div>
+//           <h1
+//             className="
+//                             text-4xl
+//                             font-heading
+//                             font-bold
+//                             text-secondary
+//                         "
+//           >
+//             Admin Settings
+//           </h1>
+
+//           <p className="mt-2 text-gray600">Configure the CampusHub platform.</p>
+//         </div>
+
+//         <SettingsSection title="General Settings">
+//           <div className="grid md:grid-cols-2 gap-6">
+//             <Input label="Platform Name" value="CampusHub" />
+
+//             <Input label="Support Email" value="admin@campushub.com" />
+//           </div>
+//         </SettingsSection>
+
+//         <SettingsSection title="Platform Settings">
+//           <ToggleSetting
+//             label="Maintenance Mode"
+//             description="Temporarily disable the platform."
+//           />
+
+//           <ToggleSetting
+//             label="Allow Registration"
+//             description="Allow new users to create accounts."
+//           />
+
+//           <ToggleSetting
+//             label="Auto Approve Resources"
+//             description="Automatically publish uploaded resources."
+//           />
+//         </SettingsSection>
+
+//         <SettingsSection title="Upload Settings">
+//           <UploadSettings />
+//         </SettingsSection>
+
+//         <SettingsSection title="Security Settings">
+//           <SecuritySettings />
+//         </SettingsSection>
+
+//         <SettingsSection title="Platform Controls">
+//           <ToggleSetting
+//             label="Enable Resource Approval"
+//             description="Every uploaded resource requires admin approval."
+//           />
+
+//           <ToggleSetting
+//             label="Allow Guest Access"
+//             description="Visitors can browse public resources without logging in."
+//           />
+
+//           <ToggleSetting
+//             label="Enable User Reports"
+//             description="Allow users to report inappropriate resources."
+//           />
+
+//           <ToggleSetting
+//             label="Enable Email Notifications"
+//             description="Send system emails for approvals and account updates."
+//           />
+//         </SettingsSection>
+
+//         <SettingsSection title="Backup & Export">
+//           <BackupSettings />
+//         </SettingsSection>
+
+//         <SettingsSection title="Email Configuration">
+//           <EmailSettings />
+//         </SettingsSection>
+
+//         <SettingsSection title="Danger Zone">
+//           <DangerZone />
+//         </SettingsSection>
+
+//         <div className="flex justify-end">
+//           <Button>Save Changes</Button>
+//         </div>
+//       </div>
+//     </AdminLayout>
+//   );
+// };
+
+// export default AdminSettings;
+
+import { useEffect, useState } from "react";
+
 import AdminLayout from "../../components/admin/AdminLayout";
 import SettingsSection from "../../components/admin/SettingsSection";
 import ToggleSetting from "../../components/admin/ToggleSetting";
-import SecuritySettings from "../../components/admin/SecuritySettings";
-import UploadSettings from "../../components/admin/UploadSettings";
+
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
-import BackupSettings from "../../components/admin/BackupSettings";
-import EmailSettings from "../../components/admin/EmailSettings";
-import DangerZone from "../../components/admin/DangerZone";
+import Loader from "../../components/ui/Loader";
+
+import useAdminSettings from "../../hooks/useAdminSettings";
+import { adminAPI } from "../../api/admin.api";
+import { successToast, errorToast } from "../../utils/toast";
+
 const AdminSettings = () => {
+  const { settings, loading, refreshSettings } = useAdminSettings();
 
+  const [form, setForm] = useState(null);
+
+  useEffect(() => {
+    if (settings) {
+      setForm(settings);
+    }
+  }, [settings]);
+
+  const updateSetting = (section, field, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      await adminAPI.updateSettings(form);
+
+      await refreshSettings();
+
+      successToast("Settings updated successfully.");
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Failed to update settings.");
+    }
+  };
+
+  if (loading || !form) {
     return (
-
-        <AdminLayout>
-
-            <div className="space-y-8">
-
-                <div>
-
-                    <h1
-                        className="
-                            text-4xl
-                            font-heading
-                            font-bold
-                            text-secondary
-                        "
-                    >
-
-                        Admin Settings
-
-                    </h1>
-
-                    <p className="mt-2 text-gray600">
-
-                        Configure the CampusHub platform.
-
-                    </p>
-
-                </div>
-
-                <SettingsSection
-                    title="General Settings"
-                >
-
-                    <div className="grid md:grid-cols-2 gap-6">
-
-                        <Input
-                            label="Platform Name"
-                            value="CampusHub"
-                        />
-
-                        <Input
-                            label="Support Email"
-                            value="admin@campushub.com"
-                        />
-
-                    </div>
-
-                </SettingsSection>
-
-                <SettingsSection
-                    title="Platform Settings"
-                >
-
-                    <ToggleSetting
-                        label="Maintenance Mode"
-                        description="Temporarily disable the platform."
-                    />
-
-                    <ToggleSetting
-                        label="Allow Registration"
-                        description="Allow new users to create accounts."
-                    />
-
-                    <ToggleSetting
-                        label="Auto Approve Resources"
-                        description="Automatically publish uploaded resources."
-                    />
-
-                </SettingsSection>
-
-
-                <SettingsSection
-                    title="Upload Settings"
-                >
-
-                    <UploadSettings/>
-
-                </SettingsSection>
-
-                <SettingsSection
-                    title="Security Settings"
-                >
-
-                    <SecuritySettings/>
-
-                </SettingsSection>
-
-                <SettingsSection
-                      title="Platform Controls"
-                  >
-
-                      <ToggleSetting
-
-                          label="Enable Resource Approval"
-
-                          description="Every uploaded resource requires admin approval."
-
-                      />
-
-                      <ToggleSetting
-
-                          label="Allow Guest Access"
-
-                          description="Visitors can browse public resources without logging in."
-
-                      />
-
-                      <ToggleSetting
-
-                          label="Enable User Reports"
-
-                          description="Allow users to report inappropriate resources."
-
-                      />
-
-                      <ToggleSetting
-
-                          label="Enable Email Notifications"
-
-                          description="Send system emails for approvals and account updates."
-
-                      />
-
-                  </SettingsSection>
-
-                <SettingsSection
-                    title="Backup & Export"
-                >
-
-                    <BackupSettings/>
-
-                </SettingsSection>
-
-                <SettingsSection
-                    title="Email Configuration"
-                >
-
-                    <EmailSettings/>
-
-                </SettingsSection>
-
-                <SettingsSection
-                    title="Danger Zone"
-                >
-
-                    <DangerZone/>
-
-                </SettingsSection>
-
-                <div className="flex justify-end">
-
-                    <Button>
-
-                        Save Changes
-
-                    </Button>
-
-                </div>
-
-            </div>
-
-        </AdminLayout>
-
+      <AdminLayout>
+        <div className="flex justify-center py-20">
+          <Loader />
+        </div>
+      </AdminLayout>
     );
+  }
 
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-4xl font-heading font-bold text-secondary">
+            Admin Settings
+          </h1>
+
+          <p className="mt-2 text-gray600">Configure the CampusHub platform.</p>
+        </div>
+
+        {/* Platform Controls */}
+
+        <SettingsSection title="Platform Controls">
+          <ToggleSetting
+            label="Allow Registration"
+            description="Allow new users to create accounts."
+            checked={form.platform.allowRegistration}
+            onChange={(checked) =>
+              updateSetting("platform", "allowRegistration", checked)
+            }
+          />
+
+          <ToggleSetting
+            label="Enable Resource Approval"
+            description="Every uploaded resource requires admin approval."
+            checked={form.platform.resourceApproval}
+            onChange={(checked) =>
+              updateSetting("platform", "resourceApproval", checked)
+            }
+          />
+
+          <ToggleSetting
+            label="Enable User Reports"
+            description="Allow users to report inappropriate resources."
+            checked={form.platform.enableReports}
+            onChange={(checked) =>
+              updateSetting("platform", "enableReports", checked)
+            }
+          />
+
+          <ToggleSetting
+            label="Enable Email Notifications"
+            description="Send system emails for approvals and account updates."
+            checked={form.platform.enableEmailNotifications}
+            onChange={(checked) =>
+              updateSetting("platform", "enableEmailNotifications", checked)
+            }
+          />
+        </SettingsSection>
+
+        {/* Upload Settings */}
+
+        <SettingsSection title="Upload Settings">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Input
+              label="Maximum Upload Size (MB)"
+              type="number"
+              value={form.upload.maxUploadSize}
+              onChange={(e) =>
+                updateSetting("upload", "maxUploadSize", Number(e.target.value))
+              }
+            />
+
+            <Input
+              label="Maximum Uploads Per Day"
+              type="number"
+              value={form.upload.uploadsPerDay}
+              onChange={(e) =>
+                updateSetting("upload", "uploadsPerDay", Number(e.target.value))
+              }
+            />
+
+            <Input
+              label="Allowed File Types"
+              className="md:col-span-2"
+              value={form.upload.allowedTypes.join(", ")}
+              onChange={(e) =>
+                updateSetting(
+                  "upload",
+                  "allowedTypes",
+                  e.target.value
+                    .split(",")
+                    .map((type) => type.trim())
+                    .filter(Boolean),
+                )
+              }
+            />
+          </div>
+        </SettingsSection>
+
+        {/* Security Settings */}
+
+        <SettingsSection title="Security Settings">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Input
+              label="Minimum Password Length"
+              type="number"
+              value={form.security.passwordLength}
+              onChange={(e) =>
+                updateSetting(
+                  "security",
+                  "passwordLength",
+                  Number(e.target.value),
+                )
+              }
+            />
+
+            <Input
+              label="Maximum Login Attempts"
+              type="number"
+              value={form.security.loginAttempts}
+              onChange={(e) =>
+                updateSetting(
+                  "security",
+                  "loginAttempts",
+                  Number(e.target.value),
+                )
+              }
+            />
+          </div>
+        </SettingsSection>
+
+        <div className="flex justify-end">
+          <Button onClick={handleSave}>Save Changes</Button>
+        </div>
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default AdminSettings;

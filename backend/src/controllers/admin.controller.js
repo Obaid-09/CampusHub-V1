@@ -3,6 +3,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 import { Resource } from "../models/resource.models.js";
 import mongoose from "mongoose";
+import { Settings } from "../models/settings.models.js";
+import { Category } from "../models/category.model.js";
 import { Report } from "../models/report.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { formatFileSize } from "../utils/formatFileSize.js";
@@ -1470,6 +1472,283 @@ const dismissReport = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, report, "Report dismissed successfully."));
 });
 
+const getCategories = asyncHandler(async (req, res) => {
+  const { search = "", type, page = 1, limit = 20 } = req.query;
+
+  const filter = {};
+
+  if (type) {
+    filter.type = type;
+  }
+
+  if (search) {
+    filter.name = {
+      $regex: search,
+      $options: "i",
+    };
+  }
+
+  const pageNumber = Number(page);
+  const limitNumber = Number(limit);
+  const skip = (pageNumber - 1) * limitNumber;
+
+  const categories = await Category.find(filter)
+    .populate("createdBy", "fullname username")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limitNumber);
+
+  const totalCategories = await Category.countDocuments(filter);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        categories,
+        page: pageNumber,
+        totalPages: Math.ceil(totalCategories / limitNumber),
+        totalCategories,
+      },
+      "Categories fetched successfully."
+    )
+  );
+});
+
+const createCategory = asyncHandler(async (req, res) => {
+  const { name, type } = req.body;
+
+  // Validation
+  // ==========================================
+  if (!name || !type) {
+    throw new ApiError(400, "Name and type are required.");
+  }
+
+  // Check duplicate
+  // ==========================================
+  const existingCategory = await Category.findOne({
+    name: name.trim(),
+    type,
+  });
+
+  if (existingCategory) {
+    throw new ApiError(409, `${type} "${name}" already exists.`);
+  }
+
+  // Create category
+  // ==========================================
+  const category = await Category.create({
+    name: name.trim(),
+    type,
+    createdBy: req.user._id,
+  });
+
+  const createdCategory = await Category.findById(category._id).populate(
+    "createdBy",
+    "fullname username"
+  );
+
+  // Response
+  // ==========================================
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(201, createdCategory, "Category created successfully.")
+    );
+});
+
+const updateCategory = asyncHandler(async (req, res) => {
+  // Validate Category ID
+  // ==========================================
+  const { categoryId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+    throw new ApiError(400, "Invalid category ID.");
+  }
+
+  // Request Body
+  // ==========================================
+  const { name, isActive } = req.body;
+
+  // Find Category
+  // ==========================================
+  const category = await Category.findById(categoryId);
+
+  if (!category) {
+    throw new ApiError(404, "Category not found.");
+  }
+
+  // Duplicate Check
+  // ==========================================
+  if (name && name.trim() !== category.name) {
+    const existingCategory = await Category.findOne({
+      _id: { $ne: categoryId },
+      name: name.trim(),
+      type: category.type,
+    });
+
+    if (existingCategory) {
+      throw new ApiError(409, `${category.type} "${name}" already exists.`);
+    }
+
+    category.name = name.trim();
+  }
+
+  // Update Active Status
+  // ==========================================
+  if (typeof isActive === "boolean") {
+    category.isActive = isActive;
+  }
+
+  await category.save();
+
+  const updatedCategory = await Category.findById(category._id).populate(
+    "createdBy",
+    "fullname username"
+  );
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedCategory, "Category updated successfully.")
+    );
+});
+
+const deleteCategory = asyncHandler(async (req, res) => {
+  // Validate Category ID
+  // ==========================================
+  const { categoryId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+    throw new ApiError(400, "Invalid category ID.");
+  }
+
+  // Find Category
+  // ==========================================
+  const category = await Category.findById(categoryId);
+
+  if (!category) {
+    throw new ApiError(404, "Category not found.");
+  }
+
+  // Check Usage
+  // ==========================================
+  let resourceExists = false;
+
+  switch (category.type) {
+    case "branch":
+      resourceExists = await Resource.exists({
+        branch: category.name,
+        isDeleted: false,
+      });
+      break;
+
+    case "subject":
+      resourceExists = await Resource.exists({
+        subject: category.name,
+        isDeleted: false,
+      });
+      break;
+
+    case "resourceType":
+      resourceExists = await Resource.exists({
+        type: category.name,
+        isDeleted: false,
+      });
+      break;
+
+    default:
+      resourceExists = false;
+  }
+
+  if (resourceExists) {
+    throw new ApiError(
+      400,
+      `Cannot delete this ${category.type}. It is currently being used by one or more resources.`
+    );
+  }
+
+  // Delete Category
+  // ==========================================
+  await category.deleteOne();
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Category deleted successfully."));
+});
+
+const getSettings = asyncHandler(async (req, res) => {
+  // Fetch existing settings
+  // ==========================================
+  let settings = await Settings.findOne();
+
+  // Create default settings if none exist
+  // ==========================================
+  if (!settings) {
+    settings = await Settings.create({});
+  }
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, settings, "Settings fetched successfully."));
+});
+
+const updateSettings = asyncHandler(async (req, res) => {
+  const { platform, upload, security } = req.body;
+
+  // Fetch existing settings
+  // ==========================================
+  let settings = await Settings.findOne();
+
+  // Create default settings if none exist
+  // ==========================================
+  if (!settings) {
+    settings = await Settings.create({});
+  }
+
+  // Update Platform Settings
+  // ==========================================
+  if (platform) {
+    settings.platform = {
+      ...settings.platform.toObject(),
+      ...platform,
+    };
+  }
+
+  // Update Upload Settings
+  // ==========================================
+  if (upload) {
+    settings.upload = {
+      ...settings.upload.toObject(),
+      ...upload,
+    };
+  }
+
+  // Update Security Settings
+  // ==========================================
+  if (security) {
+    settings.security = {
+      ...settings.security.toObject(),
+      ...security,
+    };
+  }
+
+  // Save
+  // ==========================================
+  await settings.save();
+
+  // Response
+  // ==========================================
+  return res
+    .status(200)
+    .json(new ApiResponse(200, settings, "Settings updated successfully."));
+});
+
 export {
   adminDashboard,
   getAllUsers,
@@ -1489,4 +1768,10 @@ export {
   getReportById,
   resolveReport,
   dismissReport,
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getSettings,
+  updateSettings
 };

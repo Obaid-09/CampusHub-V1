@@ -12,6 +12,7 @@ import { authAPI } from "../../api/auth.api";
 import { successToast, errorToast } from "../../utils/toast";
 import useProfile from "../../hooks/useProfile";
 import RecentlyViewed from "../../components/profile/RecentlyViewed";
+import Loader from "../../components/ui/Loader";
 
 const Profile = () => {
   const { user, loading, refreshUser } = useAuth();
@@ -22,7 +23,7 @@ const Profile = () => {
   console.log(profile);
 
   if (loading) {
-    return null;
+    return <Loader/>
 
     // Later:
     // return <ProfileSkeleton />

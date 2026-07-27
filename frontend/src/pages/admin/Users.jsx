@@ -14,15 +14,10 @@ const Users = () => {
     useAdminUsers();
 
   const [selectedUser, setSelectedUser] = useState(null);
-
   const [showDetails, setShowDetails] = useState(false);
-
   const [showSuspend, setShowSuspend] = useState(false);
-
   const [showDelete, setShowDelete] = useState(false);
-
   const [showPromote, setShowPromote] = useState(false);
-
   const [role, setRole] = useState("Student");
 
   return (

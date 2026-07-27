@@ -45,6 +45,8 @@ import resourceRouter from './routes/resource.routes.js'
 import adminRouter from './routes/admin.routes.js'
 import dashboardRouter from "./routes/dashboard.routes.js";
 import profileRouter from "./routes/profile.routes.js";
+import categoryRouter from "./routes/category.routes.js";
+import reviewRouter from "./routes/review.routes.js";
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
@@ -52,6 +54,8 @@ app.use("/api/v1/resources", resourceRouter)
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/reviews", reviewRouter);
 // http://localhost:8000/api/v1/users/register
 
 

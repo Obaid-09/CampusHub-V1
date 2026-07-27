@@ -8,78 +8,45 @@ import EmptyNotifications from "../../components/dashboard/EmptyNotifications";
 import { dummyNotifications } from "../../constants/dashboard";
 
 const Notifications = () => {
+  const [notifications] = useState(dummyNotifications);
 
-    const [notifications] = useState(dummyNotifications);
-
-    return (
-
-        <DashboardLayout>
-
-            <div className="space-y-8">
-
-                <div>
-
-                    <h1
-                        className="
+  return (
+    <DashboardLayout>
+      <div className="space-y-8">
+        <div>
+          <h1
+            className="
                             text-4xl
                             font-heading
                             font-bold
                             text-secondary
                         "
-                    >
+          >
+            Notifications
+          </h1>
 
-                        Notifications
+          <p className="mt-2 text-gray600">
+            Stay updated with your resources and account.
+          </p>
+        </div>
 
-                    </h1>
+        <NotificationsFilter />
 
-                    <p className="mt-2 text-gray600">
-
-                        Stay updated with your resources and account.
-
-                    </p>
-
-                </div>
-
-                <NotificationsFilter/>
-
-                {
-
-                    notifications.length === 0
-
-                    ? <EmptyNotifications/>
-
-                    : (
-
-                        <div className="space-y-5">
-
-                            {
-
-                                notifications.map(notification => (
-
-                                    <NotificationCard
-
-                                        key={notification.id}
-
-                                        notification={notification}
-
-                                    />
-
-                                ))
-
-                            }
-
-                        </div>
-
-                    )
-
-                }
-
-            </div>
-
-        </DashboardLayout>
-
-    );
-
+        {notifications.length === 0 ? (
+          <EmptyNotifications />
+        ) : (
+          <div className="space-y-5">
+            {notifications.map((notification) => (
+              <NotificationCard
+                key={notification.id}
+                notification={notification}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </DashboardLayout>
+  );
 };
 
 export default Notifications;

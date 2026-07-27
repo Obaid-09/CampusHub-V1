@@ -182,6 +182,8 @@ const AppRoutes = () => {
         <Route path="settings" element={<AdminSettings />} />
       </Route>
 
+      <Route path = "/categories" element = {<Categories/>}/>
+
         <Route path="/admin/resources/deleted" element={<DeletedResources />} />
       <Route path="/admin/resources/:id" element={<AdminResourceDetails />} />
 

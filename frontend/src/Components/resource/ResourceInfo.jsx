@@ -51,7 +51,7 @@ const ResourceInfo = ({ resource }) => {
                     </span>
 
                     <span className="text-gray500">
-                        ({resource.ratingsCount ?? 0} Ratings)
+                        ({resource.totalRatings ?? 0} Ratings)
                     </span>
                 </div>
             </div>

@@ -140,60 +140,42 @@ import AuthFooter from "../../components/auth/AuthFooter";
 
 import useAuth from "../../hooks/useAuth";
 
-import {
-    successToast,
-    errorToast,
-} from "../../utils/toast";
+import { successToast, errorToast } from "../../utils/toast";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { login } = useAuth();
+  const from = location.state?.from?.pathname || "/";
 
-    const from =
-        location.state?.from?.pathname ||
-        "/";
+  const handleLogin = async (formData) => {
+    try {
+      await login(formData);
+      successToast("Welcome back!");
+      navigate(from, {
+        replace: true,
+      });
+    } catch (error) {
+      errorToast(error.response?.data?.message || "Login failed");
+    }
+  };
 
-    const handleLogin = async (formData) => {
+  return (
+    <AuthLayout>
+      {(isOn) => (
+        <AuthCard isOn={isOn}>
+          <LoginForm isOn={isOn} onSubmit={handleLogin} />
 
-        try {
-            await login(formData);
-            successToast("Welcome back!");
-            navigate(from, {
-                replace: true,
-            });
-
-        } catch (error) {
-            errorToast(
-                error.response?.data?.message ||
-                "Login failed"
-            );
-        }
-    };
-
-    return (
-
-        <AuthLayout>
-            {(isOn) => (
-                <AuthCard isOn={isOn}>
-                    <LoginForm
-                        isOn={isOn}
-                        onSubmit={handleLogin}
-                    />
-
-                    <AuthFooter
-                        text="Don't have an account?"
-                        linkText="Register"
-                        to="/register"
-                    />
-                </AuthCard>
-
-            )}
-        </AuthLayout>
-
-    );
-
+          <AuthFooter
+            text="Don't have an account?"
+            linkText="Register"
+            to="/register"
+          />
+        </AuthCard>
+      )}
+    </AuthLayout>
+  );
 };
 
 export default Login;

@@ -10,11 +10,12 @@ import ReportsSection from "../../components/admin/resource/ReportsSection";
 import ModerationHistory from "../../components/admin/resource/ModerationHistory";
 import ResourceActions from "../../components/admin/resource/ResourceActions";
 import useAdminResource from "../../hooks/useAdminResource";
+import Loader from "../../components/ui/Loader";
 const AdminResourceDetails = () => {
   const { resource, loading } = useAdminResource();
 
   if (loading) {
-    return <AdminLayout>Loading...</AdminLayout>;
+    return <AdminLayout><Loader/></AdminLayout>;
   }
 
   if (!resource) {

@@ -1,11 +1,11 @@
 import { recentResources } from "../../constants/admin";
 import RecentResourceRow from "./RecentResourceRow";
 
-const RecentResources = ({resources, loading}) => {
-    if (loading) {
+const RecentResources = ({ resources, loading }) => {
+  if (loading) {
     return (
-        <div
-            className="
+      <div
+        className="
                 bg-white
                 rounded-2xl
                 shadow-card
@@ -13,12 +13,11 @@ const RecentResources = ({resources, loading}) => {
                 border-gray100
                 p-6
             "
-        >
-            Loading...
-        </div>
+      >
+        Loading...
+      </div>
     );
-}
-  console.log(recentResources);
+  }
   return (
     <div
       className="

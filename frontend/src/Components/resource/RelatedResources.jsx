@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Badge from "../ui/Badge";
 import { Eye, Download } from "lucide-react";
+import getThumbnail from "../../utils/getThumbnail";
 
 const RelatedResources = ({ resources }) => {
 
@@ -48,7 +49,7 @@ const RelatedResources = ({ resources }) => {
                         "
                     >
                         <img
-                            src={resource.thumbnail}
+                            src={getThumbnail(resource)}
                             alt={resource.title}
                             className="
                                 w-full

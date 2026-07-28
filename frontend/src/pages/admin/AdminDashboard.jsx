@@ -9,8 +9,6 @@ import useAdminDashboard from "../../hooks/useAdminDashboard";
 
 const AdminDashboard = () => {
   const { dashboard, loading } = useAdminDashboard();
-  console.log(dashboard);
-
   return (
     <AdminLayout>
       <div className="space-y-8">

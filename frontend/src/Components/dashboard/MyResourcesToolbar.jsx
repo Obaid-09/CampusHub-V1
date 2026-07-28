@@ -30,9 +30,7 @@ const MyResourcesToolbar = ({ filters, setFilters }) => {
                 shadow-card
                 border
                 border-gray100
-
                 p-5
-
                 flex
                 flex-col
                 lg:flex-row

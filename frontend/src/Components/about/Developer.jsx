@@ -1,17 +1,13 @@
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Mail } from "lucide-react";
 import Button from "../ui/Button";
-
+import pp from "../../assets/OBAID_PIC.JPEG"
 const Developer = () => {
-
-    return (
-
-        <section className="py-24">
-
-            <div className="max-w-6xl mx-auto px-6">
-
-                <div
-                    className="
+  return (
+    <section className="py-24">
+      <div className="max-w-6xl mx-auto px-6">
+        <div
+          className="
                         bg-white
                         rounded-3xl
                         shadow-card
@@ -22,16 +18,14 @@ const Developer = () => {
                         gap-10
                         items-center
                     "
-                >
+        >
+          {/* Image */}
 
-                    {/* Image */}
-
-                    <div className="flex justify-center">
-
-                        <img
-                            src="https://i.pravatar.cc/300?img=11"
-                            alt="Developer"
-                            className="
+          <div className="flex justify-center">
+            <img
+              src={pp}
+              alt="Developer"
+              className="
                                 w-56
                                 h-56
                                 rounded-full
@@ -39,76 +33,61 @@ const Developer = () => {
                                 border-4
                                 border-primaryLight
                             "
-                        />
+            />
+          </div>
 
-                    </div>
+          {/* Details */}
 
-                    {/* Details */}
+          <div className="lg:col-span-2">
+            <p className="text-primary font-semibold">BUILT WITH ❤️</p>
 
-                    <div className="lg:col-span-2">
-
-                        <p className="text-primary font-semibold">
-
-                            BUILT WITH ❤️
-
-                        </p>
-
-                        <h2
-                            className="
+            <h2
+              className="
                                 mt-3
                                 text-5xl
                                 font-heading
                                 font-bold
                                 text-secondary
                             "
-                        >
-                            Obaidullah
-                        </h2>
+            >
+              Obaidullah
+            </h2>
 
-                        <p
-                            className="
+            <p
+              className="
                                 mt-6
                                 text-xl
                                 leading-9
                                 text-gray600
                             "
-                        >
-                            Pre-final year undergraduate at
-                            <strong> NIT Warangal</strong> passionate about
-                            building scalable software solutions and AI-powered
-                            educational platforms that simplify learning for
-                            students.
-                        </p>
+            >
+              Pre-final year undergraduate at
+              <strong> NIT Warangal</strong> passionate about building scalable
+              software solutions and AI-powered educational platforms that
+              simplify learning for students.
+            </p>
 
-                        <div className="flex gap-4 mt-8 flex-wrap">
+            <div className="flex gap-4 mt-8 flex-wrap">
+              <Button variant="outline">
+                <FaGithub size={18} />
+                GitHub
+              </Button>
 
-                            <Button variant="outline">
-                                <FaGithub size={18} />
-                                GitHub
-                            </Button>
+              <Button variant="outline">
+                <FaLinkedin size={18} />
+                LinkedIn
+              </Button>
 
-                            <Button variant="outline">
-                                <FaLinkedin size={18} />
-                                LinkedIn
-                            </Button>
-
-                            <Button variant="outline">
-                                <Mail size={18} />
-                                Contact
-                            </Button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+              <Button variant="outline">
+                <Mail size={18} />
+                Contact
+              </Button>
             </div>
-
-        </section>
-
-    );
-
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Developer;

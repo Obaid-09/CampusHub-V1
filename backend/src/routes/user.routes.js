@@ -21,7 +21,7 @@ import { registerValidator, loginValidator, changePasswordValidator, updateProfi
 import { loginLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
-console.log("User routes loaded");
+
 
 router.route("/register").post(
     upload.fields([

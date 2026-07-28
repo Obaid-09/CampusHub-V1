@@ -1,12 +1,9 @@
-const ResourcePreview = ({
-    resource,
-})=>{
+import getThumbnail from "../../../utils/getThumbnail";
 
-    return(
-
-        <div
-
-            className="
+const ResourcePreview = ({ resource }) => {
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -14,27 +11,18 @@ const ResourcePreview = ({
                 shadow-card
                 overflow-hidden
             "
-
-        >
-
-            <img
-
-                src={resource.thumbnail}
-
-                alt=""
-
-                className="
+    >
+      <img
+        src={getThumbnail(resource)}
+        alt=""
+        className="
                     w-full
                     h-[450px]
                     object-cover
                 "
-
-            />
-
-        </div>
-
-    );
-
+      />
+    </div>
+  );
 };
 
 export default ResourcePreview;

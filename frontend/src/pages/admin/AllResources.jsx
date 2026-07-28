@@ -4,11 +4,8 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import { adminAPI } from "../../api/admin.api";
 import { successToast, errorToast } from "../../utils/toast";
 import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
-
 import AdminResourcesGrid from "../../components/admin/AdminResourceGrid";
-
 import DeleteResourceModal from "../../components/dashboard/DeleteResourceModal";
-
 import useAdminResources from "../../hooks/useAdminResources";
 const AllResources = () => {
   const {
@@ -53,16 +50,9 @@ const AllResources = () => {
 
   const handleRestore = async (resource) => {
     try {
-      console.log("1");
       await adminAPI.restoreResource(resource._id);
-
-      console.log("2");
       successToast("Resource restored successfully.");
-
-      console.log("3");
       await refreshResources();
-
-      console.log("4");
     } catch (error) {
       console.error(error);
     }
@@ -70,9 +60,7 @@ const AllResources = () => {
   const handleApprove = async (resource) => {
     try {
       await adminAPI.approveResource(resource._id);
-
       successToast("Resource approved successfully.");
-
       refreshResources();
     } catch (error) {
       errorToast(
@@ -84,9 +72,7 @@ const AllResources = () => {
   const handleReject = async (resource) => {
     try {
       await adminAPI.rejectResource(resource._id);
-
       successToast("Resource rejected successfully.");
-
       refreshResources();
     } catch (error) {
       errorToast(error.response?.data?.message || "Failed to reject resource.");

@@ -6,6 +6,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import generateThumbnail from "../utils/generateThumbnail.js";
 import { formatFileSize } from "../utils/formatFileSize.js";
 import { Report } from "../models/report.models.js";
 
@@ -47,26 +48,25 @@ const uploadResource = asyncHandler(async (req, res) => {
 
   // Upload PDF
   const pdf = await uploadOnCloudinary(pdfLocalPath);
-
   if (!pdf?.secure_url) {
     throw new ApiError(500, "Failed to upload PDF");
   }
 
   // Upload Thumbnail (Optional)
-  let thumbnailUrl = "";
-  let thumbnailPublicId = "";
+  // const thumbnailUrl = generateThumbnail(pdf.secure_url);
+  // const thumbnailPublicId = "";
+  // const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
+  // if (thumbnailLocalPath) {
+  //   const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
 
-  const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
-
-  if (thumbnailLocalPath) {
-    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-
-    if (thumbnail?.secure_url) {
-      thumbnailUrl = thumbnail.secure_url;
-      thumbnailPublicId = thumbnail.public_id;
-    }
-  }
-
+  //   if (thumbnail?.secure_url) {
+  //     thumbnailUrl = thumbnail.secure_url;
+  //     thumbnailPublicId = thumbnail.public_id;
+  //   }
+  // }
+  const thumbnailUrl = generateThumbnail(pdf.secure_url);
+  const thumbnailPublicId = "";
+  
   // Convert Tags
   const tagArray = tags
     ? tags
@@ -306,22 +306,6 @@ const getResourceById = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid Resource ID");
   }
 
-  // const resource = await Resource.findById(resourceId)
-  //     .populate({
-  //         path: "uploadedBy",
-  //         select:
-  //             "fullname username bio avatar branch semester year college createdAt",
-  // });
-
-  // const resource = await Resource.findById(resourceId)
-  //     .select(
-  //         "-__v -updatedAt -pdfPublicId -thumbnailPublicId -isDeleted"
-  //     )
-  //     .populate({
-  //         path: "uploadedBy",
-  //         select:
-  //             "-password -refreshToken -__v"
-  //     });
 
   const resource = await Resource.findOne({
     _id: resourceId,
@@ -355,9 +339,6 @@ const getResourceById = asyncHandler(async (req, res) => {
   resourceObject.formattedFileSize = formatFileSize(resource.fileSize);
   resourceObject.formattedUploadDate =
     resource.createdAt.toLocaleDateString("en-IN");
-
-  console.log(resource.averageRating);
-  console.log(resource.totalRatings);
   
   return res
     .status(200)

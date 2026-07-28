@@ -29,18 +29,15 @@ import {
 } from "../controllers/admin.controller.js";
 
 const router = Router();
-console.log("Resource routes loaded");
 
 router.route("/dashboard").get(verifyJWT, verifyAdmin, adminDashboard);
 
 // User Management
 router.route("/users").get(verifyJWT, verifyAdmin, getAllUsers);
-
 router.route("/users/:userId").get(verifyJWT, verifyAdmin, getUserById);
-
 router.delete("/users/:userId", verifyJWT, verifyAdmin, deleteUser);
-
 router.patch("/users/:userId/role", verifyJWT, verifyAdmin, promoteUser);
+
 // Resource Management
 router
   .route("/resources/pending")
@@ -73,9 +70,7 @@ router
   .patch(verifyJWT, verifyAdmin, restoreResource);
 
 router.route("/analytics").get(verifyJWT, verifyAdmin, getAnalytics);
-
 router.route("/reports").get(verifyJWT, verifyAdmin, getAllReports);
-
 router.route("/reports/:reportId").get(verifyJWT, verifyAdmin, getReportById);
 
 router
@@ -87,7 +82,6 @@ router
   .patch(verifyJWT, verifyAdmin, dismissReport);
 
 // Categories
-// ==========================================
 router
   .route("/categories")
   .get(verifyJWT, verifyAdmin, getCategories)

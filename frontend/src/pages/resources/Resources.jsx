@@ -81,58 +81,11 @@ const Resources = () => {
   }, [currentPage, filters]);
   const pageSize = 6;
 
-  //   const filteredResources = resources.filter((resource) => {
-  //     const searchMatch = resource.title
-  //       .toLowerCase()
-  //       .includes(filters.search.toLowerCase());
-
-  //     const branchMatch = !filters.branch || resource.branch === filters.branch;
-
-  //     const semesterMatch =
-  //       !filters.semester || resource.semester === Number(filters.semester);
-
-  //     const typeMatch = !filters.type || resource.type === filters.type;
-
-  //     return searchMatch && branchMatch && semesterMatch && typeMatch;
-  //   });
-
-  //   const sortedResources = [...filteredResources];
-  //   switch (filters.sort) {
-  //     case "downloads":
-  //       sortedResources.sort((a, b) => b.downloads - a.downloads);
-  //       break;
-
-  //     case "views":
-  //       sortedResources.sort((a, b) => b.views - a.views);
-  //       break;
-
-  //     case "rating":
-  //       sortedResources.sort((a, b) => b.rating - a.rating);
-  //       break;
-
-  //     default:
-  //       sortedResources.sort(
-  //         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-  //       );
-  //   }
-
-  //   const start = (currentPage - 1) * pageSize;
-  //   const paginatedResources = sortedResources.slice(start, start + pageSize);
-
-  //   const handleResetFilters = () => {
-  //     console.log("RESET CLICKED");
-  //     setSelectedFilters(initialFilters);
-  //     setFilters(initialFilters);
-  //     setCurrentPage(1);
-  //   };
   const handleResetFilters = () => {
     setSelectedFilters(initialFilters);
     setFilters(initialFilters);
     setCurrentPage(1);
   };
-
-  //const totalPages = Math.ceil(sortedResources.length / pageSize);
-
   return (
     <section className="bg-background min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-6">

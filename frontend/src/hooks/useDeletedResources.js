@@ -17,8 +17,6 @@ const useDeletedResources = () => {
       setLoading(true);
 
       const response = await adminAPI.getDeletedResources();
-      console.log(response.data);
-      console.log(response.data.data.resources);
       setResources(response.data.data.resources);
     } catch (error) {
       console.error("Failed to fetch deleted resources", error);

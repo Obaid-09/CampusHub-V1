@@ -260,10 +260,6 @@ resourceSchema.index({
     type:1
 });
 
-// resourceSchema.index({
-//     uploadedBy:1
-// });
-
 resourceSchema.index({
     downloads:-1
 });

@@ -65,7 +65,6 @@ const Users = () => {
           open={showSuspend}
           onClose={() => setShowSuspend(false)}
           onConfirm={(reason) => {
-            console.log(reason);
             setShowSuspend(false);
           }}
         />
@@ -74,7 +73,6 @@ const Users = () => {
           open={showDelete}
           onClose={() => setShowDelete(false)}
           onDelete={() => {
-            console.log(selectedUser);
             setShowDelete(false);
           }}
         />
@@ -85,7 +83,6 @@ const Users = () => {
           setRole={setRole}
           onClose={() => setShowPromote(false)}
           onPromote={() => {
-            console.log(role);
             setShowPromote(false);
           }}
         />

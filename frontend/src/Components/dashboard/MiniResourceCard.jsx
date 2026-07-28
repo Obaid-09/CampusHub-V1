@@ -1,28 +1,12 @@
 import { Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Badge from "../ui/Badge";
+import getThumbnail from "../../utils/getThumbnail";
 
 const MiniResourceCard = ({ resource }) => {
   const navigate = useNavigate();
 
   return (
-    // <div
-    //     onClick={() => navigate(`/resources/${resource._id}`)}
-    //     className="
-    //     flex-shrink-0
-    //     w-[260px]
-    //     bg-white
-    //     rounded-2xl
-    //     border
-    //     border-gray100
-    //     shadow-card
-    //     overflow-hidden
-    //     cursor-pointer
-    //     transition-all
-    //     hover:-translate-y-1
-    //     hover:shadow-xl
-    // "
-    // >
     <div
       onClick={() => navigate(`/resources/${resource._id}`)}
       className="
@@ -41,7 +25,7 @@ const MiniResourceCard = ({ resource }) => {
             "
     >
       <img
-        src={resource.thumbnail}
+        src={getThumbnail(resource)}
         alt={resource.title}
         className="
                     h-36

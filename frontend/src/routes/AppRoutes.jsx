@@ -36,6 +36,7 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import ChangePassword from "../pages/dashboard/ChangePassword";
 import DeletedResources from "../pages/admin/DeletedResources";
+import AdminRoute from "./AdminRoute";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -45,7 +46,14 @@ const AppRoutes = () => {
 
       <Route path="/resources/:id" element={<ResourceDetails />} />
 
-      <Route path="/users/:username" element={<UserProfile />} />
+      <Route
+        path="/users/:username"
+        element={
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/login"
@@ -80,7 +88,11 @@ const AppRoutes = () => {
 
       <Route
         path="/password-reset-success"
-        element={<PasswordResetSuccess />}
+        element={
+          <ProtectedRoute>
+            <PasswordResetSuccess />
+          </ProtectedRoute>
+        }
       />
 
       <Route
@@ -91,15 +103,6 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-
-      {/* <Route
-                path="/profile"
-                element={
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                }
-            /> */}
 
       <Route path="/about" element={<About />} />
 
@@ -121,80 +124,163 @@ const AppRoutes = () => {
         }
       />
 
-      <Route path="/dashboard/resources" element={<MyResources />} />
-
-      <Route path="/dashboard/bookmarks" element={<Bookmarks />} />
-
-      <Route path="/dashboard/resources/:id/edit" element={<EditResource />} />
-
+      <Route
+        path="/dashboard/resources"
+        element={
+          <ProtectedRoute>
+            <MyResources />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/bookmarks"
+        element={
+          <ProtectedRoute>
+            <Bookmarks />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/resources/:id/edit"
+        element={
+          <ProtectedRoute>
+            <EditResource />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/dashboard/resources/:id/analytics"
-        element={<ResourceAnalyticsPage />}
+        element={
+          <ProtectedRoute>
+            <ResourceAnalyticsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/notifications"
+        element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
       />
 
-      <Route path="/dashboard/notifications" element={<Notifications />} />
-
-      <Route path="/dashboard/settings" element={<Settings />} />
-
-      {/* <Route
-                path="/dashboard/resources"
-                element={<MyResources />}
-            />
-
-            
-
-            <Route
-                path="/dashboard/profile"
-                element={<Profile />}
-            />
-
-            
-
-            <Route
-                path="/dashboard/notifications"
-                element={<Notifications />}
-            /> */}
-
-      {/* <Route
-                path="/admin"
-                element={
-                    <AdminRoute>
-                        <AdminDashboard />
-                    </AdminRoute>
-                }
-            /> */}
-
       <Route path="/admin">
-        <Route index element={<AdminDashboard />} />
-
-        <Route path="pending" element={<PendingResources />} />
-
-        <Route path="resources" element={<AllResources />} />
-
-        <Route path="users" element={<Users />} />
-
-        <Route path="reports" element={<Reports />} />
-
-        <Route path="categories" element={<Categories />} />
-
-        <Route path="analytics" element={<AdminAnalytics />} />
-
-        <Route path="settings" element={<AdminSettings />} />
+        <Route
+          index
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="pending"
+          element={
+            <AdminRoute>
+              <PendingResources />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="resources"
+          element={
+            <AdminRoute>
+              <AllResources />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="users"
+          element={
+            <AdminRoute>
+              <Users />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <AdminRoute>
+              <Reports />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="categories"
+          element={
+            <AdminRoute>
+              <Categories />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="analytics"
+          element={
+            <AdminRoute>
+              <AdminAnalytics />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <AdminRoute>
+              <AdminSettings />
+            </AdminRoute>
+          }
+        />
       </Route>
 
-      <Route path = "/categories" element = {<Categories/>}/>
-
-        <Route path="/admin/resources/deleted" element={<DeletedResources />} />
-      <Route path="/admin/resources/:id" element={<AdminResourceDetails />} />
-
-      <Route path="/admin/resources/:id/edit" element={<EditResource />} />
-
-      <Route path="/admin/users/:id" element={<UserDetails />} />
-      
+      <Route path="/categories" element={<Categories />} />
 
       <Route
+        path="/admin/resources/deleted"
+        element={
+          <AdminRoute>
+            <DeletedResources />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/resources/:id"
+        element={
+          <AdminRoute>
+            <AdminResourceDetails />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/resources/:id/edit"
+        element={
+          <AdminRoute>
+            <EditResource />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/users/:id"
+        element={
+          <AdminRoute>
+            <UserDetails />
+          </AdminRoute>
+        }
+      />
+      <Route
         path="/admin/resources/:id/analytics"
-        element={<ResourceAnalyticsPage />}
+        element={
+          <AdminRoute>
+            <ResourceAnalyticsPage />
+          </AdminRoute>
+        }
       />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

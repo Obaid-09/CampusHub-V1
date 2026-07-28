@@ -1,3 +1,4 @@
+import getThumbnail from "../../utils/getThumbnail";
 import Button from "../ui/Button";
 import { Eye } from "lucide-react";
 
@@ -15,7 +16,7 @@ const ResourcePreview = ({
             "
         >
             <img
-                src={resource.thumbnail || "https://placehold.co/600x800/F8F6F3/C87740?text=Resource"}
+                src={getThumbnail(resource) || "https://placehold.co/600x800/F8F6F3/C87740?text=Resource"}
                 alt={resource.title}
                 className="
                     w-full

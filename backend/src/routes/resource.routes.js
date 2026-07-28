@@ -32,7 +32,6 @@ import {
 import { validate } from "../middlewares/validate.middleware.js";
 const router = Router();
 
-console.log("Resource routes loaded");
 
 router.route("/upload").post(
   verifyJWT,

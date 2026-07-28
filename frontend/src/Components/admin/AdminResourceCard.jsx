@@ -2,6 +2,7 @@ import ResourceStatusBadge from "./ResourceStatusBadge";
 import ResourceUploader from "./ResourceUploader";
 import ResourceInfoRow from "./ResourceInfoRow";
 import AdminResourceActions from "./AdminResourceActions";
+import getThumbnail from "../../utils/getThumbnail";
 
 const AdminResourceCard = ({ resource, ...actions }) => {
   return (
@@ -17,7 +18,7 @@ const AdminResourceCard = ({ resource, ...actions }) => {
     >
       <img
         src={
-          resource.thumbnail || "https://placehold.co/700x400?text=CampusHub"
+          getThumbnail(resource) || "https://placehold.co/700x400?text=CampusHub"
         }
         alt=""
         className="

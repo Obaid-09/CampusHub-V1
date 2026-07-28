@@ -47,7 +47,6 @@ const EditProfileModal = ({ open, onClose }) => {
   });
 
   useEffect(() => {
-    console.log("User from AuthContext:", user);
     if (!user) return;
     setForm({
       fullName: user.fullname || "",

@@ -32,19 +32,6 @@ const UserActions = ({ user, onPromote, onDelete }) => {
                 "
       >
         <ActionButton text="Promote" onClick={() => onPromote(user)} />
-
-        {/* <ActionButton
-          text="Suspend"
-          variant="outline"
-          onClick={() => console.log("Suspend", user)}
-        /> */}
-
-        {/* <ActionButton
-          text="Reset Password"
-          variant="secondary"
-          onClick={() => console.log("Reset")}
-        /> */}
-
         <ActionButton
           text="Delete User"
           variant="danger"

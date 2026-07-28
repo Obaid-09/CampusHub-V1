@@ -20,13 +20,8 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const { profile } = useProfile();
-  console.log(profile);
-
   if (loading) {
     return <Loader/>
-
-    // Later:
-    // return <ProfileSkeleton />
   }
 
   const handleAvatarClick = () => {

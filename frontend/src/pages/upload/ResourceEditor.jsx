@@ -20,7 +20,7 @@ const ResourceEditor = ({ editMode = false, initialData = {} }) => {
     branch: initialData.branch || "",
     semester: initialData.semester || "",
     year: initialData.year || "",
-    type: initialData.type || "Notes",
+    type: initialData.type || "",
     tags: initialData.tags || [],
   });
 

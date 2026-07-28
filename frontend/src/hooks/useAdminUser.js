@@ -13,8 +13,6 @@ const useAdminUser = () => {
       setLoading(true);
 
       const response = await adminAPI.getUserById(id);
-      console.log(response.data.data);
-      console.log(response.data.data.uploadedResources);
       setUser(response.data.data);
     } catch (error) {
       console.error("Failed to fetch user", error);

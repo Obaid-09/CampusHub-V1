@@ -2,14 +2,10 @@ import { quickActions } from "../../constants/admin";
 import QuickActionCard from "./QuickActionCard";
 
 const AdminQuickActions = () => {
-    console.log(quickActions);
-    return (
-
-        <div>
-
-            <h2
-
-                className="
+  return (
+    <div>
+      <h2
+        className="
                     text-2xl
                     font-heading
                     font-bold
@@ -17,16 +13,12 @@ const AdminQuickActions = () => {
 
                     mb-6
                 "
+      >
+        Quick Actions
+      </h2>
 
-            >
-
-                Quick Actions
-
-            </h2>
-
-            <div
-
-                className="
+      <div
+        className="
                     grid
 
                     md:grid-cols-2
@@ -34,31 +26,13 @@ const AdminQuickActions = () => {
 
                     gap-6
                 "
-
-            >
-
-                {
-
-                    quickActions.map((action) => (
-
-                        <QuickActionCard
-
-                            key={action.title}
-
-                            action={action}
-
-                        />
-
-                    ))
-
-                }
-
-            </div>
-
-        </div>
-
-    );
-
+      >
+        {quickActions.map((action) => (
+          <QuickActionCard key={action.title} action={action} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default AdminQuickActions;

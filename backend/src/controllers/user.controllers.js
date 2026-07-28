@@ -88,7 +88,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // 6) Create User object and make an entry in DB
-  console.log("avatarUrl:", avatarUrl);
   const user = await User.create({
     fullname: fullName,
     username: username.toLowerCase(),
@@ -522,7 +521,6 @@ const getMyUploads = asyncHandler(async (req, res) => {
 });
 
 const getDownloadHistory = asyncHandler(async (req, res) => {
-  console.log("Reached getMyUploads");
   const user = await User.findById(req.user._id).populate({
     path: "downloads.resource",
     select: `

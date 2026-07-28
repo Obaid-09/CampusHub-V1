@@ -2,6 +2,7 @@ import Badge from "../ui/Badge";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
 import { Eye, Download, Bookmark, Star } from "lucide-react";
+import getThumbnail from "../../utils/getThumbnail";
 
 const ResourceCard = ({
   resource,
@@ -69,7 +70,7 @@ const ResourceCard = ({
         </button>
       )}
       <img
-        src={resource.thumbnail || "https://placehold.co/600x350"}
+        src={getThumbnail(resource) || "https://placehold.co/600x350"}
         alt={resource.title}
         className={`
                             h-48

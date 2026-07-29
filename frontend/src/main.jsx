@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import App from "./App";
 import "./index.css";
 
-import { store } from "./redux/store";
+import { store } from "./redux/store.js";
 import ToastProvider from "./components/ui/ToastProvider"
 import { AuthProvider } from "./context/AuthContext";
 

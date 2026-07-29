@@ -540,7 +540,7 @@ import {
   Download,
 } from "lucide-react";
 import HeroSearch from "./HeroSearch";
-import Button from "../../components/ui/Button";
+import Button from "../../Components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import hero from "../../assets/Hero_illus.png";
 

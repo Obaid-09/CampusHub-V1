@@ -133,10 +133,10 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import AuthLayout from "../../components/auth/AuthLayout";
-import AuthCard from "../../components/auth/AuthCard";
-import LoginForm from "../../components/auth/LoginForm";
-import AuthFooter from "../../components/auth/AuthFooter";
+import AuthLayout from "../../Components/auth/AuthLayout";
+import AuthCard from "../../Components/auth/AuthCard";
+import LoginForm from "../../Components/auth/LoginForm";
+import AuthFooter from "../../Components/auth/AuthFooter";
 
 import useAuth from "../../hooks/useAuth";
 

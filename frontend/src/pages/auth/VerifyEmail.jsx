@@ -1,5 +1,5 @@
-import AuthCard from "../../components/auth/AuthCard";
-import VerifyEmailCard from "../../components/auth/VerifyEmailCard";
+import AuthCard from "../../Components/auth/AuthCard";
+import VerifyEmailCard from "../../Components/auth/VerifyEmailCard";
 
 const VerifyEmail = () => {
   return (

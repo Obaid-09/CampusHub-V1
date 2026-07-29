@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import AuthLayout from "../../components/auth/AuthLayout";
-import AuthCard from "../../components/auth/AuthCard";
-import RegisterForm from "../../components/auth/RegisterForm";
+import AuthLayout from "../../Components/auth/AuthLayout";
+import AuthCard from "../../Components/auth/AuthCard";
+import RegisterForm from "../../Components/auth/RegisterForm";
 import useAuth from "../../hooks/useAuth";
 import { authAPI } from "../../api/auth.api";
 import { successToast, errorToast } from "../../utils/toast";

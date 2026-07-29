@@ -1,9 +1,9 @@
-import ResourceToolbar from "../../components/resource/ResourceToolbar";
-import ResourceFilters from "../../components/resource/ResourceFilters";
-import ResultsInfo from "../../components/resource/ResultsInfo";
-import ActiveFilters from "../../components/resource/ActiveFilters";
-import ResourcePagination from "../../components/resource/ResourcePagination";
-import ResourceGrid from "../../components/resource/ResourceGrid";
+import ResourceToolbar from "../../Components/resource/ResourceToolbar";
+import ResourceFilters from "../../Components/resource/ResourceFilters";
+import ResultsInfo from "../../Components/resource/ResultsInfo";
+import ActiveFilters from "../../Components/resource/ActiveFilters";
+import ResourcePagination from "../../Components/resource/ResourcePagination";
+import ResourceGrid from "../../Components/resource/ResourceGrid";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { resourceAPI } from "../../api/resource.api";

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../components/ui/Button";
+import Button from "../Components/ui/Button";
 import { ArrowLeft, Home } from "lucide-react";
 
 const PageNotFound = () => {

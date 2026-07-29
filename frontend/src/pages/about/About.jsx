@@ -1,12 +1,12 @@
-import AboutHero from "../../components/about/AboutHero";
-import Mission from "../../components/about/Mission";
-import Features from "../../components/about/Features";
-import Stats from "../../components/about/Stats";
-import Vision from "../../components/about/Vision";
-import Developer from "../../components/about/Developer";
-import FAQ from "../../components/about/FAQ";
-import CTA from "../../components/about/CTA";
-import WhyCampusHub from "../../components/about/WhyCampusHub";
+import AboutHero from "../../Components/about/AboutHero";
+import Mission from "../../Components/about/Mission";
+import Features from "../../Components/about/Features";
+import Stats from "../../Components/about/Stats";
+import Vision from "../../Components/about/Vision";
+import Developer from "../../Components/about/Developer";
+import FAQ from "../../Components/about/FAQ";
+import CTA from "../../Components/about/CTA";
+import WhyCampusHub from "../../Components/about/WhyCampusHub";
 
 const About = () => {
 

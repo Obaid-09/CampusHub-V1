@@ -1,13 +1,13 @@
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
 import useDashboard from "../../hooks/useDashboard";
-import WelcomeCard from "../../components/dashboard/WelcomeCard";
-import StatsGrid from "../../components/dashboard/StatsGrid";
-import QuickActions from "../../components/dashboard/QuickActions";
-import RecentActivity from "../../components/dashboard/RecentActivity";
-import ProgressCard from "../../components/dashboard/ProgressCard";
-import TrendingResources from "../../components/dashboard/TrendingResources";
-import RecommendedResources from "../../components/dashboard/RecommendedResources";
-import UpcomingEvents from "../../components/dashboard/UpcomingEvents";
+import WelcomeCard from "../../Components/dashboard/WelcomeCard";
+import StatsGrid from "../../Components/dashboard/StatsGrid";
+import QuickActions from "../../Components/dashboard/QuickActions";
+import RecentActivity from "../../Components/dashboard/RecentActivity";
+import ProgressCard from "../../Components/dashboard/ProgressCard";
+import TrendingResources from "../../Components/dashboard/TrendingResources";
+import RecommendedResources from "../../Components/dashboard/RecommendedResources";
+import UpcomingEvents from "../../Components/dashboard/UpcomingEvents";
 
 const Dashboard = () => {
   const { dashboard, loading } = useDashboard();

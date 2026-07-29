@@ -1,5 +1,5 @@
-import AuthCard from "../../components/auth/AuthCard";
-import ForgotPasswordForm from "../../components/auth/ForgotPasswordForm";
+import AuthCard from "../../Components/auth/AuthCard";
+import ForgotPasswordForm from "../../Components/auth/ForgotPasswordForm";
 
 const ForgotPassword = () => {
   return (

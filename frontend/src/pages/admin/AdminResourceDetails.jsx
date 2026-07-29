@@ -1,16 +1,16 @@
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../../Components/admin/AdminLayout";
 
-import ResourceHeader from "../../components/admin/resource/ResourceHeader";
-import ResourcePreview from "../../components/admin/resource/ResourcePreview";
-import ResourceInformation from "../../components/admin/resource/ResourceInformation";
-import UploaderCard from "../../components/admin/resource/UploaderCard";
-import ResourceStatistics from "../../components/admin/resource/ResourceStatistics";
-import ReportsSection from "../../components/admin/resource/ReportsSection";
+import ResourceHeader from "../../Components/admin/resource/ResourceHeader";
+import ResourcePreview from "../../Components/admin/resource/ResourcePreview";
+import ResourceInformation from "../../Components/admin/resource/ResourceInformation";
+import UploaderCard from "../../Components/admin/resource/UploaderCard";
+import ResourceStatistics from "../../Components/admin/resource/ResourceStatistics";
+import ReportsSection from "../../Components/admin/resource/ReportsSection";
 
-import ModerationHistory from "../../components/admin/resource/ModerationHistory";
-import ResourceActions from "../../components/admin/resource/ResourceActions";
+import ModerationHistory from "../../Components/admin/resource/ModerationHistory";
+import ResourceActions from "../../Components/admin/resource/ResourceActions";
 import useAdminResource from "../../hooks/useAdminResource";
-import Loader from "../../components/ui/Loader";
+import Loader from "../../Components/ui/Loader";
 const AdminResourceDetails = () => {
   const { resource, loading } = useAdminResource();
 

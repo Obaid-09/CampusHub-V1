@@ -1,11 +1,11 @@
 import { useState } from "react";
-import AdminLayout from "../../components/admin/AdminLayout";
-import CategoryTabs from "../../components/admin/CategoryTabs";
-import CategoryToolbar from "../../components/admin/CategoryToolbar";
-import CategoryTable from "../../components/admin/CategoryTable";
-import AddCategoryModal from "../../components/admin/AddCategoryModal";
-import EditCategoryModal from "../../components/admin/EditCategoryModal";
-import DeleteCategoryModal from "../../components/admin/DeleteCategoryModal";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import CategoryTabs from "../../Components/admin/CategoryTabs";
+import CategoryToolbar from "../../Components/admin/CategoryToolbar";
+import CategoryTable from "../../Components/admin/CategoryTable";
+import AddCategoryModal from "../../Components/admin/AddCategoryModal";
+import EditCategoryModal from "../../Components/admin/EditCategoryModal";
+import DeleteCategoryModal from "../../Components/admin/DeleteCategoryModal";
 
 import useAdminCategories from "../../hooks/useAdminCategories";
 import { adminAPI } from "../../api/admin.api";

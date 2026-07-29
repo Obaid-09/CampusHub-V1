@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
-import NotificationsFilter from "../../components/dashboard/NotificationsFilter";
-import NotificationCard from "../../components/dashboard/NotificationCard";
-import EmptyNotifications from "../../components/dashboard/EmptyNotifications";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
+import NotificationsFilter from "../../Components/dashboard/NotificationsFilter";
+import NotificationCard from "../../Components/dashboard/NotificationCard";
+import EmptyNotifications from "../../Components/dashboard/EmptyNotifications";
 
 import { dummyNotifications } from "../../constants/dashboard";
 

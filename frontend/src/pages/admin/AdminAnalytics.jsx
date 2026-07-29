@@ -1,11 +1,11 @@
-import AdminLayout from "../../components/admin/AdminLayout";
-import Loader from "../../components/ui/Loader";
-import ResourceStatusDistribution from "../../components/admin/ResourceStatusDistribution";
-import AnalyticsHeader from "../../components/admin/AnalyticsHeader";
-import AnalyticsStatsGrid from "../../components/admin/AnalyticsStatsGrid";
-import UploadTrendChart from "../../components/admin/UploadTrendChart";
-import BranchDistribution from "../../components/admin/BranchDistribution";
-import ReportsOverview from "../../components/admin/ReportsOverview";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import Loader from "../../Components/ui/Loader";
+import ResourceStatusDistribution from "../../Components/admin/ResourceStatusDistribution";
+import AnalyticsHeader from "../../Components/admin/AnalyticsHeader";
+import AnalyticsStatsGrid from "../../Components/admin/AnalyticsStatsGrid";
+import UploadTrendChart from "../../Components/admin/UploadTrendChart";
+import BranchDistribution from "../../Components/admin/BranchDistribution";
+import ReportsOverview from "../../Components/admin/ReportsOverview";
 import useAdminAnalytics from "../../hooks/useAdminAnalytics";
 
 const AdminAnalytics = () => {

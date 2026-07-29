@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ResourceEditor from "../upload/ResourceEditor";
-import Loader from "../../components/ui/Loader";
-import EmptyState from "../../components/ui/EmptyState";
+import Loader from "../../Components/ui/Loader";
+import EmptyState from "../../Components/ui/EmptyState";
 import { resourceAPI } from "../../api/resource.api";
 
 const EditResource = () => {

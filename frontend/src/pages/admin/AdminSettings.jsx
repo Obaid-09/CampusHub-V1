@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import AdminLayout from "../../components/admin/AdminLayout";
-import SettingsSection from "../../components/admin/SettingsSection";
-import ToggleSetting from "../../components/admin/ToggleSetting";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import SettingsSection from "../../Components/admin/SettingsSection";
+import ToggleSetting from "../../Components/admin/ToggleSetting";
 
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
-import Loader from "../../components/ui/Loader";
+import Input from "../../Components/ui/Input";
+import Button from "../../Components/ui/Button";
+import Loader from "../../Components/ui/Loader";
 
 import useAdminSettings from "../../hooks/useAdminSettings";
 import { adminAPI } from "../../api/admin.api";

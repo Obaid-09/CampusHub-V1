@@ -1,5 +1,5 @@
-import AuthCard from "../../components/auth/AuthCard";
-import ChangePasswordForm from "../../components/auth/ChangePasswordForm"
+import AuthCard from "../../Components/auth/AuthCard";
+import ChangePasswordForm from "../../Components/auth/ChangePasswordForm"
 
 const ChangePassword = () => {
   return (

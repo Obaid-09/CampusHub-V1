@@ -120,11 +120,11 @@
 
 import { useState } from "react";
 
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
-import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
-import MyResourcesGrid from "../../components/dashboard/MyResourcesGrid";
-import DeleteResourceModal from "../../components/dashboard/DeleteResourceModal";
-import Loader from "../../components/ui/Loader";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
+import MyResourcesToolbar from "../../Components/dashboard/MyResourcesToolbar";
+import MyResourcesGrid from "../../Components/dashboard/MyResourcesGrid";
+import DeleteResourceModal from "../../Components/dashboard/DeleteResourceModal";
+import Loader from "../../Components/ui/Loader";
 
 import { resourceAPI } from "../../api/resource.api";
 import { successToast, errorToast } from "../../utils/toast";

@@ -113,19 +113,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ResourceBreadcrumb from "../../components/resource/ResourceBreadcrumb.jsx.jsx";
-import ResourcePreview from "../../components/resource/ResourcePreview.jsx";
-import ResourceInfo from "../../components/resource/ResourceInfo.jsx";
-import ResourceDescription from "../../components/resource/ResourceDescription.jsx";
-import ResourceActions from "../../components/resource/ResourceActions.jsx";
-import ResourceStats from "../../components/resource/ResourceStats.jsx";
-import ResourceUploader from "../../components/resource/ResourceUploader.jsx";
-import RelatedResources from "../../components/resource/RelatedResources.jsx";
-import RatingSection from "../../components/resource/RatingSection.jsx";
-import ReportResourceModal from "../../components/resource/ReportResourceModal";
+import ResourceBreadcrumb from "../../Components/resource/ResourceBreadcrumb.jsx.jsx";
+import ResourcePreview from "../../Components/resource/ResourcePreview.jsx";
+import ResourceInfo from "../../Components/resource/ResourceInfo.jsx";
+import ResourceDescription from "../../Components/resource/ResourceDescription.jsx";
+import ResourceActions from "../../Components/resource/ResourceActions.jsx";
+import ResourceStats from "../../Components/resource/ResourceStats.jsx";
+import ResourceUploader from "../../Components/resource/ResourceUploader.jsx";
+import RelatedResources from "../../Components/resource/RelatedResources.jsx";
+import RatingSection from "../../Components/resource/RatingSection.jsx";
+import ReportResourceModal from "../../Components/resource/ReportResourceModal.jsx";
 
-import Loader from "../../components/ui/Loader";
-import EmptyState from "../../components/ui/EmptyState";
+import Loader from "../../Components/ui/Loader.jsx";
+import EmptyState from "../../Components/ui/EmptyState.jsx";
 
 import { resourceAPI } from "../../api/resource.api";
 import { successToast, errorToast } from "../../utils/toast";

@@ -1,12 +1,12 @@
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
-import AnalyticsHeader from "../../components/dashboard/AnalyticsHeader";
-import AnalyticsStats from "../../components/dashboard/AnalyticsStats";
-import AnalyticsInfo from "../../components/dashboard/AnalyticsInfo";
-import AnalyticsActions from "../../components/dashboard/AnalyticsActions";
-import AnalyticsCharts from "../../components/dashboard/AnalyticsCharts";
-import RatingDistribution from "../../components/dashboard/RatingDistribution";
-import RecentReviews from "../../components/dashboard/RecentReviews";
-import AnalyticsAudience from "../../components/dashboard/AnalyticsAudience";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
+import AnalyticsHeader from "../../Components/dashboard/AnalyticsHeader";
+import AnalyticsStats from "../../Components/dashboard/AnalyticsStats";
+import AnalyticsInfo from "../../Components/dashboard/AnalyticsInfo";
+import AnalyticsActions from "../../Components/dashboard/AnalyticsActions";
+import AnalyticsCharts from "../../Components/dashboard/AnalyticsCharts";
+import RatingDistribution from "../../Components/dashboard/RatingDistribution";
+import RecentReviews from "../../Components/dashboard/RecentReviews";
+import AnalyticsAudience from "../../Components/dashboard/AnalyticsAudience";
 import { dummyResource } from "../../constants/resources";
 
 const ResourceAnalyticsPage = () => {

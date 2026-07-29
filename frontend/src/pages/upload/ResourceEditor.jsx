@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import UploadDropzone from "../../components/upload/UploadDropzone";
-import UploadForm from "../../components/upload/UploadForm";
-import UploadPreview from "../../components/upload/UploadPreview";
-import UploadProgress from "../../components/upload/UploadProgress";
-import UploadSuccess from "../../components/upload/UploadSuccess";
+import UploadDropzone from "../../Components/upload/UploadDropzone";
+import UploadForm from "../../Components/upload/UploadForm";
+import UploadPreview from "../../Components/upload/UploadPreview";
+import UploadProgress from "../../Components/upload/UploadProgress";
+import UploadSuccess from "../../Components/upload/UploadSuccess";
 import { resourceAPI } from "../../api/resource.api";
 import { errorToast, successToast } from "../../utils/toast";
 

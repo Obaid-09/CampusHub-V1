@@ -1,7 +1,7 @@
-import PendingToolbar from "../../components/admin/PendingToolbar";
-import PendingGrid from "../../components/admin/PendingGrid";
+import PendingToolbar from "../../Components/admin/PendingToolbar";
+import PendingGrid from "../../Components/admin/PendingGrid";
 import usePendingResources from "../../hooks/usePendingResources";
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../../Components/admin/AdminLayout";
 
 const PendingResources = () => {
   const { resources, loading, removeResources } = usePendingResources();

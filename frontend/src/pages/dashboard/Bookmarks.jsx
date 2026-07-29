@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
-import BookmarksToolbar from "../../components/dashboard/BookmarksToolbar";
-import BookmarksGrid from "../../components/dashboard/BookmarksGrid";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
+import BookmarksToolbar from "../../Components/dashboard/BookmarksToolbar";
+import BookmarksGrid from "../../Components/dashboard/BookmarksGrid";
 
-import Loader from "../../components/ui/Loader";
+import Loader from "../../Components/ui/Loader";
 import { resourceAPI } from "../../api/resource.api";
 import { errorToast, successToast } from "../../utils/toast";
 

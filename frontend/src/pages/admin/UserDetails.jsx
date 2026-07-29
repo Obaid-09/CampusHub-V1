@@ -1,18 +1,18 @@
-import AdminLayout from "../../components/admin/AdminLayout";
-import UserStatsGrid from "../../components/admin/UserStatsGrid";
-import UserProfileCard from "../../components/admin/UserProfileCard";
-import UserResourcesTable from "../../components/admin/UserResourcesTable";
+import AdminLayout from "../../Components/admin/AdminLayout.jsx";
+import UserStatsGrid from "../../Components/admin/UserStatsGrid.jsx";
+import UserProfileCard from "../../Components/admin/UserProfileCard.jsx";
+import UserResourcesTable from "../../Components/admin/UserResourcesTable.jsx";
 import useAdminUser from "../../hooks/useAdminUser";
 // import RecentDownloads from "../../components/admin/RecentDownloads";
 // import BookmarksActivity from "../../components/admin/BookmarksActivity";
 // import ReportsActivity from "../../components/admin/ReportsActivity";
-import UserActions from "../../components/admin/UserActions";
+import UserActions from "../../Components/admin/UserActions.jsx";
 import { useState, useEffect } from "react";
 import { successToast, errorToast } from "../../utils/toast.js";
 import { adminAPI } from "../../api/admin.api.js";
-import PromoteUserModal from "../../components/admin/PromoteUserModal";
+import PromoteUserModal from "../../Components/admin/PromoteUserModal.jsx";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../components/ui/Loader.jsx";
+import Loader from "../../Components/ui/Loader.jsx";
 
 const UserDetails = () => {
   const { user, loading, refreshUser } = useAdminUser();

@@ -1,18 +1,18 @@
-import ProfileHeader from "../../components/profile/ProfileHeader";
-import ProfileStats from "../../components/profile/ProfileStats";
-import ProfileAbout from "../../components/profile/ProfileAbout";
-import UploadedResources from "../../components/profile/UploadedResources";
-import Achievements from "../../components/profile/Achievements";
-import ActivityTimeline from "../../components/profile/ActivityTimeline";
+import ProfileHeader from "../../Components/profile/ProfileHeader";
+import ProfileStats from "../../Components/profile/ProfileStats";
+import ProfileAbout from "../../Components/profile/ProfileAbout";
+import UploadedResources from "../../Components/profile/UploadedResources";
+import Achievements from "../../Components/profile/Achievements";
+import ActivityTimeline from "../../Components/profile/ActivityTimeline";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
-import EditProfileModal from "../../components/profile/EditProfileModal";
+import EditProfileModal from "../../Components/profile/EditProfileModal";
 import { useRef } from "react";
 import { authAPI } from "../../api/auth.api";
 import { successToast, errorToast } from "../../utils/toast";
 import useProfile from "../../hooks/useProfile";
-import RecentlyViewed from "../../components/profile/RecentlyViewed";
-import Loader from "../../components/ui/Loader";
+import RecentlyViewed from "../../Components/profile/RecentlyViewed";
+import Loader from "../../Components/ui/Loader";
 
 const Profile = () => {
   const { user, loading, refreshUser } = useAuth();

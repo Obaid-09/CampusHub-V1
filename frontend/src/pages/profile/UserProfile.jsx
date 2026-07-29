@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ProfileHeader from "../../components/profile/ProfileHeader";
-import Loader from "../../components/ui/Loader";
-import EmptyState from "../../components/ui/EmptyState";
+import ProfileHeader from "../../Components/profile/ProfileHeader";
+import Loader from "../../Components/ui/Loader";
+import EmptyState from "../../Components/ui/EmptyState";
 import { userAPI } from "../../api/user.api";
 
 const UserProfile = () => {

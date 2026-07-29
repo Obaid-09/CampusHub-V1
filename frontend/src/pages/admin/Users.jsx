@@ -1,13 +1,13 @@
 import { useState } from "react";
 import useAdminUsers from "../../hooks/useAdminUsers";
-import AdminLayout from "../../components/admin/AdminLayout";
-import UsersToolbar from "../../components/admin/UsersToolbar";
-import UsersTable from "../../components/admin/UsersTable";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import UsersToolbar from "../../Components/admin/UsersToolbar";
+import UsersTable from "../../Components/admin/UsersTable";
 
-import UserDetailsModal from "../../components/admin/UserDetailsModal";
-import SuspendUserModal from "../../components/admin/SuspendUserModal";
-import DeleteUserModal from "../../components/admin/DeleteUserModal";
-import PromoteUserModal from "../../components/admin/PromoteUserModal";
+import UserDetailsModal from "../../Components/admin/UserDetailsModal";
+import SuspendUserModal from "../../Components/admin/SuspendUserModal";
+import DeleteUserModal from "../../Components/admin/DeleteUserModal";
+import PromoteUserModal from "../../Components/admin/PromoteUserModal";
 
 const Users = () => {
   const { users, loading, filters, setFilters, pagination, refreshUsers } =

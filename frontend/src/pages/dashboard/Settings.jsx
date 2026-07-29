@@ -1,10 +1,10 @@
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import DashboardLayout from "../../Components/dashboard/DashboardLayout";
 import { useState } from "react";
-import AccountSettings from "../../components/dashboard/AccountSettings";
-import SecuritySettings from "../../components/dashboard/SecuritySettings";
-import PreferenceSettings from "../../components/dashboard/PreferenceSettings";
-import Danger from "../../components/dashboard/Danger";
-import EditProfileModal from "../../components/profile/EditProfileModal";
+import AccountSettings from "../../Components/dashboard/AccountSettings";
+import SecuritySettings from "../../Components/dashboard/SecuritySettings";
+import PreferenceSettings from "../../Components/dashboard/PreferenceSettings";
+import Danger from "../../Components/dashboard/Danger";
+import EditProfileModal from "../../Components/profile/EditProfileModal";
 
 const Settings = () => {
   const [showEditProfile, setShowEditProfile] = useState(false);

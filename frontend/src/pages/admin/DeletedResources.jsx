@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import AdminLayout from "../../components/admin/AdminLayout";
-import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
-import AdminResourcesGrid from "../../components/admin/AdminResourceGrid";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import MyResourcesToolbar from "../../Components/dashboard/MyResourcesToolbar";
+import AdminResourcesGrid from "../../Components/admin/AdminResourceGrid";
 
 import useDeletedResources from "../../hooks/useDeletedResources";
 import { adminAPI } from "../../api/admin.api";

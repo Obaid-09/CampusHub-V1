@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../../Components/admin/AdminLayout";
 import { adminAPI } from "../../api/admin.api";
 import { successToast, errorToast } from "../../utils/toast";
-import MyResourcesToolbar from "../../components/dashboard/MyResourcesToolbar";
-import AdminResourcesGrid from "../../components/admin/AdminResourceGrid";
-import DeleteResourceModal from "../../components/dashboard/DeleteResourceModal";
+import MyResourcesToolbar from "../../Components/dashboard/MyResourcesToolbar";
+import AdminResourcesGrid from "../../Components/admin/AdminResourceGrid";
+import DeleteResourceModal from "../../Components/dashboard/DeleteResourceModal";
 import useAdminResources from "../../hooks/useAdminResources";
 const AllResources = () => {
   const {

@@ -1,10 +1,10 @@
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../../Components/admin/AdminLayout";
 
-import AdminHeader from "../../components/admin/AdminHeader";
-import AdminStatsGrid from "../../components/admin/AdminStatsGrid";
-import AdminQuickActions from "../../components/admin/AdminQuickActions";
-import RecentResources from "../../components/admin/RecentResources";
-import RecentUsers from "../../components/admin/RecentUsers";
+import AdminHeader from "../../Components/admin/AdminHeader";
+import AdminStatsGrid from "../../Components/admin/AdminStatsGrid";
+import AdminQuickActions from "../../Components/admin/AdminQuickActions";
+import RecentResources from "../../Components/admin/RecentResources";
+import RecentUsers from "../../Components/admin/RecentUsers";
 import useAdminDashboard from "../../hooks/useAdminDashboard";
 
 const AdminDashboard = () => {

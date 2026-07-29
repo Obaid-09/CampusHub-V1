@@ -1,17 +1,15 @@
 import Button from "../ui/Button";
 
 const SettingRow = ({
-    title,
-    description,
-    buttonText,
-    buttonVariant = "primary",
-    onClick,
+  title,
+  description,
+  buttonText,
+  buttonVariant = "primary",
+  onClick,
 }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 flex
                 flex-col
                 md:flex-row
@@ -27,53 +25,47 @@ const SettingRow = ({
 
                 last:border-none
             "
-        >
+    >
+      {/* Left */}
 
-            {/* Left */}
-
-            <div className="flex-1">
-
-                <h3
-                    className="
+      <div className="flex-1">
+        <h3
+          className="
                         text-xl
                         font-semibold
                         text-secondary
                     "
-                >
-                    {title}
-                </h3>
+        >
+          {title}
+        </h3>
 
-                <p
-                    className="
+        <p
+          className="
                         mt-2
                         text-gray500
                         leading-relaxed
                     "
-                >
-                    {description}
-                </p>
+        >
+          {description}
+        </p>
+      </div>
 
-            </div>
+      {/* Right */}
 
-            {/* Right */}
-
-            <Button
-                variant={buttonVariant}
-                onClick={onClick}
-                className="
+      <Button
+        variant={buttonVariant}
+        onClick={onClick}
+        className="
                     w-full
                     md:w-44
                     h-12
                     text-white
                 "
-            >
-                {buttonText}
-            </Button>
-
-        </div>
-
-    );
-
+      >
+        {buttonText}
+      </Button>
+    </div>
+  );
 };
 
 export default SettingRow;

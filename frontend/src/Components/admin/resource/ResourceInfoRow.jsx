@@ -1,13 +1,7 @@
-const ResourceInfoRow = ({
-    label,
-    value,
-})=>{
-
-    return(
-
-        <div
-
-            className="
+const ResourceInfoRow = ({ label, value }) => {
+  return (
+    <div
+      className="
                 flex
                 justify-between
                 py-3
@@ -15,32 +9,19 @@ const ResourceInfoRow = ({
                 border-gray100
                 last:border-none
             "
+    >
+      <span className="text-gray500">{label}</span>
 
-        >
-
-            <span className="text-gray500">
-
-                {label}
-
-            </span>
-
-            <span
-
-                className="
+      <span
+        className="
                     font-medium
                     text-secondary
                 "
-
-            >
-
-                {value}
-
-            </span>
-
-        </div>
-
-    );
-
+      >
+        {value}
+      </span>
+    </div>
+  );
 };
 
 export default ResourceInfoRow;

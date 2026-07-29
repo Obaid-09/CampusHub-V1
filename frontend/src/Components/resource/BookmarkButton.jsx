@@ -18,7 +18,7 @@ const BookmarkButton = ({ resourceId, initiallyBookmarked = false }) => {
       const response = await resourceAPI.bookmarkResource(resourceId);
 
       setBookmarked(response.data.data.bookmarked);
-      successToast("Resource Bookmarked successfully")
+      successToast("Resource Bookmarked successfully");
     } catch (error) {
       setBookmarked(previous);
 

@@ -1,25 +1,15 @@
 const colors = {
+  Approved: "bg-green-100 text-green-700",
 
-    Approved:
-        "bg-green-100 text-green-700",
+  Pending: "bg-amber-100 text-amber-700",
 
-    Pending:
-        "bg-amber-100 text-amber-700",
-
-    Rejected:
-        "bg-red-100 text-red-700",
-
+  Rejected: "bg-red-100 text-red-700",
 };
 
-const ResourceStatusBadge = ({
-    status,
-}) => {
-
-    return (
-
-        <span
-
-            className={`
+const ResourceStatusBadge = ({ status }) => {
+  return (
+    <span
+      className={`
                 px-3
                 py-1
                 rounded-full
@@ -28,15 +18,10 @@ const ResourceStatusBadge = ({
 
                 ${colors[status]}
             `}
-
-        >
-
-            {status}
-
-        </span>
-
-    );
-
+    >
+      {status}
+    </span>
+  );
 };
 
 export default ResourceStatusBadge;

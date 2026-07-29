@@ -1,11 +1,9 @@
 import Button from "../ui/Button";
 
 const DangerZone = () => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 mt-10
                 bg-red-50
                 border
@@ -13,48 +11,38 @@ const DangerZone = () => {
                 rounded-2xl
                 p-8
             "
-        >
-
-            <h2
-                className="
+    >
+      <h2
+        className="
                     text-2xl
                     font-heading
                     font-bold
                     text-red-700
                 "
-            >
+      >
+        Danger Zone
+      </h2>
 
-                Danger Zone
-
-            </h2>
-
-            <p
-                className="
+      <p
+        className="
                     mt-3
                     text-red-600
                 "
-            >
+      >
+        Deleting this resource is permanent.
+      </p>
 
-                Deleting this resource is permanent.
-
-            </p>
-
-            <Button
-                className="
+      <Button
+        className="
                     mt-6
                     bg-red-600
                     hover:bg-red-700
                 "
-            >
-
-                Delete Resource
-
-            </Button>
-
-        </div>
-
-    );
-
+      >
+        Delete Resource
+      </Button>
+    </div>
+  );
 };
 
 export default DangerZone;

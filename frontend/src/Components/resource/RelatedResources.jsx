@@ -4,39 +4,35 @@ import { Eye, Download } from "lucide-react";
 import getThumbnail from "../../utils/getThumbnail";
 
 const RelatedResources = ({ resources }) => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    return (
-
-        <section className="mt-20">
-            <h2
-                className="
+  return (
+    <section className="mt-20">
+      <h2
+        className="
                     text-3xl
                     font-heading
                     font-bold
                     text-secondary
                     mb-8
                 "
-            >
-                Related Resources
-            </h2>
+      >
+        Related Resources
+      </h2>
 
-            <div
-                className="
+      <div
+        className="
                     grid
                     md:grid-cols-2
                     xl:grid-cols-4
                     gap-6
                 "
-            >
-                {resources.map((resource) => (
-                    <div
-                        key={resource._id}
-                        onClick={() =>
-                            navigate(`/resources/${resource._id}`)
-                        }
-                        className="
+      >
+        {resources.map((resource) => (
+          <div
+            key={resource._id}
+            onClick={() => navigate(`/resources/${resource._id}`)}
+            className="
                             bg-white
                             rounded-2xl
                             overflow-hidden
@@ -47,70 +43,66 @@ const RelatedResources = ({ resources }) => {
                             hover:-translate-y-2
                             hover:shadow-xl
                         "
-                    >
-                        <img
-                            src={getThumbnail(resource)}
-                            alt={resource.title}
-                            className="
+          >
+            <img
+              src={getThumbnail(resource)}
+              alt={resource.title}
+              className="
                                 w-full
                                 h-44
                                 object-cover
                             "
-                        />
+            />
 
-                        <div className="p-5">
+            <div className="p-5">
+              <Badge>{resource.type}</Badge>
 
-                            <Badge>
-                                {resource.type}
-                            </Badge>
-
-                            <h3
-                                className="
+              <h3
+                className="
                                     mt-4
                                     font-semibold
                                     text-secondary
                                     line-clamp-2
                                 "
-                            >
-                                {resource.title}
-                            </h3>
+              >
+                {resource.title}
+              </h3>
 
-                            <p
-                                className="
+              <p
+                className="
                                     mt-2
                                     text-sm
                                     text-gray500
                                 "
-                            >
-                                {resource.subject}
-                            </p>
+              >
+                {resource.subject}
+              </p>
 
-                            <div
-                                className="
+              <div
+                className="
                                     flex
                                     justify-between
                                     mt-5
                                     text-sm
                                     text-gray500
                                 "
-                            >
-                                <span className="flex gap-1 items-center">
-                                    <Eye size={16}/>
-                                    {resource.views}
-                                </span>
+              >
+                <span className="flex gap-1 items-center">
+                  <Eye size={16} />
+                  {resource.views}
+                </span>
 
-                                <span className="flex gap-1 items-center">
-                                    <Download size={16}/>
-                                    {resource.downloads}
-                                </span>
-
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                <span className="flex gap-1 items-center">
+                  <Download size={16} />
+                  {resource.downloads}
+                </span>
+              </div>
             </div>
-        </section>
-    );
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 };
 
 export default RelatedResources;

@@ -1,9 +1,7 @@
 const AchievementBadge = ({ achievement }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-background
                 rounded-2xl
                 p-5
@@ -11,42 +9,30 @@ const AchievementBadge = ({ achievement }) => {
                 border
                 border-gray100
             "
-        >
+    >
+      <div className="text-5xl">{achievement.icon}</div>
 
-            <div className="text-5xl">
-
-                {achievement.icon}
-
-            </div>
-
-            <h3
-                className="
+      <h3
+        className="
                     mt-4
                     font-semibold
                     text-secondary
                 "
-            >
+      >
+        {achievement.title}
+      </h3>
 
-                {achievement.title}
-
-            </h3>
-
-            <p
-                className="
+      <p
+        className="
                     mt-2
                     text-sm
                     text-gray500
                 "
-            >
-
-                {achievement.description}
-
-            </p>
-
-        </div>
-
-    );
-
+      >
+        {achievement.description}
+      </p>
+    </div>
+  );
 };
 
 export default AchievementBadge;

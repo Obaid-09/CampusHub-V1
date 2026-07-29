@@ -5,49 +5,38 @@ import AuthFooter from "./AuthFooter";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
+  return (
+    <>
+      <AuthHeader
+        title="Forgot Password"
+        subtitle="Enter your registered email address."
+      />
 
-        <>
+      <div className="space-y-6">
+        <AuthInput
+          label={
+            <>
+              Email
+              <span className="text-red-500 ml-1">*</span>
+            </>
+          }
+          placeholder="Enter your email"
+          type="email"
+        />
 
-            <AuthHeader
-                title="Forgot Password"
-                subtitle="Enter your registered email address."
-            />
+        <Button
+          className="w-full h-14"
+          onClick={() => navigate("/verify-email")}
+        >
+          Send Reset Link
+        </Button>
 
-            <div className="space-y-6">
-
-                <AuthInput
-                    label={
-                        <>
-                            Email
-                            <span className="text-red-500 ml-1">*</span>
-                        </>
-                    }
-                    placeholder="Enter your email"
-                    type="email"
-                />
-
-                <Button
-                    className="w-full h-14"
-                    onClick={() => navigate("/verify-email")}
-                >
-                    Send Reset Link
-                </Button>
-
-                <AuthFooter
-                    text=""
-                    linkText="Back to Login"
-                    to="/login"
-                />
-
-            </div>
-
-        </>
-
-    );
-
+        <AuthFooter text="" linkText="Back to Login" to="/login" />
+      </div>
+    </>
+  );
 };
 
 export default ForgotPasswordForm;

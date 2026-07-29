@@ -45,9 +45,9 @@ const Features = () => {
     return (
 
         <section className="py-24 bg-background">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-5xl mx-auto px-6">
                 <div className="text-center">
-                    <h2 className="text-5xl font-heading font-bold text-secondary">
+                    <h2 className="text-4xl font-heading font-bold text-secondary">
                         Everything You Need
                     </h2>
                     <p className="mt-5 text-xl text-gray600 max-w-3xl mx-auto">
@@ -71,18 +71,18 @@ const Features = () => {
                                 duration-300
                             "
                         >
-                            <div className="w-16 h-16 rounded-2xl bg-primaryLight flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-2xl bg-primaryLight flex items-center justify-center">
                                 <Icon
-                                    size={32}
+                                    size={25}
                                     className="text-primary"
                                 />
                             </div>
 
-                            <h3 className="mt-8 text-2xl font-semibold text-secondary">
+                            <h3 className="mt-8 text-xl font-semibold text-secondary">
                                 {title}
                             </h3>
 
-                            <p className="mt-4 text-gray600 leading-8">
+                            <p className="mt-4 text-gray600 leading-6 text-[15px]">
                                 {description}
                             </p>
                         </div>

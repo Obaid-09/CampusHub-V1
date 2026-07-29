@@ -18,7 +18,8 @@ const AdminResourceCard = ({ resource, ...actions }) => {
     >
       <img
         src={
-          getThumbnail(resource) || "https://placehold.co/700x400?text=CampusHub"
+          getThumbnail(resource) ||
+          "https://placehold.co/700x400?text=CampusHub"
         }
         alt=""
         className="

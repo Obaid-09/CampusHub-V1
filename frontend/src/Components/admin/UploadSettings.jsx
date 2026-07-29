@@ -2,70 +2,48 @@ import Input from "../ui/Input";
 import Select from "../ui/Select";
 
 const UploadSettings = () => {
+  return (
+    <div className="grid md:grid-cols-2 gap-6">
+      <Input label="Maximum Upload Size (MB)" value="50" />
 
-    return (
+      <Input label="Maximum Files Per Upload" value="1" />
 
-        <div className="grid md:grid-cols-2 gap-6">
+      <Select
+        label="Allowed File Types"
+        options={[
+          {
+            value: "pdf",
+            label: "PDF Only",
+          },
 
-            <Input
-                label="Maximum Upload Size (MB)"
-                value="50"
-            />
+          {
+            value: "documents",
+            label: "PDF + DOCX",
+          },
 
-            <Input
-                label="Maximum Files Per Upload"
-                value="1"
-            />
+          {
+            value: "all",
+            label: "All Documents",
+          },
+        ]}
+      />
 
-            <Select
+      <Select
+        label="Default Resource Visibility"
+        options={[
+          {
+            value: "public",
+            label: "Public",
+          },
 
-                label="Allowed File Types"
-
-                options={[
-
-                    {
-                        value:"pdf",
-                        label:"PDF Only",
-                    },
-
-                    {
-                        value:"documents",
-                        label:"PDF + DOCX",
-                    },
-
-                    {
-                        value:"all",
-                        label:"All Documents",
-                    },
-
-                ]}
-
-            />
-
-            <Select
-
-                label="Default Resource Visibility"
-
-                options={[
-
-                    {
-                        value:"public",
-                        label:"Public",
-                    },
-
-                    {
-                        value:"private",
-                        label:"Private",
-                    },
-
-                ]}
-
-            />
-
-        </div>
-
-    );
-
+          {
+            value: "private",
+            label: "Private",
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
 export default UploadSettings;

@@ -1,8 +1,10 @@
 import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Topbar = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   return (
     <header
       className="
@@ -67,7 +69,7 @@ const Topbar = () => {
         </button>
 
         <img
-          src="https://i.pravatar.cc/100?img=12"
+          src={user?.avatar}
           alt="Profile"
           className="
                         w-12

@@ -27,7 +27,7 @@ const UserDetails = () => {
   if (loading) {
     return (
       <AdminLayout>
-        <Loader/>
+        <Loader />
       </AdminLayout>
     );
   }

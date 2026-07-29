@@ -1,12 +1,9 @@
 import { FcGoogle } from "react-icons/fc";
 
 const SocialLogin = () => {
-
-    return (
-
-        <div className="mt-6">
-
-    <button
+  return (
+    <div className="mt-6">
+      <button
         className="
         w-full
         h-14
@@ -27,17 +24,12 @@ const SocialLogin = () => {
 
         transition
         "
-    >
-        <FcGoogle size={28}/>
-
+      >
+        <FcGoogle size={28} />
         Continue with Google
-
-    </button>
-
-</div>
-
-    );
-
+      </button>
+    </div>
+  );
 };
 
 export default SocialLogin;

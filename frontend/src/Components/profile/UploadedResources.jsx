@@ -115,10 +115,10 @@ const UploadedResources = () => {
                         scrollbar-track-transparent
                     "
         >
-        {resources.map((resource) => (
-          <MiniResourceCard key={resource._id} resource={resource} />
-        ))}
-      </div>
+          {resources.map((resource) => (
+            <MiniResourceCard key={resource._id} resource={resource} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -2,20 +2,18 @@ import SearchBar from "../resource/SearchBar";
 import Select from "../ui/Select";
 
 const AdminResourcesToolbar = ({
-    search,
-    setSearch,
+  search,
+  setSearch,
 
-    branch,
-    setBranch,
+  branch,
+  setBranch,
 
-    type,
-    setType,
+  type,
+  setType,
 }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 shadow-card
@@ -29,96 +27,68 @@ const AdminResourcesToolbar = ({
 
                 gap-4
             "
-        >
+    >
+      <div className="flex-1">
+        <SearchBar
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search resources..."
+        />
+      </div>
 
-            <div className="flex-1">
+      <Select
+        value={branch}
+        onChange={(e) => setBranch(e.target.value)}
+        options={[
+          {
+            value: "",
+            label: "All Branches",
+          },
 
-                <SearchBar
+          {
+            value: "CSE",
+            label: "CSE",
+          },
 
-                    value={search}
+          {
+            value: "ECE",
+            label: "ECE",
+          },
 
-                    onChange={(e)=>
-                        setSearch(e.target.value)
-                    }
+          {
+            value: "EEE",
+            label: "EEE",
+          },
+        ]}
+      />
 
-                    placeholder="Search resources..."
+      <Select
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+        options={[
+          {
+            value: "",
+            label: "All Types",
+          },
 
-                />
+          {
+            value: "Notes",
+            label: "Notes",
+          },
 
-            </div>
+          {
+            value: "PYQ",
+            label: "PYQ",
+          },
 
-            <Select
-
-                value={branch}
-
-                onChange={(e)=>
-                    setBranch(e.target.value)
-                }
-
-                options={[
-
-                    {
-                        value:"",
-                        label:"All Branches",
-                    },
-
-                    {
-                        value:"CSE",
-                        label:"CSE",
-                    },
-
-                    {
-                        value:"ECE",
-                        label:"ECE",
-                    },
-
-                    {
-                        value:"EEE",
-                        label:"EEE",
-                    },
-
-                ]}
-
-            />
-
-            <Select
-
-                value={type}
-
-                onChange={(e)=>
-                    setType(e.target.value)
-                }
-
-                options={[
-
-                    {
-                        value:"",
-                        label:"All Types",
-                    },
-
-                    {
-                        value:"Notes",
-                        label:"Notes",
-                    },
-
-                    {
-                        value:"PYQ",
-                        label:"PYQ",
-                    },
-
-                    {
-                        value:"Assignment",
-                        label:"Assignment",
-                    },
-
-                ]}
-
-            />
-
-        </div>
-
-    );
-
+          {
+            value: "Assignment",
+            label: "Assignment",
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
 export default AdminResourcesToolbar;

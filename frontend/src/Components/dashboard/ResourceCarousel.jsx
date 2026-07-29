@@ -2,68 +2,50 @@ import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import MiniResourceCard from "./MiniResourceCard";
 
-const ResourceCarousel = ({
-    title,
-    resources,
-}) => {
+const ResourceCarousel = ({ title, resources }) => {
+  const scrollRef = useRef(null);
 
-    const scrollRef = useRef(null);
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({
+      left: -320,
 
-    const scrollLeft = () => {
+      behavior: "smooth",
+    });
+  };
 
-        scrollRef.current?.scrollBy({
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({
+      left: 320,
 
-            left: -320,
+      behavior: "smooth",
+    });
+  };
 
-            behavior: "smooth",
-
-        });
-
-    };
-
-    const scrollRight = () => {
-
-        scrollRef.current?.scrollBy({
-
-            left: 320,
-
-            behavior: "smooth",
-
-        });
-
-    };
-
-    return (
-
-        <section className="mt-14">
-
-            <div
-                className="
+  return (
+    <section className="mt-14">
+      <div
+        className="
                     flex
                     items-center
                     justify-between
                     mb-6
                 "
-            >
-
-                <h2
-                    className="
+      >
+        <h2
+          className="
                         text-3xl
                         font-heading
                         font-bold
                         text-secondary
                     "
-                >
-                    {title}
-                </h2>
+        >
+          {title}
+        </h2>
 
-                <div className="flex gap-3">
-
-                    <button
-
-                        onClick={scrollLeft}
-
-                        className="
+        <div className="flex gap-3">
+          <button
+            onClick={scrollLeft}
+            className="
                             h-11
                             w-11
 
@@ -81,17 +63,13 @@ const ResourceCarousel = ({
 
                             transition-all
                         "
-                    >
+          >
+            <ChevronLeft size={20} />
+          </button>
 
-                        <ChevronLeft size={20}/>
-
-                    </button>
-
-                    <button
-
-                        onClick={scrollRight}
-
-                        className="
+          <button
+            onClick={scrollRight}
+            className="
                             h-11
                             w-11
 
@@ -109,23 +87,16 @@ const ResourceCarousel = ({
 
                             transition-all
                         "
-                    >
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
 
-                        <ChevronRight size={20}/>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div className="overflow-hidden">
-
-                <div
-
-                    ref={scrollRef}
-
-                    className="
+      <div className="overflow-hidden">
+        <div
+          ref={scrollRef}
+          className="
                         flex
                         gap-6
 
@@ -137,29 +108,14 @@ const ResourceCarousel = ({
 
                         pb-2
                     "
-
-                >
-
-                    {resources.map(resource => (
-
-                        <MiniResourceCard
-
-                            key={resource._id}
-
-                            resource={resource}
-
-                        />
-
-                    ))}
-
-                </div>
-
-            </div>
-
-        </section>
-
-    );
-
+        >
+          {resources.map((resource) => (
+            <MiniResourceCard key={resource._id} resource={resource} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ResourceCarousel;

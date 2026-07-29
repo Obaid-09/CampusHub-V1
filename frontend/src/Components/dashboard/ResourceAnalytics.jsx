@@ -1,16 +1,9 @@
-import {
-    Eye,
-    Download,
-    Bookmark,
-    Star,
-} from "lucide-react";
+import { Eye, Download, Bookmark, Star } from "lucide-react";
 
 const ResourceAnalytics = ({ resource }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 mt-5
 
                 rounded-xl
@@ -24,44 +17,32 @@ const ResourceAnalytics = ({ resource }) => {
 
                 gap-4
             "
-        >
+    >
+      <div className="flex gap-2 items-center">
+        <Eye size={18} />
 
-            <div className="flex gap-2 items-center">
+        {resource.views}
+      </div>
 
-                <Eye size={18}/>
+      <div className="flex gap-2 items-center">
+        <Download size={18} />
 
-                {resource.views}
+        {resource.downloads}
+      </div>
 
-            </div>
+      <div className="flex gap-2 items-center">
+        <Bookmark size={18} />
 
-            <div className="flex gap-2 items-center">
+        {resource.bookmarks}
+      </div>
 
-                <Download size={18}/>
+      <div className="flex gap-2 items-center">
+        <Star size={18} />
 
-                {resource.downloads}
-
-            </div>
-
-            <div className="flex gap-2 items-center">
-
-                <Bookmark size={18}/>
-
-                {resource.bookmarks}
-
-            </div>
-
-            <div className="flex gap-2 items-center">
-
-                <Star size={18}/>
-
-                {resource.averageRating}
-
-            </div>
-
-        </div>
-
-    );
-
+        {resource.averageRating}
+      </div>
+    </div>
+  );
 };
 
 export default ResourceAnalytics;

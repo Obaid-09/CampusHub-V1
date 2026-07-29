@@ -1,10 +1,4 @@
-import {
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-} from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
 import ChartCard from "./ChartCard";
 
@@ -42,8 +36,6 @@ const ResourceStatusDistribution = ({ data }) => {
             </Pie>
 
             <Tooltip />
-
-            
           </PieChart>
         </ResponsiveContainer>
 

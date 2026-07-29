@@ -6,7 +6,7 @@ import MiniResourceCard from "./MiniResourceCard";
 //         resource.semester === user.semester
 // );
 
-const RecommendedResources = ({resources, loading}) => {
+const RecommendedResources = ({ resources, loading }) => {
   if (loading) {
     return (
       <section className="mt-14">

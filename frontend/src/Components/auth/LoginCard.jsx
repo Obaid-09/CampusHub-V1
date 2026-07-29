@@ -2,30 +2,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import LoginForm from "./LoginForm";
 
 const LoginCard = ({ isOn }) => {
-    return (
-        <AnimatePresence>
-
-            {isOn && (
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        x: 80,
-                        scale: 0.9,
-                    }}
-                    animate={{
-                        opacity: 1,
-                        x: 0,
-                        scale: 1,
-                    }}
-                    exit={{
-                        opacity: 0,
-                        x: 80,
-                        scale: 0.9,
-                    }}
-                    transition={{
-                        duration: 0.45,
-                    }}
-                    className="
+  return (
+    <AnimatePresence>
+      {isOn && (
+        <motion.div
+          initial={{
+            opacity: 0,
+            x: 80,
+            scale: 0.9,
+          }}
+          animate={{
+            opacity: 1,
+            x: 0,
+            scale: 1,
+          }}
+          exit={{
+            opacity: 0,
+            x: 80,
+            scale: 0.9,
+          }}
+          transition={{
+            duration: 0.45,
+          }}
+          className="
                         w-[100%]
                         max-w-[28rem]
                         md:w-[120%]
@@ -39,13 +38,12 @@ const LoginCard = ({ isOn }) => {
                         p-8
                         top-10
                     "
-                >
-                    <LoginForm />
-                </motion.div>
-            )}
-
-        </AnimatePresence>
-    );
+        >
+          <LoginForm />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 };
 
 export default LoginCard;

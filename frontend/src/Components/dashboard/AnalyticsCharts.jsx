@@ -1,19 +1,11 @@
 const AnalyticsCharts = () => {
+  return (
+    <div className="grid lg:grid-cols-2 gap-8">
+      <DownloadTrend />
 
-    return (
-
-        <div className="grid lg:grid-cols-2 gap-8">
-
-            <DownloadTrend />
-
-            <DownloadTrend
-                title="Views Trend"
-            />
-
-        </div>
-
-    );
-
+      <DownloadTrend title="Views Trend" />
+    </div>
+  );
 };
 
 export default AnalyticsCharts;

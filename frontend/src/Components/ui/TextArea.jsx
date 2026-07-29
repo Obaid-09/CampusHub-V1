@@ -1,22 +1,15 @@
-const TextArea = ({
-    label,
-    error,
-    rows = 5,
-    className = "",
-    ...props
-}) => {
-    return (
-        <div className="w-full">
+const TextArea = ({ label, error, rows = 5, className = "", ...props }) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block mb-2 text-sm font-medium text-secondary">
+          {label}
+        </label>
+      )}
 
-            {label && (
-                <label className="block mb-2 text-sm font-medium text-secondary">
-                    {label}
-                </label>
-            )}
-
-            <textarea
-                rows={rows}
-                className={`
+      <textarea
+        rows={rows}
+        className={`
                     w-full
                     rounded-xl
                     border
@@ -33,17 +26,12 @@ const TextArea = ({
                     focus:ring-primaryLight
                     ${className}
                 `}
-                {...props}
-            />
+        {...props}
+      />
 
-            {error && (
-                <p className="mt-2 text-sm text-danger">
-                    {error}
-                </p>
-            )}
-
-        </div>
-    );
+      {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+    </div>
+  );
 };
 
 export default TextArea;

@@ -1,18 +1,16 @@
 import Button from "../ui/Button";
 
 const DeleteResourceModal = ({
-    open,
-    onClose,
-    onConfirm,
-    deleting = false,
+  open,
+  onClose,
+  onConfirm,
+  deleting = false,
 }) => {
+  if (!open) return null;
 
-    if(!open) return null;
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 fixed
                 inset-0
                 bg-black/50
@@ -21,87 +19,64 @@ const DeleteResourceModal = ({
                 items-center
                 z-50
             "
-        >
-
-            <div
-                className="
+    >
+      <div
+        className="
                     bg-white
                     rounded-2xl
                     p-8
                     w-[420px]
                 "
-            >
-
-                <h2
-                    className="
+      >
+        <h2
+          className="
                         text-2xl
                         font-heading
                         font-bold
                     "
-                >
+        >
+          Delete Resource?
+        </h2>
 
-                    Delete Resource?
-
-                </h2>
-
-                <p
-                    className="
+        <p
+          className="
                         mt-3
                         text-gray600
                     "
-                >
+        >
+          This action cannot be undone.
+        </p>
 
-                    This action cannot be undone.
-
-                </p>
-
-                <div
-                    className="
+        <div
+          className="
                         flex
                         gap-4
                         mt-8
                     "
-                >
+        >
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={onClose}
+            disabled={deleting}
+          >
+            Cancel
+          </Button>
 
-                    <Button
-
-                        variant="outline"
-
-                        className="flex-1"
-
-                        onClick={onClose}
-                        disabled={deleting}
-
-                    >
-
-                        Cancel
-
-                    </Button>
-
-                    <Button
-
-                        className="
+          <Button
+            className="
                             flex-1
                             bg-red-600
                         "
-
-                        onClick={onConfirm}
-                        disabled={deleting}
-
-                    >
-
-                        {deleting ? "Deleting..." : "Delete"}
-
-                    </Button>
-
-                </div>
-
-            </div>
-
+            onClick={onConfirm}
+            disabled={deleting}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </Button>
         </div>
-
-    );
-
+      </div>
+    </div>
+  );
 };
 
 export default DeleteResourceModal;

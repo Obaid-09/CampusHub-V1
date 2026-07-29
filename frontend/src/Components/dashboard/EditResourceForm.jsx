@@ -3,11 +3,9 @@ import UploadForm from "../upload/UploadForm";
 import Button from "../ui/Button";
 
 const EditResourceForm = ({ resource }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-3xl
                 border
@@ -15,44 +13,27 @@ const EditResourceForm = ({ resource }) => {
                 shadow-card
                 p-8
             "
-        >
+    >
+      <UploadDropzone />
 
-            <UploadDropzone />
+      <div className="mt-8">
+        <UploadForm initialData={resource} editMode={true} />
+      </div>
 
-            <div className="mt-8">
-
-                <UploadForm
-                    initialData={resource}
-                    editMode={true}
-                />
-
-            </div>
-
-            <div
-                className="
+      <div
+        className="
                     flex
                     justify-end
                     gap-4
                     mt-10
                 "
-            >
+      >
+        <Button variant="outline">Cancel</Button>
 
-                <Button
-                    variant="outline"
-                >
-                    Cancel
-                </Button>
-
-                <Button>
-                    Save Changes
-                </Button>
-
-            </div>
-
-        </div>
-
-    );
-
+        <Button>Save Changes</Button>
+      </div>
+    </div>
+  );
 };
 
 export default EditResourceForm;

@@ -1,51 +1,35 @@
 const ReportEvidenceCard = ({ report }) => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-background
                 rounded-2xl
                 p-6
             "
-        >
-
-            <h3
-                className="
+    >
+      <h3
+        className="
                     text-xl
                     font-semibold
                     text-secondary
                 "
-            >
+      >
+        Report Description
+      </h3>
 
-                Report Description
+      <p className="mt-4 text-gray600">{report.description}</p>
 
-            </h3>
-
-            <p className="mt-4 text-gray600">
-
-                {report.description}
-
-            </p>
-
-            <img
-
-                src={report.evidence}
-
-                alt="Evidence"
-
-                className="
+      <img
+        src={report.evidence}
+        alt="Evidence"
+        className="
                     mt-6
                     rounded-xl
                     w-full
                 "
-
-            />
-
-        </div>
-
-    );
-
+      />
+    </div>
+  );
 };
 
 export default ReportEvidenceCard;

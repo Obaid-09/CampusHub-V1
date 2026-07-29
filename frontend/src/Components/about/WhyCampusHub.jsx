@@ -33,11 +33,11 @@ const WhyCampusHub = () => {
 
     return (
         <section className="py-24">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-5xl mx-auto px-6">
                 <div className="text-center">
                     <h2
                         className="
-                            text-5xl
+                            text-4xl
                             font-heading
                             font-bold
                             text-secondary
@@ -49,7 +49,7 @@ const WhyCampusHub = () => {
                     <p
                         className="
                             mt-5
-                            text-xl
+                            text-lg
                             text-gray600
                             max-w-3xl
                             mx-auto
@@ -77,8 +77,8 @@ const WhyCampusHub = () => {
 
                             <div
                                 className="
-                                    w-16
-                                    h-16
+                                    w-14
+                                    h-14
                                     rounded-2xl
                                     bg-primaryLight
                                     flex
@@ -87,7 +87,7 @@ const WhyCampusHub = () => {
                                 "
                             >
                                 <Icon
-                                    size={32}
+                                    size={25}
                                     className="text-primary"
                                 />
 
@@ -95,7 +95,7 @@ const WhyCampusHub = () => {
                             <h3
                                 className="
                                     mt-8
-                                    text-2xl
+                                    text-xl
                                     font-semibold
                                     text-secondary
                                 "
@@ -105,8 +105,8 @@ const WhyCampusHub = () => {
                             <p
                                 className="
                                     mt-4
-                                    text-lg
-                                    leading-8
+                                    text-[18px]
+                                    leading-7
                                     text-gray600
                                 "
                             >

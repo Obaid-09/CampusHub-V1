@@ -1,31 +1,3 @@
-// import StatCard from "./StatCard";
-// import useDashboard from "../../hooks/useDashboard";
-// const StatsGrid = () => {
-//   const { stats, loading } = useDashboard();
-//   if (loading) {
-//     return (
-//       <div className="mt-8 text-center text-gray-500">Loading dashboard...</div>
-//     );
-//   }
-//   return (
-//     <div
-//       className="
-//                 mt-8
-//                 grid
-//                 sm:grid-cols-2
-//                 xl:grid-cols-4
-//                 gap-6
-//             "
-//     >
-//       {stats.map((item) => (
-//         <StatCard key={item.title} {...item} />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default StatsGrid;
-
 import StatCard from "./StatCard";
 // import useDashboard from "../../hooks/useDashboard";
 

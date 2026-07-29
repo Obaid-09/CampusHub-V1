@@ -1,33 +1,31 @@
 export const ROUTES = {
-    HOME: "/",
-    LOGIN: "/login",
-    REGISTER: "/register",
-    RESOURCES: "/resources",
-    RESOURCE_DETAILS: "/resources/:resourceId",
-    PROFILE: "/profile",
-    MY_UPLOADS: "/my-uploads",
-    BOOKMARKS: "/bookmarks",
-    DOWNLOADS: "/downloads",
-    RECENT: "/recently-viewed",
-    ADMIN: "/admin",
+  HOME: "/",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  RESOURCES: "/resources",
+  RESOURCE_DETAILS: "/resources/:resourceId",
+  PROFILE: "/profile",
+  MY_UPLOADS: "/my-uploads",
+  BOOKMARKS: "/bookmarks",
+  DOWNLOADS: "/downloads",
+  RECENT: "/recently-viewed",
+  ADMIN: "/admin",
 };
 
 export const ADMIN_ROUTES = {
+  dashboard: "/admin",
 
-    dashboard: "/admin",
+  pending: "/admin/pending",
 
-    pending: "/admin/pending",
+  resources: "/admin/resources",
 
-    resources: "/admin/resources",
+  users: "/admin/users",
 
-    users: "/admin/users",
+  reports: "/admin/reports",
 
-    reports: "/admin/reports",
+  categories: "/admin/categories",
 
-    categories: "/admin/categories",
+  analytics: "/admin/analytics",
 
-    analytics: "/admin/analytics",
-
-    settings: "/admin/settings",
-
+  settings: "/admin/settings",
 };

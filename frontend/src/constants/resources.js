@@ -1,159 +1,117 @@
-const resourceTypes = [
-    "Notes",
-    "PYQ",
-    "Assignment",
-    "Lab Manual",
-    "Book",
-];
+const resourceTypes = ["Notes", "PYQ", "Assignment", "Lab Manual", "Book"];
 
 const subjects = [
-    "Operating Systems",
-    "DBMS",
-    "Computer Networks",
-    "OOPS",
-    "DSA",
-    "Machine Learning",
+  "Operating Systems",
+  "DBMS",
+  "Computer Networks",
+  "OOPS",
+  "DSA",
+  "Machine Learning",
 ];
 
 const uploaders = [
-    {
-        fullname: "Rahul Sharma",
-        avatar: "https://i.pravatar.cc/150?img=11",
-    },
-    {
-        fullname: "Ankit Verma",
-        avatar: "https://i.pravatar.cc/150?img=12",
-    },
-    {
-        fullname: "Priya Singh",
-        avatar: "https://i.pravatar.cc/150?img=13",
-    },
-    {
-        fullname: "Sneha Patel",
-        avatar: "https://i.pravatar.cc/150?img=14",
-    },
+  {
+    fullname: "Rahul Sharma",
+    avatar: "https://i.pravatar.cc/150?img=11",
+  },
+  {
+    fullname: "Ankit Verma",
+    avatar: "https://i.pravatar.cc/150?img=12",
+  },
+  {
+    fullname: "Priya Singh",
+    avatar: "https://i.pravatar.cc/150?img=13",
+  },
+  {
+    fullname: "Sneha Patel",
+    avatar: "https://i.pravatar.cc/150?img=14",
+  },
 ];
 
 const thumbnails = {
+  Notes: "https://placehold.co/600x800/F8F6F3/C87740?text=Notes",
 
-    Notes:
-    "https://placehold.co/600x800/F8F6F3/C87740?text=Notes",
+  PYQ: "https://placehold.co/600x800/F8F6F3/2E1F26?text=PYQs",
 
-    PYQ:
-    "https://placehold.co/600x800/F8F6F3/2E1F26?text=PYQs",
+  Assignment: "https://placehold.co/600x800/F8F6F3/2563EB?text=Assignment",
 
-    Assignment:
-    "https://placehold.co/600x800/F8F6F3/2563EB?text=Assignment",
+  "Lab Manual": "https://placehold.co/600x800/F8F6F3/059669?text=Lab",
 
-    "Lab Manual":
-    "https://placehold.co/600x800/F8F6F3/059669?text=Lab",
-
-    Book:
-    "https://placehold.co/600x800/F8F6F3/F59E0B?text=Book",
-
+  Book: "https://placehold.co/600x800/F8F6F3/F59E0B?text=Book",
 };
 
-export const dummyResources = Array.from(
-    { length: 18 },
-    (_, index) => {
+export const dummyResources = Array.from({ length: 18 }, (_, index) => {
+  const subject = subjects[index % subjects.length];
 
-        const subject =
-            subjects[index % subjects.length];
+  const uploader = uploaders[index % uploaders.length];
 
-        const uploader =
-            uploaders[index % uploaders.length];
+  return {
+    _id: String(index + 1),
 
-        return {
+    title: `${subject} ${resourceTypes[index % resourceTypes.length]}`,
 
-            _id: String(index + 1),
+    description: `Complete study material for ${subject}. Includes important concepts, diagrams, previous year questions and exam tips.`,
 
-            title: `${subject} ${resourceTypes[index % resourceTypes.length]}`,
+    subject,
 
-            description:
-                `Complete study material for ${subject}. Includes important concepts, diagrams, previous year questions and exam tips.`,
+    courseCode: `CS30${index % 6}`,
 
-            subject,
+    type: resourceTypes[index % resourceTypes.length],
 
-            courseCode: `CS30${index % 6}`,
+    branch: "CSE",
 
-            type:
-                resourceTypes[index % resourceTypes.length],
+    semester: (index % 8) + 1,
 
-            branch: "CSE",
+    year: 3,
 
-            semester:
-                (index % 8) + 1,
+    college: "NIT Warangal",
 
-            year: 3,
+    thumbnail: thumbnails[resourceTypes[index % resourceTypes.length]],
 
-            college: "NIT Warangal",
+    pdfUrl: "#",
 
-            thumbnail:
-                        thumbnails[
-                            resourceTypes[index % resourceTypes.length]
-                        ],
+    totalPages: 80 + Math.floor(Math.random() * 70),
 
-            pdfUrl: "#",
+    fileSize: `${(4 + Math.random() * 8).toFixed(1)} MB`,
 
-            totalPages:
-                80 + Math.floor(Math.random() * 70),
+    downloads: Math.floor(Math.random() * 3000),
 
-            fileSize:
-                `${(4 + Math.random() * 8).toFixed(1)} MB`,
+    views: Math.floor(Math.random() * 8000),
 
-            downloads:
-                Math.floor(Math.random() * 3000),
+    bookmarks: Math.floor(Math.random() * 500),
 
-            views:
-                Math.floor(Math.random() * 8000),
+    rating: Number((4 + Math.random()).toFixed(1)),
 
-            bookmarks:
-                Math.floor(Math.random() * 500),
+    uploadedDate: "12 July 2026",
 
-            rating:
-                Number((4 + Math.random()).toFixed(1)),
+    uploadedBy: {
+      ...uploader,
+      branch: "CSE",
+      year: 3,
+      college: "NIT Warangal",
+      uploads: 20 + Math.floor(Math.random() * 30),
+    },
 
-            uploadedDate:
-                "12 July 2026",
+    tags: [subject, "Semester Notes", "Important", "Exam"],
 
-            uploadedBy: {
-                ...uploader,
-                branch: "CSE",
-                year: 3,
-                college: "NIT Warangal",
-                uploads:
-                    20 + Math.floor(Math.random() * 30),
-            },
+    reviews: [
+      {
+        id: 1,
+        name: "Aditya",
+        rating: 5,
+        comment: "Excellent notes. Helped a lot during exams.",
+        date: "10 Jul 2026",
+      },
 
-            tags: [
-                subject,
-                "Semester Notes",
-                "Important",
-                "Exam",
-            ],
-
-            reviews: [
-
-                {
-                    id: 1,
-                    name: "Aditya",
-                    rating: 5,
-                    comment:
-                        "Excellent notes. Helped a lot during exams.",
-                    date: "10 Jul 2026",
-                },
-
-                {
-                    id: 2,
-                    name: "Priya",
-                    rating: 4,
-                    comment:
-                        "Well structured and easy to revise.",
-                    date: "08 Jul 2026",
-                },
-            ],
-        };
-    }
-);
+      {
+        id: 2,
+        name: "Priya",
+        rating: 4,
+        comment: "Well structured and easy to revise.",
+        date: "08 Jul 2026",
+      },
+    ],
+  };
+});
 
 export const dummyResource = dummyResources[0];

@@ -19,6 +19,7 @@ const Categories = () => {
         <div className="text-center">
           <p
             className="
+                            text-3xl
                             text-primary
                             uppercase
                             tracking-widest
@@ -55,7 +56,9 @@ const Categories = () => {
         </div>
 
         <div
-          className="
+          className="   
+                        max-w-5xl
+                        mx-auto
                         mt-16
                         grid
                         gap-8

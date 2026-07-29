@@ -9,7 +9,7 @@ const Mission = () => {
     return (
 
         <section className="bg-white py-24">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-6xl mx-auto px-6">
                 <div className="grid lg:grid-cols-2 gap-20 items-center">
                     <div>
                         <span
@@ -25,7 +25,7 @@ const Mission = () => {
                         <h2
                             className="
                                 mt-4
-                                text-5xl
+                                text-4xl
                                 font-heading
                                 font-bold
                                 text-secondary
@@ -37,8 +37,8 @@ const Mission = () => {
                         <p
                             className="
                                 mt-8
-                                text-xl
-                                leading-9
+                                text-lg
+                                leading-8
                                 text-gray600
                             "
                         >
@@ -56,16 +56,16 @@ const Mission = () => {
                     <div className="space-y-8">
                         <div className="flex gap-5">
                             <Target
-                                size={38}
+                                size={32}
                                 className="text-primary mt-1"
                             />
                             <div>
 
-                                <h3 className="text-2xl font-semibold">
+                                <h3 className="text-lg font-semibold">
                                     Centralized Learning
                                 </h3>
 
-                                <p className="mt-2 text-gray600">
+                                <p className="mt-2 text-gray600 text-[15px]">
                                     One place for Notes, PYQs,
                                     Books and Lab Manuals.
                                 </p>
@@ -74,16 +74,16 @@ const Mission = () => {
 
                         <div className="flex gap-5">
                             <GraduationCap
-                                size={38}
+                                size={32}
                                 className="text-primary mt-1"
                             />
                             <div>
 
-                                <h3 className="text-2xl font-semibold">
+                                <h3 className="text-xl font-semibold">
                                     Student Community
                                 </h3>
 
-                                <p className="mt-2 text-gray600">
+                                <p className="mt-2 text-gray600 text-[15px]">
                                     Built around collaboration,
                                     knowledge sharing and growth.
                                 </p>
@@ -92,16 +92,16 @@ const Mission = () => {
 
                         <div className="flex gap-5">
                             <Globe
-                                size={38}
+                                size={32}
                                 className="text-primary mt-1"
                             />
 
                             <div>
-                                <h3 className="text-2xl font-semibold">
+                                <h3 className="text-xl font-semibold">
                                     Future Ready
                                 </h3>
 
-                                <p className="mt-2 text-gray600">
+                                <p className="mt-2 text-gray600 text-[15px]">
                                     AI-powered search and intelligent
                                     study assistance coming soon.
                                 </p>

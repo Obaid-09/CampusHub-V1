@@ -1,17 +1,11 @@
 import { Edit3, Trash2, BarChart3 } from "lucide-react";
 
-const ResourceActions = ({
-    onEdit,
-    onDelete,
-    onAnalytics,
-}) => {
-
-    return (
-
-        <div className="flex gap-3 mt-5">
-            <button
-                onClick={onEdit}
-                className="
+const ResourceActions = ({ onEdit, onDelete, onAnalytics }) => {
+  return (
+    <div className="flex gap-3 mt-5">
+      <button
+        onClick={onEdit}
+        className="
                     flex-1
                     flex
                     justify-center
@@ -25,14 +19,14 @@ const ResourceActions = ({
                     hover:text-white
                     transition-all
                 "
-            >
-                <Edit3 size={18}/>
-                Edit
-            </button>
+      >
+        <Edit3 size={18} />
+        Edit
+      </button>
 
-            <button
-                onClick={onAnalytics}
-                className="
+      <button
+        onClick={onAnalytics}
+        className="
                     flex-1
                     flex
                     justify-center
@@ -46,14 +40,14 @@ const ResourceActions = ({
                     hover:text-white
                     transition-all
                 "
-            >
-                <BarChart3 size={18}/>
-                Analytics
-            </button>
+      >
+        <BarChart3 size={18} />
+        Analytics
+      </button>
 
-            <button
-                onClick={onDelete}
-                className="
+      <button
+        onClick={onDelete}
+        className="
                     w-12
                     flex-1
                     flex
@@ -66,11 +60,11 @@ const ResourceActions = ({
                     hover:text-white
                     transition-all
                 "
-            >
-                <Trash2 size={18}/>
-            </button>
-        </div>
-    );
+      >
+        <Trash2 size={18} />
+      </button>
+    </div>
+  );
 };
 
 export default ResourceActions;

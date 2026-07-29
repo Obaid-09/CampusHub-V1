@@ -1,51 +1,43 @@
 import MiniResourceCard from "./MiniResourceCard";
 
-const TrendingResources = ({resources, loading}) => {
-
-    if (loading) {
+const TrendingResources = ({ resources, loading }) => {
+  if (loading) {
     return (
-        <section className="mt-14">
-            <h2
-                className="
+      <section className="mt-14">
+        <h2
+          className="
                     text-3xl
                     font-heading
                     font-bold
                     text-secondary
                     mb-6
                 "
-            >
-                Trending Resources
-            </h2>
+        >
+          Trending Resources
+        </h2>
 
-            <div className="text-gray500">
-                Loading...
-            </div>
-        </section>
+        <div className="text-gray500">Loading...</div>
+      </section>
     );
-}
+  }
 
-    return (
-
-        <section className="mt-14">
-
-            <h2
-                className="
+  return (
+    <section className="mt-14">
+      <h2
+        className="
                     text-3xl
                     font-heading
                     font-bold
                     text-secondary
                     mb-6
                 "
-            >
+      >
+        Trending Resources
+      </h2>
 
-                Trending Resources
-
-            </h2>
-
-            <div className="overflow-hidden">
-
-                <div
-                    className="
+      <div className="overflow-hidden">
+        <div
+          className="
                         flex
                         gap-6
                         overflow-x-auto
@@ -55,25 +47,14 @@ const TrendingResources = ({resources, loading}) => {
                         scrollbar-thumb-primary/40
                         scrollbar-track-transparent
                     "
-                >
-
-                    {resources.map(resource => (
-
-                        <MiniResourceCard
-                            key={resource._id}
-                            resource={resource}
-                        />
-
-                    ))}
-
-                </div>
-
-            </div>
-
-        </section>
-
-    );
-
+        >
+          {resources.map((resource) => (
+            <MiniResourceCard key={resource._id} resource={resource} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default TrendingResources;

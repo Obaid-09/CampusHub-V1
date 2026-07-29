@@ -24,7 +24,7 @@ const Stats = () => {
 
     return (
         <section className="py-24">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-5xl mx-auto px-6">
                 <div
                     className="
                         bg-secondary
@@ -39,7 +39,7 @@ const Stats = () => {
                                 key={stat.label}
                                 className="text-center"
                             >
-                                <h2 className="text-5xl font-bold text-primary">
+                                <h2 className="text-4xl font-bold text-primary">
                                     {stat.value}
                                 </h2>
                                 <p className="mt-4 text-xl text-white/80">

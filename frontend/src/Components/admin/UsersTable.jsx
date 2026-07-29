@@ -1,12 +1,6 @@
 import UserRow from "./UserRow";
 
-const UsersTable = ({
-  users,
-  loading,
-  onView,
-  onDelete,
-  onPromote,
-}) => {
+const UsersTable = ({ users, loading, onView, onDelete, onPromote }) => {
   if (loading) {
     return (
       <div className="text-center py-16 text-gray500">Loading users...</div>

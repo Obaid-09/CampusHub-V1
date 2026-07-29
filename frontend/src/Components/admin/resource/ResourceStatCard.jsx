@@ -1,12 +1,7 @@
-const ResourceStatCard = ({
-    title,
-    value,
-}) => {
-
-    return (
-
-        <div
-            className="
+const ResourceStatCard = ({ title, value }) => {
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -14,31 +9,21 @@ const ResourceStatCard = ({
                 shadow-card
                 p-6
             "
-        >
+    >
+      <p className="text-gray500">{title}</p>
 
-            <p className="text-gray500">
-
-                {title}
-
-            </p>
-
-            <h2
-                className="
+      <h2
+        className="
                     mt-3
                     text-4xl
                     font-bold
                     text-secondary
                 "
-            >
-
-                {value}
-
-            </h2>
-
-        </div>
-
-    );
-
+      >
+        {value}
+      </h2>
+    </div>
+  );
 };
 
 export default ResourceStatCard;

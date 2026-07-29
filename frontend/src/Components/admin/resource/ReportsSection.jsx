@@ -3,12 +3,9 @@ import { resourceReports } from "../../../constants/admin";
 import ReportCard from "./ReportCard";
 
 const ReportsSection = () => {
-
-    return (
-
-        <div
-
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 shadow-card
@@ -16,48 +13,25 @@ const ReportsSection = () => {
                 border-gray100
                 p-8
             "
-
-        >
-
-            <h2
-
-                className="
+    >
+      <h2
+        className="
                     text-2xl
                     font-bold
                     text-secondary
                     mb-6
                 "
+      >
+        Reports
+      </h2>
 
-            >
-
-                Reports
-
-            </h2>
-
-            <div className="space-y-5">
-
-                {
-
-                    resourceReports.map(report=>(
-
-                        <ReportCard
-
-                            key={report._id}
-
-                            report={report}
-
-                        />
-
-                    ))
-
-                }
-
-            </div>
-
-        </div>
-
-    );
-
+      <div className="space-y-5">
+        {resourceReports.map((report) => (
+          <ReportCard key={report._id} report={report} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default ReportsSection;

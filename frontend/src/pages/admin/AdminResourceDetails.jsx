@@ -15,7 +15,11 @@ const AdminResourceDetails = () => {
   const { resource, loading } = useAdminResource();
 
   if (loading) {
-    return <AdminLayout><Loader/></AdminLayout>;
+    return (
+      <AdminLayout>
+        <Loader />
+      </AdminLayout>
+    );
   }
 
   if (!resource) {

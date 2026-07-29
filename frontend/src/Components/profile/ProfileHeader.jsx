@@ -2,7 +2,13 @@ import { Edit, GraduationCap, Calendar } from "lucide-react";
 import Button from "../ui/Button";
 import { Camera } from "lucide-react";
 
-const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvatar }) => {
+const ProfileHeader = ({
+  profile,
+  onAvatarClick,
+  isOwner,
+  onEdit,
+  uploadingAvatar,
+}) => {
   return (
     <div
       className="
@@ -144,7 +150,9 @@ const ProfileHeader = ({ profile, onAvatarClick, isOwner, onEdit, uploadingAvata
               <Calendar size={16} />
               Joined{" "}
               {profile?.createdAt || profile?.joinedAt
-                ? new Date(profile.createdAt || profile.joinedAt).toLocaleDateString(
+                ? new Date(
+                    profile.createdAt || profile.joinedAt,
+                  ).toLocaleDateString(
                     "en-IN",
 
                     {

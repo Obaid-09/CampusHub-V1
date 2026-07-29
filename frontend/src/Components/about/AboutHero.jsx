@@ -7,7 +7,7 @@ const AboutHero = () => {
     const navigate = useNavigate();
     return (
         <section className="bg-background py-28">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-5xl mx-auto px-6">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left */}
                     <div>
@@ -29,8 +29,8 @@ const AboutHero = () => {
 
                         <h1
                             className="
-                                text-5xl
-                                lg:text-7xl
+                                text-3xl
+                                lg:text-5xl
                                 font-heading
                                 font-bold
                                 text-secondary
@@ -51,8 +51,8 @@ const AboutHero = () => {
                         <p
                             className="
                                 mt-8
-                                text-xl
-                                leading-9
+                                text-lg
+                                leading-7
                                 text-gray600
                                 max-w-xl
                             "
@@ -62,18 +62,20 @@ const AboutHero = () => {
                             and share quality academic resources in one place.
                         </p>
 
-                        <div className="flex gap-5 mt-10 flex-wrap">
+                        <div className="flex gap-5 mt-10 text-md flex-wrap">
                             <Button
                                 onClick={() => navigate("/resources")}
+                                className="text-sm"
                             >
                                 Explore Resources
-                                <ArrowRight size={18}/>
+                                <ArrowRight size={15}/>
                             </Button>
                             <Button
                                 variant="outline"
                                 onClick={() => navigate("/upload")}
+                                className="text-sm"
                             >
-                                <Upload size={18}/>
+                                <Upload size={15}/>
                                 Upload Resource
                             </Button>
                         </div>
@@ -88,7 +90,7 @@ const AboutHero = () => {
                                 rounded-3xl
                                 shadow-2xl
                                 object-cover
-                                h-[500px]
+                                h-[450px]
                             "
                         />
                     </div>

@@ -1,90 +1,80 @@
 import { dummyResources } from "./resources";
 
-export const trendingResources =
-    dummyResources.slice(0,5);
+export const trendingResources = dummyResources.slice(0, 5);
 
-export const recommendedResources =
-    dummyResources.slice(5,10);
+export const recommendedResources = dummyResources.slice(5, 10);
 
 export const dashboardStats = [
+  {
+    title: "Uploads",
+    value: 12,
+    color: "text-primary",
+  },
 
-    {
-        title: "Uploads",
-        value: 12,
-        color: "text-primary",
-    },
+  {
+    title: "Bookmarks",
+    value: 48,
+    color: "text-green-600",
+  },
 
-    {
-        title: "Bookmarks",
-        value: 48,
-        color: "text-green-600",
-    },
+  {
+    title: "Downloads",
+    value: "1.5K",
+    color: "text-blue-600",
+  },
 
-    {
-        title: "Downloads",
-        value: "1.5K",
-        color: "text-blue-600",
-    },
-
-    {
-        title: "Reputation",
-        value: "4.8★",
-        color: "text-yellow-500",
-    },
-
+  {
+    title: "Reputation",
+    value: "4.8★",
+    color: "text-yellow-500",
+  },
 ];
 
 export const recentActivities = [
+  {
+    id: 1,
+    title: "Uploaded DBMS Notes",
+    time: "2 hours ago",
+  },
 
-    {
-        id: 1,
-        title: "Uploaded DBMS Notes",
-        time: "2 hours ago",
-    },
+  {
+    id: 2,
+    title: "Bookmarked CN PYQs",
+    time: "Yesterday",
+  },
 
-    {
-        id: 2,
-        title: "Bookmarked CN PYQs",
-        time: "Yesterday",
-    },
-
-    {
-        id: 3,
-        title: "Downloaded OS Notes",
-        time: "2 days ago",
-    },
-
+  {
+    id: 3,
+    title: "Downloaded OS Notes",
+    time: "2 days ago",
+  },
 ];
 
 export const quickActions = [
+  {
+    title: "Upload Resource",
+    path: "/upload",
+  },
 
-    {
-        title: "Upload Resource",
-        path: "/upload",
-    },
+  {
+    title: "Browse Resources",
+    path: "/resources",
+  },
 
-    {
-        title: "Browse Resources",
-        path: "/resources",
-    },
-
-    {
-        title: "View Bookmarks",
-        path: "/dashboard/bookmarks",
-    },
-
+  {
+    title: "View Bookmarks",
+    path: "/dashboard/bookmarks",
+  },
 ];
 
 export const progress = {
+  uploads: 12,
 
-    uploads: 12,
+  downloads: 1540,
 
-    downloads: 1540,
+  bookmarks: 48,
 
-    bookmarks: 48,
-
-    target: 20,
-
+  target: 20,
 };
 
 // export const trendingResources = [
@@ -125,7 +115,7 @@ export const progress = {
 
 //     },
 
-// ];  
+// ];
 
 // export const recommendedResources = [
 
@@ -162,74 +152,66 @@ export const progress = {
 // ];
 
 export const dummyNotifications = [
+  {
+    id: 1,
+    type: "approval",
+    title: "Resource Approved",
+    description: "Operating Systems Notes is now publicly available.",
+    time: "2 hours ago",
+    unread: true,
+  },
 
-    {
-        id: 1,
-        type: "approval",
-        title: "Resource Approved",
-        description: "Operating Systems Notes is now publicly available.",
-        time: "2 hours ago",
-        unread: true,
-    },
+  {
+    id: 2,
+    type: "download",
+    title: "New Downloads",
+    description: "Your DBMS Notes received 24 new downloads.",
+    time: "Yesterday",
+    unread: true,
+  },
 
-    {
-        id: 2,
-        type: "download",
-        title: "New Downloads",
-        description: "Your DBMS Notes received 24 new downloads.",
-        time: "Yesterday",
-        unread: true,
-    },
+  {
+    id: 3,
+    type: "rating",
+    title: "New Rating",
+    description: "Someone rated your CN Notes 5 stars.",
+    time: "2 days ago",
+    unread: false,
+  },
 
-    {
-        id: 3,
-        type: "rating",
-        title: "New Rating",
-        description: "Someone rated your CN Notes 5 stars.",
-        time: "2 days ago",
-        unread: false,
-    },
+  {
+    id: 4,
+    type: "review",
+    title: "New Review",
+    description: "Excellent notes! Helped a lot before exams.",
+    time: "3 days ago",
+    unread: false,
+  },
 
-    {
-        id: 4,
-        type: "review",
-        title: "New Review",
-        description: "Excellent notes! Helped a lot before exams.",
-        time: "3 days ago",
-        unread: false,
-    },
-
-    {
-        id: 5,
-        type: "achievement",
-        title: "Achievement Unlocked",
-        description: "You earned the Top Contributor badge.",
-        time: "Last Week",
-        unread: false,
-    },
-
+  {
+    id: 5,
+    type: "achievement",
+    title: "Achievement Unlocked",
+    description: "You earned the Top Contributor badge.",
+    time: "Last Week",
+    unread: false,
+  },
 ];
 
 export const upcomingEvents = [
+  {
+    id: 1,
 
-    {
+    title: "Mid Semester Exams",
 
-        id:1,
+    date: "15 Sept",
+  },
 
-        title:"Mid Semester Exams",
+  {
+    id: 2,
 
-        date:"15 Sept",
+    title: "Assignment Submission",
 
-    },
-
-    {
-
-        id:2,
-
-        title:"Assignment Submission",
-
-        date:"20 Sept",
-
-    },
-
+    date: "20 Sept",
+  },
 ];

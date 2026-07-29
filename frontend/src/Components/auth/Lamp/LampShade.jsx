@@ -1,11 +1,10 @@
 const LampShade = ({ isOn }) => {
-    return (
-        <div className="relative flex justify-center">
+  return (
+    <div className="relative flex justify-center">
+      {/* Shade */}
 
-            {/* Shade */}
-
-            <div
-                className={`
+      <div
+        className={`
                     w-40
                     h-14
                     rounded-t-full
@@ -15,15 +14,14 @@ const LampShade = ({ isOn }) => {
                     duration-500
 
                     ${
-                        isOn
-                            ? "bg-neutral-700 border-yellow-300"
-                            : "bg-neutral-800 border-neutral-600"
+                      isOn
+                        ? "bg-neutral-700 border-yellow-300"
+                        : "bg-neutral-800 border-neutral-600"
                     }
                 `}
-            />
-
-        </div>
-    );
+      />
+    </div>
+  );
 };
 
 export default LampShade;

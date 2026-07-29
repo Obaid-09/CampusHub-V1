@@ -1,19 +1,12 @@
-const AuthInput = ({
-    label,
-    disabled,
-    className = "",
-    ...props
-}) => {
-    return (
-        <div className="space-y-2">
-            <label className="block font-medium text-gray-700">
-                {label}
-            </label>
+const AuthInput = ({ label, disabled, className = "", ...props }) => {
+  return (
+    <div className="space-y-2">
+      <label className="block font-medium text-gray-700">{label}</label>
 
-            <input
-                disabled={disabled}
-                {...props}
-                className={`
+      <input
+        disabled={disabled}
+        {...props}
+        className={`
                     w-full
                     h-14
                     px-5
@@ -23,8 +16,8 @@ const AuthInput = ({
                     transition-all
                     ${className}
                 `}
-            />
-        </div>
-    );
+      />
+    </div>
+  );
 };
 export default AuthInput;

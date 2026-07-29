@@ -9,10 +9,10 @@ const branches = [
   { value: "EEE", label: "Electrical & Electronics" },
   { value: "ECE", label: "Electronics & Communication" },
   { value: "ME", label: "Mechanical" },
-  {value: "CE", label: "Civil"},
-  {value: "CH", label: "Chemical"},
-  {value: "BT", label: "Biotechnology"},
-  {value: "MT", label: "Metallurgy"},
+  { value: "CE", label: "Civil" },
+  { value: "CH", label: "Chemical" },
+  { value: "BT", label: "Biotechnology" },
+  { value: "MT", label: "Metallurgy" },
 ];
 
 const resourceTypes = [
@@ -21,7 +21,7 @@ const resourceTypes = [
   { value: "Assignment", label: "Assignment" },
   { value: "Lab Manual", label: "Lab Manual" },
   { value: "Book", label: "Book" },
-  {value: "Record", label: "Lab Records"},
+  { value: "Record", label: "Lab Records" },
 ];
 
 const UploadForm = ({

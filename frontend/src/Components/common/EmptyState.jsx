@@ -1,51 +1,35 @@
 import {
-    Inbox,
-    FolderOpen,
-    Bookmark,
-    Bell,
-    Search,
-    FileText,
+  Inbox,
+  FolderOpen,
+  Bookmark,
+  Bell,
+  Search,
+  FileText,
 } from "lucide-react";
 
 import EmptyStateAction from "./EmptyStateAction";
 
 const icons = {
-
-    resources: FolderOpen,
-
-    bookmarks: Bookmark,
-
-    notifications: Bell,
-
-    search: Search,
-
-    reports: FileText,
-
-    default: Inbox,
-
+  resources: FolderOpen,
+  bookmarks: Bookmark,
+  notifications: Bell,
+  search: Search,
+  reports: FileText,
+  default: Inbox,
 };
 
 const EmptyState = ({
-
-    type = "default",
-
-    title,
-
-    description,
-
-    actionText,
-
-    onAction,
-
+  type = "default",
+  title,
+  description,
+  actionText,
+  onAction,
 }) => {
+  const Icon = icons[type] || Inbox;
 
-    const Icon = icons[type] || Inbox;
-
-    return (
-
-        <div
-
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -59,12 +43,9 @@ const EmptyState = ({
                 items-center
                 text-center
             "
-
-        >
-
-            <div
-
-                className="
+    >
+      <div
+        className="
                     w-20
                     h-20
                     rounded-full
@@ -75,22 +56,12 @@ const EmptyState = ({
                     items-center
                     justify-center
                 "
+      >
+        <Icon size={38} className="text-primary" />
+      </div>
 
-            >
-
-                <Icon
-
-                    size={38}
-
-                    className="text-primary"
-
-                />
-
-            </div>
-
-            <h2
-
-                className="
+      <h2
+        className="
                     mt-8
 
                     text-3xl
@@ -101,16 +72,12 @@ const EmptyState = ({
 
                     text-secondary
                 "
+      >
+        {title}
+      </h2>
 
-            >
-
-                {title}
-
-            </h2>
-
-            <p
-
-                className="
+      <p
+        className="
                     mt-4
 
                     max-w-md
@@ -119,25 +86,13 @@ const EmptyState = ({
 
                     leading-relaxed
                 "
+      >
+        {description}
+      </p>
 
-            >
-
-                {description}
-
-            </p>
-
-            <EmptyStateAction
-
-                text={actionText}
-
-                onClick={onAction}
-
-            />
-
-        </div>
-
-    );
-
+      <EmptyStateAction text={actionText} onClick={onAction} />
+    </div>
+  );
 };
 
 export default EmptyState;

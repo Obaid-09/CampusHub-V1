@@ -2,11 +2,9 @@ import SearchBar from "../ui/SearchBar";
 import Select from "../ui/Select";
 
 const ReportsToolbar = () => {
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 bg-white
                 rounded-2xl
                 border
@@ -19,84 +17,50 @@ const ReportsToolbar = () => {
                 lg:flex-row
                 gap-4
             "
-        >
+    >
+      <div className="flex-1">
+        <SearchBar placeholder="Search reports..." />
+      </div>
 
-            <div className="flex-1">
+      <Select
+        options={[
+          {
+            value: "",
+            label: "All Status",
+          },
 
-                <SearchBar
-                    placeholder="Search reports..."
-                />
+          {
+            value: "Pending",
+            label: "Pending",
+          },
 
-            </div>
+          {
+            value: "Resolved",
+            label: "Resolved",
+          },
+        ]}
+      />
 
-            <Select
+      <Select
+        options={[
+          {
+            value: "",
+            label: "All Types",
+          },
 
-                options={[
+          {
+            value: "Resource",
+            label: "Resource",
+          },
 
-                    {
-
-                        value:"",
-
-                        label:"All Status",
-
-                    },
-
-                    {
-
-                        value:"Pending",
-
-                        label:"Pending",
-
-                    },
-
-                    {
-
-                        value:"Resolved",
-
-                        label:"Resolved",
-
-                    },
-
-                ]}
-
-            />
-
-            <Select
-
-                options={[
-
-                    {
-
-                        value:"",
-
-                        label:"All Types",
-
-                    },
-
-                    {
-
-                        value:"Resource",
-
-                        label:"Resource",
-
-                    },
-
-                    {
-
-                        value:"User",
-
-                        label:"User",
-
-                    },
-
-                ]}
-
-            />
-
-        </div>
-
-    );
-
+          {
+            value: "User",
+            label: "User",
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
 export default ReportsToolbar;

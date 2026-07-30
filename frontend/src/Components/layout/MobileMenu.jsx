@@ -2,7 +2,7 @@ import { X, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 import Logo from "../common/Logo";
-import NavLinks from "./NavLinks";
+import NavLinks from "./Navlinks";
 import Button from "../ui/Button";
 
 import useAuth from "../../hooks/useAuth";

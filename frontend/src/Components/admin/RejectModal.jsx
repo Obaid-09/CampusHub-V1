@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Modal from "../ui/Modal";
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 import Button from "../ui/Button";
 
 const RejectModal = ({ open, onClose, onReject }) => {

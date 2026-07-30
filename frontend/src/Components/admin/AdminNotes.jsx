@@ -1,4 +1,4 @@
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 
 const AdminNotes = () => {
   return (

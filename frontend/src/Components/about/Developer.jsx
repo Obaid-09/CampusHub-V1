@@ -1,7 +1,7 @@
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Mail } from "lucide-react";
 import Button from "../ui/Button";
-import pp from "../../assets/OBAID_PIC.JPEG"
+import pp from "../../assets/OBAID_PIC.jpeg"
 const Developer = () => {
   return (
     <section className="py-24">

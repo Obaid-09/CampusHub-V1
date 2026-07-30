@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../ui/Button";
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 
 const SuspendUserModal = ({ open, onClose, onConfirm }) => {
   const [reason, setReason] = useState("");

@@ -35,10 +35,9 @@ const registerUser = asyncHandler(async (req, res) => {
     branch,
     semester,
     year,
-    college,
     bio,
   } = req.body;
-  college = req.body.college?.trim() || "NIT Warangal";
+  const college = req.body.college?.trim() || "NIT Warangal";
 
   // 2) Validation not empty
   if (

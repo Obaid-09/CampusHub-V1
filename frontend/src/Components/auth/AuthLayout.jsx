@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Lamp from "./Lamp/Lamp";
-import LampGlow from "./Lamp/LampGlow"
+import LampGlow from "./Lamp/LampGlow";
 import LightCone from "./Lamp/LightCone";
 import FloorGlow from "./Lamp/FloorGlow";
 
@@ -87,3 +87,21 @@ const AuthLayout = ({ children }) => {
 };
 
 export default AuthLayout;
+
+// const AuthLayout = ({ children }) => {
+//   return (
+//     <div
+//       style={{
+//         minHeight: "100vh",
+//         background: "red",
+//         color: "white",
+//         padding: "50px",
+//       }}
+//     >
+//       <h1>AUTH LAYOUT</h1>
+//       {children(true)}
+//     </div>
+//   );
+// };
+
+// export default AuthLayout;

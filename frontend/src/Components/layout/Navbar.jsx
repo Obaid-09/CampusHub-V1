@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import Logo from "../common/Logo";
 import Button from "../ui/Button";
-import NavLinks from "./NavLinks";
+import NavLinks from "./Navlinks";
 import SearchBox from "./SearchBox";
 import ProfileDropdown from "./ProfileDropdown";
 import MobileMenu from "./MobileMenu";

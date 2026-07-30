@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "../ui/Modal";
 import AuthInput from "../auth/AuthInput";
 import Select from "../ui/Select";
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 import Button from "../ui/Button";
 
 import useAuth from "../../hooks/useAuth";

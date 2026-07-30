@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "../ui/Button";
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 
 const DismissReportModal = ({ open, report, onClose, onDismiss }) => {
   const [reason, setReason] = useState("");

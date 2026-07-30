@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Button from "../ui/Button";
-import Textarea from "../ui/Textarea";
+import Textarea from "../ui/TextArea";
 
 const ResolveReportModal = ({ open, report, onClose, onResolve }) => {
   const [notes, setNotes] = useState("");

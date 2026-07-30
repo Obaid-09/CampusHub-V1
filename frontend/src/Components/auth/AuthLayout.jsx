@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Lamp from "./lamp/Lamp";
-import LampGlow from "./lamp/LampGlow";
-import LightCone from "./lamp/LightCone";
-import FloorGlow from "./lamp/FloorGlow";
+import Lamp from "./Lamp/Lamp";
+import LampGlow from "./Lamp/LampGlow"
+import LightCone from "./Lamp/LightCone";
+import FloorGlow from "./Lamp/FloorGlow";
 
 const AuthLayout = ({ children }) => {
   const [isOn, setIsOn] = useState(false);

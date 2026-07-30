@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../../Components/admin/AdminLayout";
 
-import AdminResourcesToolbar from "../../components/admin/AdminResourcesToolbar";
-import AdminResourceGrid from "../../components/admin/AdminResourceGrid";
+import AdminResourcesToolbar from "../../Components/admin/AdminResourcesToolbar";
+import AdminResourceGrid from "../../Components/admin/AdminResourceGrid";
 
 import { dummyResources } from "../../constants/resources";
 

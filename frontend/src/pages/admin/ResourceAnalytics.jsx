@@ -1,10 +1,10 @@
-import AdminLayout from "../../components/admin/AdminLayout";
-import ResourceAnalyticsHeader from "../../components/admin/ResourceAnalyticsHeader";
-import ResourceStatsGrid from "../../components/admin/ResourceStatsGrid";
-import DownloadChart from "../../components/admin/DownloadChart";
-import RatingsChart from "../../components/admin/RatingsChart";
-import ReviewsTable from "../../components/admin/ReviewsTable";
-import DownloadUsersTable from "../../components/admin/DownloadUsersTable";
+import AdminLayout from "../../Components/admin/AdminLayout";
+import ResourceAnalyticsHeader from "../../Components/admin/ResourceAnalyticsHeader";
+import ResourceStatsGrid from "../../Components/admin/ResourceStatsGrid";
+import DownloadChart from "../../Components/admin/DownloadChart";
+import RatingsChart from "../../Components/admin/RatingsChart";
+import ReviewsTable from "../../Components/admin/ReviewsTable";
+import DownloadUsersTable from "../../Components/admin/DownloadUsersTable";
 
 const ResourceAnalytics = () => {
   return (

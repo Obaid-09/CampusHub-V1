@@ -3,7 +3,7 @@ import useAdminUsers from "../../hooks/useAdminUsers";
 import AdminLayout from "../../Components/admin/AdminLayout";
 import UsersToolbar from "../../Components/admin/UsersToolbar";
 import UsersTable from "../../Components/admin/UsersTable";
-
+import { adminAPI } from "../../api/admin.api";
 import UserDetailsModal from "../../Components/admin/UserDetailsModal";
 import SuspendUserModal from "../../Components/admin/SuspendUserModal";
 import DeleteUserModal from "../../Components/admin/DeleteUserModal";
@@ -20,6 +20,17 @@ const Users = () => {
   const [showPromote, setShowPromote] = useState(false);
   const [role, setRole] = useState("Student");
 
+  const handlePromote = async () => {
+    if (!selectedUser) return;
+    try {
+      await adminAPI.promoteUser(selectedUser._id, role);
+      await refreshUsers();
+      setShowPromote(false);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error("Failed to update role", error);
+    }
+  };
   return (
     <AdminLayout>
       <div className="space-y-8">
@@ -82,9 +93,7 @@ const Users = () => {
           role={role}
           setRole={setRole}
           onClose={() => setShowPromote(false)}
-          onPromote={() => {
-            setShowPromote(false);
-          }}
+          onPromote={handlePromote}
         />
       </div>
     </AdminLayout>

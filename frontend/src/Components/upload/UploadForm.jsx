@@ -62,6 +62,7 @@ const UploadForm = ({
       <Textarea
         label="Description"
         value={form.description}
+        className="text-black"
         onChange={(e) => update("description", e.target.value)}
       />
 

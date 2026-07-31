@@ -267,6 +267,7 @@ const RegisterForm = ({ isOn, onSubmit }) => {
         />
 
         <Textarea
+          className="text-gray-200"
           label="Bio"
           placeholder="Tell us about yourself..."
           value={form.bio}

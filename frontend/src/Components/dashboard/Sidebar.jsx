@@ -85,6 +85,7 @@ const Sidebar = () => {
   return (
     <aside
       className="
+                max-w-[50%]
                 w-72
                 min-h-screen
                 bg-white
@@ -96,7 +97,8 @@ const Sidebar = () => {
     >
       <h1
         className="
-                    text-3xl
+                    text-xl
+                    sm:text-3xl
                     font-heading
                     font-bold
                     text-primary
@@ -108,10 +110,12 @@ const Sidebar = () => {
 
       <div
         className="
-        flex
-        items-center
+        sm:flex
+        sm:items-center
+
         gap-3
         mb-10
+
     "
       >
         <Avatar src={user?.avatar} alt={user?.fullname} size="lg" />
@@ -119,11 +123,9 @@ const Sidebar = () => {
         <div>
           <h3
             className="
-
-                font-semibold
-
+                text-sm
+                sm:font-semibold
                 text-secondary
-
             "
           >
             {user?.fullname}
@@ -152,15 +154,13 @@ const Sidebar = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) => `
+                                text-sm
                                 flex
                                 items-center
                                 gap-4
-
                                 px-4
                                 py-3
-
                                 rounded-xl
-
                                 transition-all
 
                                 ${

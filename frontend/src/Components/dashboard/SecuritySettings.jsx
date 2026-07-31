@@ -2,8 +2,22 @@ import { useNavigate } from "react-router-dom";
 
 import SettingsSection from "./SettingsSection";
 import SettingRow from "./SettingRow";
+import { successToast, errorToast } from "../../utils/toast";
+import useAuth from "../../hooks/useAuth";
 const SecuritySettings = () => {
   const navigate = useNavigate();
+    const { logout } = useAuth();
+    const handleLogout = async () => {
+      try {
+        await logout();
+        successToast("Logged out successfully");
+        navigate("/login", {
+          replace: true,
+        });
+      } catch (error) {
+        errorToast(error.response?.data?.message || "Logout failed");
+      }
+    };
 
   return (
     <SettingsSection title="Security">
@@ -12,7 +26,7 @@ const SecuritySettings = () => {
           title="Change Password"
           description="Update your password regularly to keep your account secure."
           buttonText="Change"
-          onClick={() => navigate("/forgot-password")}
+          onClick={() => navigate("/change-password")}
         />
 
         <SettingRow
@@ -26,7 +40,7 @@ const SecuritySettings = () => {
           title="Logout"
           description="Sign out from your current device."
           buttonText="Logout"
-          // onClick={logoutHandler}
+          onClick={handleLogout}
         />
       </div>
     </SettingsSection>

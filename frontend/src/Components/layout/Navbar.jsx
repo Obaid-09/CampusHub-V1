@@ -32,7 +32,7 @@ const Navbar = () => {
       >
         <div
           className="
-                        max-w-7xl
+                        max-w-5xl
                         mx-auto
                         px-6
                         h-20
@@ -43,30 +43,30 @@ const Navbar = () => {
         >
           <Logo />
 
-          <div className="hidden lg:flex">
+          <div className="hidden md:flex">
             <NavLinks />
           </div>
 
           <SearchBox />
 
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             {!loading &&
               (isAuthenticated ? (
                 <ProfileDropdown />
               ) : (
                 <>
                   <Link to="/login">
-                    <Button variant="outline">Login</Button>
+                    <Button variant="outline" className="text-sm">Login</Button>
                   </Link>
 
                   <Link to="/register">
-                    <Button>Register</Button>
+                    <Button className="text-sm">Register</Button>
                   </Link>
                 </>
               ))}
           </div>
 
-          <button className="lg:hidden" onClick={() => setOpen(true)}>
+          <button className="md:hidden" onClick={() => setOpen(true)}>
             <Menu size={28} />
           </button>
         </div>

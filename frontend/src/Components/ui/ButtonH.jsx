@@ -32,7 +32,10 @@ const Button = ({
       className={`
                 inline-flex
                 items-center
-                justify-center
+                text-start
+                px-2
+                sm:px-6
+                sm:justify-center
                 gap-2
                 rounded-lg
                 font-medium

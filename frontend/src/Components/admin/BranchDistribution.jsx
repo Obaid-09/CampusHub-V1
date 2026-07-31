@@ -35,7 +35,7 @@ const BranchDistribution = ({ branches }) => {
               data={chartData}
               dataKey="value"
               nameKey="name"
-              outerRadius={110}
+              outerRadius={90}
               label
             >
               {chartData.map((entry, index) => (
@@ -53,7 +53,7 @@ const BranchDistribution = ({ branches }) => {
               key={branch.name}
               className="flex items-center justify-between"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center text-sm gap-3">
                 <div
                   className="w-4 h-4 rounded-full"
                   style={{
@@ -64,7 +64,7 @@ const BranchDistribution = ({ branches }) => {
                 <span className="font-medium">{branch.name}</span>
               </div>
 
-              <span className="font-semibold text-secondary">
+              <span className="font-semibold text-sm text-secondary">
                 {branch.value}
               </span>
             </div>

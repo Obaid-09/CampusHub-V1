@@ -1,6 +1,5 @@
 import Logo from "../common/Logo";
 import FooterLinks from "./FooterLinks";
-
 import {
   quickLinks,
   resourceLinks,

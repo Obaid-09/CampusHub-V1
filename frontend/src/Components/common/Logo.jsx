@@ -7,7 +7,7 @@ const Logo = ({ className = "" }) => {
       <img
         src={logo}
         alt="CampusHub Logo"
-        className="h-12 w-auto object-contain"
+        className="h-10 w-auto object-contain"
       />
     </Link>
   );

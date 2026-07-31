@@ -2,7 +2,7 @@ const TextArea = ({ label, error, rows = 5, className = "", ...props }) => {
   return (
     <div className="w-full">
       {label && (
-        <label className="block mb-2 text-sm font-medium text-secondary">
+        <label className="block mb-2 text-sm font-medium text-gray-400">
           {label}
         </label>
       )}

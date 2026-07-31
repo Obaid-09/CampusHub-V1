@@ -25,8 +25,8 @@ const ResourceStatusDistribution = ({ data }) => {
               data={chartData}
               dataKey="value"
               nameKey="name"
-              innerRadius={65}
-              outerRadius={105}
+              innerRadius={60}
+              outerRadius={90}
               paddingAngle={4}
               label
             >
@@ -50,10 +50,10 @@ const ResourceStatusDistribution = ({ data }) => {
                   }}
                 />
 
-                <span className="font-medium">{item.name}</span>
+                <span className="font-medium text-sm">{item.name}</span>
               </div>
 
-              <span className="font-semibold text-secondary">{item.value}</span>
+              <span className="font-semibold text-sm text-secondary">{item.value}</span>
             </div>
           ))}
         </div>

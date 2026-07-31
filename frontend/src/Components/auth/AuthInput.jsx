@@ -1,7 +1,7 @@
 const AuthInput = ({ label, disabled, className = "", ...props }) => {
   return (
     <div className="space-y-2">
-      <label className="block font-medium text-gray-700">{label}</label>
+      <label className="block font-medium text-gray-200">{label}</label>
 
       <input
         disabled={disabled}

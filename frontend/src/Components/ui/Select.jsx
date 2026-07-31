@@ -8,7 +8,7 @@ const Select = ({
   return (
     <div className="space-y-2">
       {label && (
-        <label className="text-sm font-medium text-secondary">{label}</label>
+        <label className="text-sm font-medium text-gray-400">{label}</label>
       )}
 
       <select

@@ -15,6 +15,7 @@ const SearchBar = ({ placeholder = "Search...", ...props }) => {
                     py-3
                     rounded-xl
                     border
+                    text-sm
                     border-gray200
                     focus:border-primary
                     focus:ring-2

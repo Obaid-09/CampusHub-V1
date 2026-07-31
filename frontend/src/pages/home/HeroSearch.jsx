@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../../Components/ui/Button";
+import Button from "../../Components/ui/ButtonH";
 
 const HeroSearch = () => {
   const [search, setSearch] = useState("");

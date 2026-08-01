@@ -152,50 +152,7 @@ export const progress = {
 // ];
 
 export const dummyNotifications = [
-  {
-    id: 1,
-    type: "approval",
-    title: "Resource Approved",
-    description: "Operating Systems Notes is now publicly available.",
-    time: "2 hours ago",
-    unread: true,
-  },
 
-  {
-    id: 2,
-    type: "download",
-    title: "New Downloads",
-    description: "Your DBMS Notes received 24 new downloads.",
-    time: "Yesterday",
-    unread: true,
-  },
-
-  {
-    id: 3,
-    type: "rating",
-    title: "New Rating",
-    description: "Someone rated your CN Notes 5 stars.",
-    time: "2 days ago",
-    unread: false,
-  },
-
-  {
-    id: 4,
-    type: "review",
-    title: "New Review",
-    description: "Excellent notes! Helped a lot before exams.",
-    time: "3 days ago",
-    unread: false,
-  },
-
-  {
-    id: 5,
-    type: "achievement",
-    title: "Achievement Unlocked",
-    description: "You earned the Top Contributor badge.",
-    time: "Last Week",
-    unread: false,
-  },
 ];
 
 export const upcomingEvents = [

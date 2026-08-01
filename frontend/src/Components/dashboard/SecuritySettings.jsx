@@ -32,8 +32,8 @@ const SecuritySettings = () => {
         <SettingRow
           title="Email Verification"
           description="Verify your email to access all CampusHub features."
-          buttonText="Verify"
-          onClick={() => navigate("/verify-email")}
+          buttonText="Coming Soon"
+          // onClick={() => navigate("/verify-email")}
         />
 
         <SettingRow

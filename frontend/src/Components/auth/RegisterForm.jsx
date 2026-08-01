@@ -1,7 +1,6 @@
 import AuthHeader from "./AuthHeader";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
-import SocialLogin from "./SocialLogin";
 import AuthFooter from "./AuthFooter";
 import AvatarUpload from "./AvatarUpload";
 import TermsCheckbox from "./TermsCheckbox";
@@ -347,7 +346,7 @@ const RegisterForm = ({ isOn, onSubmit }) => {
           <div className="flex-1 h-px bg-white/10" />
         </div>
 
-        <SocialLogin disabled={!isOn || loading} />
+        {/* <SocialLogin disabled={!isOn || loading} /> */}
 
         <AuthFooter
           text="Already have an account?"

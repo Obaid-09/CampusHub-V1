@@ -24,7 +24,7 @@ const AboutHero = () => {
                                 mb-8
                             "
                         >
-                            🚀 Empowering Engineering Students
+                            Empowering Engineering Students
                         </div>
 
                         <h1

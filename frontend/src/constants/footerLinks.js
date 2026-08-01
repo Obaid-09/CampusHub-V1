@@ -54,7 +54,7 @@ export const socialLinks = [
   },
 
   {
-    name: "Contact",
-    path: "/contact",
+    name: "Instagram",
+    path: "https://www.instagram.com/obaid_0917/?hl=en",
   },
 ];

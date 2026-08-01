@@ -588,7 +588,7 @@ const Hero = () => {
             Trusted by Engineering Students
           </div>
 
-          <h1 className="text-xl sm:text-4xl lg:text-6xl font-heading font-bold text-secondary leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-heading font-bold text-secondary leading-tight">
             Find
             <span className="text-primary">
               {" "}
@@ -619,7 +619,7 @@ const Hero = () => {
             </Button>
           </div>
 
-          <div className="flex w-full justify-between gap-8 md:gap-10 mt-14 flex-wrap">
+          {/* <div className="flex w-full justify-between gap-8 md:gap-10 mt-14 flex-wrap">
             {stats.map(({ icon: Icon, value, label, iconBg, iconColor }) => (
               <div key={label} className="flex flex-col">
                 <div
@@ -631,7 +631,7 @@ const Hero = () => {
                 <p className="text-gray500 text-sm">{label}</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Right */}

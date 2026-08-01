@@ -1,7 +1,7 @@
 import AboutHero from "../../Components/about/AboutHero";
 import Mission from "../../Components/about/Mission";
 import Features from "../../Components/about/Features";
-import Stats from "../../Components/about/Stats";
+// import Stats from "../../Components/about/Stats";
 import Vision from "../../Components/about/Vision";
 import Developer from "../../Components/about/Developer";
 import FAQ from "../../Components/about/FAQ";
@@ -16,7 +16,7 @@ const About = () => {
             <WhyCampusHub/>
             <Mission />
             <Features />
-            <Stats />
+            {/* <Stats /> */}
             <Vision />
             <Developer />
             <FAQ />

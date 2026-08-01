@@ -25,7 +25,7 @@ const links = [
 
 const NavLinks = ({ mobile = false, onNavigate }) => {
   return (
-    <div className={mobile ? "flex flex-col gap-6" : "flex items-center gap-6"}>
+    <div className={mobile ? "flex flex-col gap-6" : "flex items-center gap-4"}>
       {links.map((link) => (
         <NavLink
           key={link.path}

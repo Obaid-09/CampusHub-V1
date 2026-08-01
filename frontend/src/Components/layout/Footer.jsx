@@ -66,9 +66,8 @@ const Footer = () => {
           <p className="text-gray400">© 2026 CampusHub. All Rights Reserved.</p>
 
           <p className="mt-2 text-gray400">
-            Designed & Developed with
-            <span className="text-red-500 mx-2">❤️</span>
-            by
+            Designed & Developed by
+            {/* <span className="text-red-500 mx-2">❤️</span> */}
             <span className="text-primary font-semibold ml-2">Obaidullah</span>
           </p>
         </div>

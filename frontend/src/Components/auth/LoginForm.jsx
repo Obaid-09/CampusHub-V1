@@ -2,7 +2,6 @@ import { useState } from "react";
 import AuthInput from "./AuthInput";
 import PasswordInput from "./PasswordInput";
 import RememberMe from "./RememberMe";
-import SocialLogin from "./SocialLogin";
 import AuthHeader from "./AuthHeader";
 import AuthFooter from "./AuthFooter";
 import Button from "../ui/Button";
@@ -84,7 +83,7 @@ const LoginForm = ({ isOn, onSubmit }) => {
           Sign In
         </Button>
 
-        <SocialLogin disabled={!isOn || loading} />
+        {/* <SocialLogin disabled={!isOn || loading} /> */}
 
         <AuthFooter />
       </form>
